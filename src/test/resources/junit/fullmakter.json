@@ -1,0 +1,40 @@
+{
+  "fullmakter": [
+    {
+      "referensnummer": "MOF0000000021",
+      "registreringstidpunkt": "2022-10-24T13:48:13.705856+02:00",
+      "status": "GILTIG",
+      "id": "95189b70-c0cc-432f-a1ef-bb75b876ab75",
+      "rubrik": "Testfullmakt Mina ombud",
+      "giltigFrom": "2022-10-24",
+      "giltigTom": "2024-10-23",
+      "tredjeman": "2120002411",
+      "fullmaktsgivare": {
+        "id": "5560107053",
+        "typ": "orgnr",
+        "namn": "Testbolag 11 bokat av SKV för test och validering av långt företag namn Aktiebolag"
+      },
+      "fullmaktsgivarroll": "ORGANISATION",
+      "fullmaktshavare": [
+        {
+          "id": "195809132896",
+          "typ": "pnr",
+          "fornamn": "Paul Ingemar",
+          "namn": "Vall"
+        },
+        {
+          "id": "195809132897",
+          "typ": "pnr",
+          "fornamn": "Paul Inge",
+          "namn": "Vallenberg"
+        }
+      ]
+    }
+  ],
+  "page": {
+    "size": 100,
+    "totalElements": 1,
+    "totalPages": 1,
+    "number": 0
+  }
+}

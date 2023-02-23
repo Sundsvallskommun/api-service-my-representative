@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/sok/behorigheter"
+  },
+  "response": {
+    "bodyFileName": "behorigheter.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": "200"
+  }
+}

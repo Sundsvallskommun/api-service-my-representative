@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/sok/fullmakter"
+  },
+  "response": {
+    "bodyFileName": "fullmakter.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": "200"
+  }
+}

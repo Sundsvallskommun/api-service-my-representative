@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/sok/fullmakter"
+  },
+  "response": {
+    "bodyFileName": "test3_noResponseFromMinaOmbud_shouldReturnEmptyResponse/response/behorigheter.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": "200"
+  }
+}

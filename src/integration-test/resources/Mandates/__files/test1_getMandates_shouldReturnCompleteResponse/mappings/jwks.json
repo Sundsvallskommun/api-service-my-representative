@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/tredjeman/2120002411/jwks"
+  },
+  "response": {
+    "bodyFileName": "test1_getMandates_shouldReturnCompleteResponse/response/jwks.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": "200"
+  }
+}

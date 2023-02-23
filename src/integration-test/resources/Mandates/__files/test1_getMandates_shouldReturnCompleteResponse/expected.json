@@ -1,0 +1,75 @@
+{
+  "mandates": [
+    {
+      "mandateIssuer": {
+        "partyId": "fb2f0290-3820-11ed-a261-0242ac120005",
+        "type": "orgnr",
+        "name": "TB Valls Golv AB",
+        "legalId": "5563454502"
+      },
+      "mandateAcquirers": [
+        {
+          "partyId": "ffaf692e-6686-11ed-9022-0242ac120002",
+          "type": "pnr",
+          "name": "Karin Andersson",
+          "legalId": "198101032384"
+        }
+      ],
+      "mandateRole": "ORGANIZATION",
+      "issuedDate": "2023-01-11T11:57:06.043136",
+      "permissions": [
+        {
+          "code": "d7b1de6e-8ef2-49e8-81b0-002646e3a0ff",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "db0023d9-3d19-482f-b43c-47e0073484a2",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "e5fcf2cd-45e1-4725-a4ff-72a478e5690e",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "5bfa26bc-47f7-4252-b474-bf7c60ba30e7",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "caf5b8e8-cab1-4baf-b644-8ec049e3a346",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "5182f213-767f-4e43-a891-86c6747482ca",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "db3005dd-4d8e-4b20-91a5-d898337c35f1",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "02d4c196-f91a-4797-b706-894bba30eaff",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "code": "b21bd8b3-bebd-4733-b536-eba88057a3a4",
+          "mandateStatus": "ACTIVE",
+          "mandate": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        }
+      ]
+    }
+  ],
+  "_meta": {
+    "page": 0,
+    "limit": 20,
+    "totalRecords": 1,
+    "totalPages": 1
+  }
+}

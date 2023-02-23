@@ -1,0 +1,482 @@
+openapi: 3.0.1
+info:
+  title: api-my-representative
+  contact: {}
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /jwks:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: jwks
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jwks'
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+      x-wso2-mutual-ssl: Optional
+  /getMandates:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: getMandates
+      parameters:
+        - name: mandateIssuer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: mandateIssuer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: false
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: mandateAcquirer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: mandateAcquirer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: true
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: mandates
+          in: query
+          required: false
+          schema:
+            minItems: 0
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+              description: Fetch only specified mandates
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            minimum: 0
+            type: string
+            description: Page number
+            example: 0
+            default: "0"
+          example: 0
+        - name: limit
+          in: query
+          description: Result size per page
+          required: false
+          schema:
+            maximum: 1000
+            minimum: 1
+            type: string
+            description: Result size per page
+            example: 100
+            default: "100"
+          example: 100
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MandatesResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /getAuthorities:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: getAuthorities
+      parameters:
+        - name: authorityIssuer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: authorityIssuer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: false
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: authorityAcquirer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: authorityAcquirer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: true
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            minimum: 0
+            type: string
+            description: Page number
+            example: 0
+            default: "0"
+          example: 0
+        - name: limit
+          in: query
+          description: Result size per page
+          required: false
+          schema:
+            maximum: 1000
+            minimum: 1
+            type: string
+            description: Result size per page
+            example: 100
+            default: "100"
+          example: 100
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthoritiesResponse'
+  /api-docs:
+    get:
+      tags:
+        - API
+      summary: OpenAPI
+      operationId: getApiDocs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/yaml:
+              schema:
+                type: string
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+      x-wso2-mutual-ssl: Optional
+components:
+  schemas:
+    Problem:
+      type: object
+      properties:
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        title:
+          type: string
+        detail:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusType'
+    StatusType:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        reasonPhrase:
+          type: string
+    Jwks:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+      description: Simple representation of the JSON Web Key Set (JWKS).
+    Mandate:
+      type: object
+      properties:
+        mandateIssuer:
+          $ref: '#/components/schemas/ResponseIssuer'
+        mandateAcquirers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseAcquirer'
+        mandateRole:
+          type: string
+          description: If the issuer is an organization or private person
+          example: ORGANIZATION
+          enum:
+            - PRIVATE
+            - ORGANIZATION
+        issuedDate:
+          type: string
+          description: Date when the mandate was issued
+          format: date-time
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+      description: Mandate information model.
+    MandatesResponse:
+      type: object
+      properties:
+        mandates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mandate'
+        _meta:
+          $ref: '#/components/schemas/MetaData'
+      description: Mandate response model
+    MetaData:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page
+          format: int32
+          readOnly: true
+          example: 5
+        limit:
+          type: integer
+          description: Displayed objects per page
+          format: int32
+          readOnly: true
+          example: 20
+        totalRecords:
+          type: integer
+          description: Total amount of hits based on provided search parameters
+          format: int64
+          readOnly: true
+          example: 98
+        totalPages:
+          type: integer
+          description: Total amount of pages based on provided search parameters
+          format: int32
+          readOnly: true
+          example: 23
+      description: Metadata model
+      readOnly: true
+    Permission:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code for the specific permission
+          example: bf1a690b-33d6-4a3e-b407-e7346fa1c97c
+        mandateStatus:
+          type: string
+          description: Status of the mandate
+          example: Aktiv
+          enum:
+            - ACTIVE
+            - PASSIVE
+            - Aktiv
+            - Passiv
+        mandate:
+          type: string
+          description: UUID for the mandate
+          example: 95189b70-c0cc-432f-a1ef-bb75b876ab75
+    ResponseAcquirer:
+      type: object
+      properties:
+        partyId:
+          type: string
+          description: PartyId for the sole trader or organization
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        type:
+          type: string
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          example: pnr
+        name:
+          type: string
+          description: Name of company / person
+        legalId:
+          type: string
+          description: "LegalId for person, sole trader or organization"
+      description: Base response information for the acquirer of mandates / authorities
+    ResponseIssuer:
+      type: object
+      properties:
+        partyId:
+          type: string
+          description: PartyId for the sole trader or organization
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        type:
+          type: string
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+        name:
+          type: string
+          description: Name of company / person
+        legalId:
+          type: string
+          description: "LegalId for person, sole trader or organization"
+      description: Base response information for the issuer of mandates / authorities
+    AuthoritiesResponse:
+      type: object
+      properties:
+        authorities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Authority'
+        _meta:
+          $ref: '#/components/schemas/MetaData'
+      description: Mandate response model
+    Authority:
+      type: object
+      properties:
+        authorityIssuer:
+          $ref: '#/components/schemas/ResponseIssuer'
+        authorityAcquirers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseAcquirer'
+        authorityRole:
+          type: string
+          description: If the issuer is an organization or private person
+          example: ORGANIZATION
+          enum:
+            - PRIVATE
+            - ORGANIZATION
+        referenceNumber:
+          type: string
+          description: Reference number intended as a reference between client and
+            third party
+          example: MOF1234567890
+        status:
+          type: string
+          description: Status of the authority
+          example: ACTIVE
+          enum:
+            - ACTUAL
+            - VALID
+            - HISTORICAL
+        id:
+          type: string
+          description: Unique ID for the authority
+          example: bf31188a-bfbb-4f23-a60a-89c75d009b53
+        description:
+          type: string
+          description: What the authority represents
+        issuedDate:
+          type: string
+          description: Date when the authority was issued
+          format: date-time
+        validFrom:
+          type: string
+          description: Date from when the authority is valid
+          format: date
+        validTo:
+          type: string
+          description: Date to when the authority ceased to be valid
+          format: date
+      description: Authority information model.
+  securitySchemes: {}

@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/sok/fullmakter"
+  },
+  "response": {
+    "bodyFileName": "test1_getAuthorities_shouldReturnCompleteResponse/response/fullmakter.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": "200"
+  }
+}

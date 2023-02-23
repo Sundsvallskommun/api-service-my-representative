@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/party/PRIVATE/195809132896/partyId"
+    },
+    "response": {
+        "body": "ffaf692e-6686-11ed-9022-0242ac120002",
+        "headers": {
+            "Content-Type": "text/plain"
+        },
+        "status": "200"
+    }
+}

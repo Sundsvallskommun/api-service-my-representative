@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>se.sundsvall.dept44</groupId>
+		<artifactId>dept44-service-parent</artifactId>
+		<version>1.25</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>se.sundsvall</groupId>
+	<artifactId>my-representative</artifactId>
+	<version>0.1</version>
+	<name>My Representative</name>
+	<description>My Representative</description>
+
+	<properties>
+		<docker.image.name>ms-myrepresentative</docker.image.name>
+		<exposed.app.port>8080</exposed.app.port>
+		<published.container.port.sandbox>8760</published.container.port.sandbox>
+		<published.container.port.test>8760</published.container.port.test>
+		<published.container.port.production>8760</published.container.port.production>
+		<sandbox.wiremock>true</sandbox.wiremock>
+		<sandbox.db>false</sandbox.db>
+
+		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+		<minaombud-generated-sources-folder>${project.build.directory}/minaombud-sources</minaombud-generated-sources-folder>
+		<party-generated-sources-folder>${project.build.directory}/party-sources</party-generated-sources-folder>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<jjwt-version>0.11.5</jjwt-version>
+		<nimbus.jose-version>9.28</nimbus.jose-version>
+		<jackson.databind-version>0.2.4</jackson.databind-version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-starter-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-common-validators</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-starter-feign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<!-- JWT -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt-version}</version>
+			<!--<scope>runtime</scope>-->
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+			<version>${jjwt-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- New JWA stuff -->
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>nimbus-jose-jwt</artifactId>
+			<version>${nimbus.jose-version}</version>
+		</dependency>
+
+		<!-- Needed for generating classes for mina ombud -->
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>${jackson.databind-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.erdtman</groupId>
+			<artifactId>java-json-canonicalization</artifactId>
+			<version>1.1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/org/openapitools/**</exclude>
+						<exclude>**/generated/se/sundsvall/**</exclude>
+						<exclude>**/se/sundsvall/myrepresentative/config/OpenApiConfigurationExtension**</exclude>
+						<exclude>**/se/sundsvall/myrepresentative/MyRepresentatives**</exclude>
+						<exclude>**/se/sundsvall/myrepresentative/service/signature/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- Add the generated entity classes as sources. -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-generated-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${minaombud-generated-sources-folder}</source>
+								<source>${party-generated-sources-folder}</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>5.4.0</version> <!-- DON'T update to 6.x since there's a bug which overrides some fields with default values. -->
+				<executions>
+					<execution>
+						<id>mina-ombud-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/contracts/minaombud/dfm_konsument_v1.yaml</inputSpec>
+							<output>${generated-sources-path}</output>
+							<generatorName>spring</generatorName>
+							<generateApis>false</generateApis>
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+								<generatePom>false</generatePom>
+								<generateSupportingFiles>false</generateSupportingFiles>
+								<interfaceOnly>true</interfaceOnly>
+								<modelPackage>generated.se.sundsvall.minaombud</modelPackage>
+								<useBeanValidation>true</useBeanValidation>
+								<useSwaggerAnnotations>false</useSwaggerAnnotations>
+								<openApiNullable>false</openApiNullable>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>party-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/contracts/party/party.yaml</inputSpec>
+							<output>${generated-sources-path}</output>
+							<generatorName>spring</generatorName>
+							<generateApis>false</generateApis>
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+								<generatePom>false</generatePom>
+								<generateSupportingFiles>false</generateSupportingFiles>
+								<interfaceOnly>true</interfaceOnly>
+								<modelPackage>generated.se.sundsvall.party</modelPackage>
+								<useBeanValidation>true</useBeanValidation>
+								<useSwaggerAnnotations>false</useSwaggerAnnotations>
+								<openApiNullable>false</openApiNullable>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
