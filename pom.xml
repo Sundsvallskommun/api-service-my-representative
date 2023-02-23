@@ -32,7 +32,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<jjwt-version>0.11.5</jjwt-version>
-		<nimbus.jose-version>9.28</nimbus.jose-version>
+		<nimbus.jose-version>9.31</nimbus.jose-version>
 		<jackson.databind-version>0.2.4</jackson.databind-version>
 	</properties>
 
