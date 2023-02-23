@@ -145,7 +145,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>5.4.0</version> <!-- DON'T update to 6.x since there's a bug which overrides some fields with default values. -->
+				<version>6.4.0</version> <!-- DON'T update to 6.x since there's a bug which overrides some fields with default values. -->
 				<executions>
 					<execution>
 						<id>mina-ombud-api</id>
