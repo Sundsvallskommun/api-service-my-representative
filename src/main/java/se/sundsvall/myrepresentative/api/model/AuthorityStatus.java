@@ -16,8 +16,8 @@ public enum AuthorityStatus {
 
     /**
      * Translates the value from bolagsverket to our enum value.
-     * @param status
-     * @return
+     * @param status status to convert from String
+     * @return the enum value
      */
     public static AuthorityStatus fromBolagsverketValue(String status) {
         return switch (status.toLowerCase()) {

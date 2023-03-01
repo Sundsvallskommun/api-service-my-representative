@@ -17,7 +17,7 @@ public enum Role {
 
     /**
      * Translates the value from bolagsverket to our enum value.
-     * @param role
+     * @param role either private or organisation
      * @return null if no match is found
      */
     public static Role fromBolagsverketValue(String role) {

@@ -2,6 +2,7 @@ package se.sundsvall.myrepresentative.service.jwt;
 
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -65,7 +66,6 @@ public class JwtService {
      * Create a signed JWT token
      * @param legalId The legal id of the person we want to fetch data for
      * @return a signed JWT token to be used in the X-Service-Name header
-     * @throws JOSEException if the signing fails
      */
     public String createSignedJwt(String legalId) {
         //Use request-ID as "subject"" for the jwt, if the requestid for some reason is null, we cannot build the token.
@@ -81,7 +81,7 @@ public class JwtService {
                 .claim(PERSONAL_NUMBER_CLAIM, legalId)
                 .build();
 
-        SignedJWT signedJWT = null;
+        SignedJWT signedJWT;
         try {
             signedJWT = signJWT(rsaKey, claimsSet);
         } catch (JOSEException e) {
@@ -125,7 +125,7 @@ public class JwtService {
      */
     Base64URL createX5tSha256Thumbprint() {
         byte[] sha256Bytes = DigestUtils.sha256(keyPair.getPrivate().getEncoded());
-        return new Base64URL(new String(Base64.getUrlEncoder().encode(sha256Bytes)));
+        return new Base64URL(new String(Base64.getUrlEncoder().encode(sha256Bytes), StandardCharsets.UTF_8));
     }
 
     /**

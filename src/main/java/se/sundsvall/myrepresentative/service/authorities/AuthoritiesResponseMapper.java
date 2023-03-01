@@ -32,7 +32,7 @@ public class AuthoritiesResponseMapper {
         return MetaData.builder()
                 .withPage(response.getPage().getNumber())
                 .withTotalPages(response.getPage().getTotalPages().intValue())
-                .withTotalRecords(response.getPage().getTotalElements().intValue())
+                .withTotalRecords(response.getPage().getTotalElements())
                 .withLimit(response.getPage().getSize())
                 .build();
     }
