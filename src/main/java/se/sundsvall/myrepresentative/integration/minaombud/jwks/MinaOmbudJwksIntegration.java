@@ -7,14 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import generated.se.sundsvall.minaombud.JwkSet;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @FeignClient(
         name = "minaombudjwk",
         url = "${integration.minaombud.url}",
         configuration = MinaOmbudJwksConfiguration.class
 )
-@CircuitBreaker(name = "minaombudjwk")
 public interface MinaOmbudJwksIntegration {
 
     /**

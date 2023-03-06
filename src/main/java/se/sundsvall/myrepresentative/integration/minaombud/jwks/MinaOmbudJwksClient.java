@@ -26,8 +26,8 @@ public class MinaOmbudJwksClient {
 
     /**
      * Fetches the jwks from mina ombud and converts it to a com.nimbusds.jose.jwk.JWKSet.
-     * @param thirdParty
-     * @return
+     * @param thirdParty The third party to fetch the jwks for
+     * @return  A com.nimbusds.jose.jwk.JWKSet
      */
     public JWKSet getJwks(String thirdParty) {
         JwkSet jwks = jwksIntegration.getJwks(thirdParty);

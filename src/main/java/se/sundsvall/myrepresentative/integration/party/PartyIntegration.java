@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import generated.se.sundsvall.party.PartyType;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @FeignClient(
         name = "party",
@@ -19,7 +18,6 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
         configuration = PartyConfiguration.class,
         decode404 = true
 )
-@CircuitBreaker(name = "party")
 public interface PartyIntegration {
 
     /**
