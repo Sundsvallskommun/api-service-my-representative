@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>1.32</version>
+		<version>2.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -31,9 +31,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<jjwt-version>0.11.5</jjwt-version>
-		<nimbus.jose-version>9.31</nimbus.jose-version>
 		<jackson.databind-version>0.2.6</jackson.databind-version>
+		<java.json.canonicalization-version>1.1</java.json.canonicalization-version>
+		<jjwt-version>0.11.5</jjwt-version>
+		<openapi.generator.maven.plugin-version>6.5.0</openapi.generator.maven.plugin-version>
 	</properties>
 
 	<dependencies>
@@ -41,22 +42,27 @@
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-starter-test</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-common-validators</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-starter-feign</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.github.ben-manes.caffeine</groupId>
 			<artifactId>caffeine</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -68,24 +74,18 @@
 			<artifactId>jjwt-api</artifactId>
 			<version>${jjwt-version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>${jjwt-version}</version>
-			<!--<scope>runtime</scope>-->
 		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
 			<version>${jjwt-version}</version>
 			<scope>runtime</scope>
-		</dependency>
-
-		<!-- New JWA stuff -->
-		<dependency>
-			<groupId>com.nimbusds</groupId>
-			<artifactId>nimbus-jose-jwt</artifactId>
-			<version>${nimbus.jose-version}</version>
 		</dependency>
 
 		<!-- Needed for generating classes for mina ombud -->
@@ -99,10 +99,11 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>io.github.erdtman</groupId>
 			<artifactId>java-json-canonicalization</artifactId>
-			<version>1.1</version>
+			<version>${java.json.canonicalization-version}</version>
 		</dependency>
 	</dependencies>
 
@@ -145,7 +146,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>5.4.0</version> <!-- DON'T update to 6.x since there's a bug which overrides some fields with default values. -->
+				<version>${openapi.generator.maven.plugin-version}</version>
 				<executions>
 					<execution>
 						<id>mina-ombud-api</id>
@@ -166,6 +167,7 @@
 								<useBeanValidation>true</useBeanValidation>
 								<useSwaggerAnnotations>false</useSwaggerAnnotations>
 								<openApiNullable>false</openApiNullable>
+								<useSpringBoot3>true</useSpringBoot3>
 							</configOptions>
 						</configuration>
 					</execution>
@@ -188,6 +190,7 @@
 								<useBeanValidation>true</useBeanValidation>
 								<useSwaggerAnnotations>false</useSwaggerAnnotations>
 								<openApiNullable>false</openApiNullable>
+								<useSpringBoot3>true</useSpringBoot3>
 							</configOptions>
 						</configuration>
 					</execution>

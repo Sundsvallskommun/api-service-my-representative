@@ -4,7 +4,7 @@ import static se.sundsvall.myrepresentative.api.RepresentativesResource.JWKS_END
 
 import java.util.Optional;
 
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +17,7 @@ import io.swagger.v3.oas.models.Operation;
 public class OpenApiConfigurationExtension {
 
     @Bean
-    public OpenApiCustomiser addNoAuthEndpoint() {
+    public OpenApiCustomizer addNoAuthEndpoint() {
         return openApi -> Optional.ofNullable(openApi.getPaths().get(JWKS_ENDPOINT))
                 .flatMap(openApiPath -> Optional.ofNullable(openApiPath.getGet())).ifPresent(this::extendOperation);
     }

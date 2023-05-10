@@ -1,7 +1,7 @@
 package se.sundsvall.myrepresentative.service.signature;
 
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
-import static se.sundsvall.myrepresentative.service.signature.SignatureValidator.COULD_NOT_VERIFY_RESPONSE;
+import static se.sundsvall.myrepresentative.service.signature.SignatureVerificator.COULD_NOT_VERIFY_RESPONSE;
 
 import java.util.Base64;
 import java.util.Objects;
@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.webjars.NotFoundException;
 import org.zalando.problem.Problem;
 
 import se.sundsvall.myrepresentative.integration.minaombud.jwks.MinaOmbudJwksClient;
@@ -38,20 +37,23 @@ public class JwksHelper {
         this.jwksClient = jwksClient;
     }
 
-    public JWK getJWKFromProtectedHeader(String protectedHeader) throws NotFoundException, JsonProcessingException {
+    public JWK getJWKFromProtectedHeader(String protectedHeader) throws JsonProcessingException {
         String kidToFind = getKidFromProtectedHeader(protectedHeader);
         LOG.info("Looking for kid in jwks: {}", kidToFind);
 
         populateJwksIfMissing();
 
-        //Check for a cached Jwk, if we don't have it (or couldn't find it after a second fetch) it will throw an exception
+        //Check for a cached Jwk, if we don't have it (or couldn't find it after a second fetch) we will throw an exception
         validateKidIsCached(kidToFind);
 
         return jwkSet.getKeys().stream()
                 .filter(Objects::nonNull)
                 .filter(jwk -> StringUtils.isNotBlank(jwk.getKeyID()) && jwk.getKeyID().equals(kidToFind))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("Couldn't find JWK with kid: " + kidToFind));
+                .orElseThrow(() -> Problem.builder()
+                        .withTitle(COULD_NOT_VERIFY_RESPONSE)
+                        .withStatus(INTERNAL_SERVER_ERROR)
+                        .build());
     }
 
     /**
@@ -60,17 +62,13 @@ public class JwksHelper {
      * @param kidToFind from the "Sig"-object from Mina Ombud
      */
     void validateKidIsCached(String kidToFind) {
-        //If the kid is missing, update the JWK-set and check again.
+        //If the kid is missing, update the JWK-set and then check again.
         if(isKidMissingInKeySet(kidToFind)) {
             updateJwkSet();
 
-            //If we still cannot find it throw an exception, should never happen unless Mina Ombud isn't working as intended.
+            //If we still couldn't find it log an error, exception will be thrown later.
             if(isKidMissingInKeySet(kidToFind)) {
                 LOG.error("Could not find kid in JWK-set");
-                throw Problem.builder()
-                        .withTitle(COULD_NOT_VERIFY_RESPONSE)
-                        .withStatus(INTERNAL_SERVER_ERROR)
-                        .build();
             }
         }
     }

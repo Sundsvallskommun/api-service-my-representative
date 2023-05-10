@@ -27,18 +27,14 @@ public class AuthoritiesRequestMapper {
 
     private Identitetsbeteckning createIdentitetsbeteckningForIssuer(GetIssuer issuer) {
         if(issuer != null) {
-            return new Identitetsbeteckning()
-                    .id(issuer.getLegalId())
-                    .typ(issuer.getType());
+            return new Identitetsbeteckning(issuer.getLegalId(), issuer.getType());
         } else {
             return null;
         }
     }
 
     private Identitetsbeteckning createIdentitetsbeteckningForAcquirer(GetAcquirer acquirer) {
-        return new Identitetsbeteckning()
-                .id(acquirer.getLegalId())
-                .typ(acquirer.getType());
+        return new Identitetsbeteckning(acquirer.getLegalId(), acquirer.getType());
     }
 
     private PageParameters createPageParameters(AuthoritiesRequest request) {

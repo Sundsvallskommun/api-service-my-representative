@@ -11,7 +11,7 @@ import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
 import se.sundsvall.myrepresentative.integration.minaombud.ombud.OmbudIntegration;
 import se.sundsvall.myrepresentative.integration.party.PartyClient;
 import se.sundsvall.myrepresentative.service.jwt.JwtService;
-import se.sundsvall.myrepresentative.service.signature.SignatureValidator;
+import se.sundsvall.myrepresentative.service.signature.SignatureVerificator;
 
 import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
 import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
@@ -24,15 +24,15 @@ public class MandatesService {
     private final PartyClient partyClient;
     private final MandatesRequestMapper mandatesRequestMapper;
     private final MandatesResponseMapper mandatesResponseMapper;
-    private final SignatureValidator signatureValidator;
+    private final SignatureVerificator signatureVerificator;
 
-    public MandatesService(JwtService jwtService, OmbudIntegration ombudIntegration, MandatesResponseMapper mandatesResponseMapper, MandatesRequestMapper mandatesRequestMapper, PartyClient partyClient, SignatureValidator signatureValidator) {
+    public MandatesService(JwtService jwtService, OmbudIntegration ombudIntegration, MandatesResponseMapper mandatesResponseMapper, MandatesRequestMapper mandatesRequestMapper, PartyClient partyClient, SignatureVerificator signatureVerificator) {
         this.jwtService = jwtService;
         this.ombudIntegration = ombudIntegration;
         this.mandatesResponseMapper = mandatesResponseMapper;
         this.mandatesRequestMapper = mandatesRequestMapper;
         this.partyClient = partyClient;
-        this.signatureValidator = signatureValidator;
+        this.signatureVerificator = signatureVerificator;
     }
 
     public MandatesResponse getMandates(MandatesRequest mandatesRequest) {
@@ -76,7 +76,7 @@ public class MandatesService {
 
     MandatesResponse validateAndMapResponseFromBolagsverket(HamtaBehorigheterResponse behorigheterResponse) {
         if (!behorigheterResponse.getKontext().isEmpty()) {
-            signatureValidator.validateSignatures(behorigheterResponse);
+            signatureVerificator.verifySignatures(behorigheterResponse);
         }
         return mandatesResponseMapper.mapFullmakterResponse(behorigheterResponse);
     }

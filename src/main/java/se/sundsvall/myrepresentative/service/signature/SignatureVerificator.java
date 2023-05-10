@@ -33,18 +33,18 @@ import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
  * There's a lot of catching and throwing
  */
 @Component
-public class SignatureValidator {
+public class SignatureVerificator {
 
     public static final String COULD_NOT_VERIFY_RESPONSE = "Couldn't verify response from bolagsverket";
 
-    private static final Logger LOG = LoggerFactory.getLogger(SignatureValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SignatureVerificator.class);
     private final ObjectMapper mapper;
     private final JwksHelper jwksHelper;
 
-    public SignatureValidator(JwksHelper jwksHelper) {
+    public SignatureVerificator(JwksHelper jwksHelper) {
         this.jwksHelper = jwksHelper;
 
-        //Create a custom objectmapper to handle the response and to keep it "intact" as we use it to validate the signature.
+        //Create a custom objectmapper to handle the response and to keep it "intact" as we use it to verify the signature.
         this.mapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
@@ -54,17 +54,16 @@ public class SignatureValidator {
 
     /**
      * Takes the signature (_sig) of the response and uses it to verify the signature.
-     *
-     * @param response
+     * @param response The response from Mina Ombud
      */
-    public void validateSignatures(HamtaBehorigheterResponse response) {
+    public void verifySignatures(HamtaBehorigheterResponse response) {
         LOG.info("Verifying {} signature(s) from response", response.getKontext().size());
 
-        //Loop through all the signatures in the response and validate them
+        //Loop through all the signatures in the response and verify them
         boolean allVerified = response.getKontext().stream()
-                .allMatch(this::validateSignature);
+                .allMatch(this::verifySignature);
 
-        //If not all signatures are valid, the response is not valid.
+        //If not all signatures are verified, the response is not verified.
         if (!allVerified) {
             LOG.warn("Not all signatures could be verified");
             throw Problem.builder()
@@ -72,19 +71,19 @@ public class SignatureValidator {
                     .withStatus(INTERNAL_SERVER_ERROR)
                     .build();
         } else {
-            LOG.info("All signatures are valid");
+            LOG.info("All signatures are verified");
         }
     }
 
-    private boolean validateSignature(final Behorighetskontext kontext) {
+    private boolean verifySignature(final Behorighetskontext kontext) {
         try {
-            //Find the JWK (in the JwkSet) matching the kid in the signature, then use the JWK to validate the signature
+            //Find the JWK (in the JwkSet) matching the kid in the signature, then use the JWK to verify the signature
             JWK jwkForVerifying = jwksHelper.getJWKFromProtectedHeader(kontext.getSig().getProtected());
             String kontextStringWithRemovedSig = removeSig(kontext);
 
             //use the public key to verify the signature
             RSAKey publicRSAKey = jwkForVerifying.toRSAKey();
-            return runValidation(publicRSAKey, kontextStringWithRemovedSig, kontext);
+            return runVerification(publicRSAKey, kontextStringWithRemovedSig, kontext);
 
         } catch (Exception e) {
             //Catch everything, bottom line is we couldn't verify the signature.
@@ -114,7 +113,7 @@ public class SignatureValidator {
         return jsonCanonicalizer.getEncodedString();
     }
 
-    private boolean runValidation(RSAKey publicRSAKey, String kontextWithRemovedSig, Behorighetskontext kontext) throws JOSEException, ParseException {
+    private boolean runVerification(RSAKey publicRSAKey, String kontextWithRemovedSig, Behorighetskontext kontext) throws JOSEException, ParseException {
         RSASSAVerifier rsassaVerifier = new RSASSAVerifier(publicRSAKey);
 
         //Url-encode the payload to base64

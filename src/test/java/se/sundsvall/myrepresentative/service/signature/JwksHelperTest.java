@@ -76,20 +76,6 @@ class JwksHelperTest {
     }
 
     @Test
-    void checkForCachedJwk_shouldThrowExceptionWhenNotFound() throws ParseException, JsonProcessingException {
-        //Populate the jwks
-        when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
-        jwksHelper.populateJwksIfMissing();
-
-        assertThatExceptionOfType(ThrowableProblem.class)
-                .isThrownBy(() -> jwksHelper.validateKidIsCached("kid-not-found"))
-                .withMessage("Couldn't verify response from bolagsverket");
-
-        //2 since we start by populating the cache and then another call when updating the cache
-        verify(mockJwksClient, times(2)).getJwks(THIRD_PARTY);
-    }
-
-    @Test
     void isKidMissingInKeySet_shouldReturnFalse_whenFound() throws ParseException, JsonProcessingException {
         //Populate the jwks
         when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));

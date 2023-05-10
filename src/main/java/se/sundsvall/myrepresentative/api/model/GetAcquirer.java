@@ -1,12 +1,11 @@
 package se.sundsvall.myrepresentative.api.model;
 
-import javax.validation.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

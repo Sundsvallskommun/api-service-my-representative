@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: '1.0.1'
+  version: '1.1.0'
   title: API för digitala fullmakter
   description: |
     ## Introduktion
@@ -201,7 +201,7 @@ paths:
   /sok/behorigheter:
     post:
       operationId: hamtaBehorigheter
-      summary: Hämta behörigheter hos tredje man
+      summary: Sök behörigheter
       description: |
         Hämtar de behörigheter som finns på giltiga fullmakter för fullmaktshavaren.
       tags:
@@ -515,14 +515,6 @@ components:
       example:
         id: "198101052382"
         typ: "pnr"
-      discriminator:
-        propertyName: typ
-        mapping:
-          pnr: '#/components/schemas/Identitetsbeteckning'
-          orgnr: '#/components/schemas/Identitetsbeteckning'
-          samnr: '#/components/schemas/Identitetsbeteckning'
-          gdnr: '#/components/schemas/Identitetsbeteckning'
-          username: '#/components/schemas/Identitetsbeteckning'
 
     Fornamn:
       type: string
@@ -552,27 +544,11 @@ components:
       allOf:
         - $ref: '#/components/schemas/Identitetsbeteckning'
         - $ref: '#/components/schemas/Namngiven'
-      discriminator:
-        propertyName: typ
-        mapping:
-          pnr: '#/components/schemas/NamnIdentitet'
-          orgnr: '#/components/schemas/NamnIdentitet'
-          samnr: '#/components/schemas/NamnIdentitet'
-          gdnr: '#/components/schemas/NamnIdentitet'
-          username: '#/components/schemas/NamnIdentitet'
-
     Fullmaktsgivare:
       title: Fullmaktsgivare
       description: Fullmaktsgivare med namn och identitet.
       allOf:
         - $ref: '#/components/schemas/NamnIdentitet'
-      discriminator:
-        propertyName: typ
-        mapping:
-          pnr: '#/components/schemas/Fullmaktsgivare'
-          orgnr: '#/components/schemas/Fullmaktsgivare'
-          samnr: '#/components/schemas/Fullmaktsgivare'
-          gdnr: '#/components/schemas/Fullmaktsgivare'
       example: {"id": "5560038860", "typ": "orgnr", "namn": "Testbolag AB"}
     FullmaktsgivareRoll:
       description: Anger om en fullmakt utfärdas i roll som privatperson eller organisation.
@@ -587,13 +563,6 @@ components:
       description: Fullmaktshavare med namn och identitet.
       allOf:
         - $ref: '#/components/schemas/NamnIdentitet'
-      discriminator:
-        propertyName: typ
-        mapping:
-          pnr: '#/components/schemas/Fullmaktshavare'
-          orgnr: '#/components/schemas/Fullmaktshavare'
-          samnr: '#/components/schemas/Fullmaktshavare'
-          gdnr: '#/components/schemas/Fullmaktshavare'
       example: {"id": "197309069289", "typ": "pnr", "fornamn": "Nina", "namn": "Greger"}
     Tredjeman:
       title: Tredjeman
@@ -611,22 +580,12 @@ components:
       description: Fysisk person med namn och identitet.
       allOf:
         - $ref: '#/components/schemas/NamnIdentitet'
-      discriminator:
-        propertyName: typ
-        mapping:
-          pnr: '#/components/schemas/FysiskPerson'
-          samnr: '#/components/schemas/FysiskPerson'
-          gdnr: '#/components/schemas/FysiskPerson'
       example: {"id": "197309069289", "typ": "pnr", "fornamn": "Nina", "namn": "Greger"}
     JuridiskPerson:
       title: JuridiskPerson
       description: Juridisk person med namn och identitet.
       allOf:
         - $ref: '#/components/schemas/NamnIdentitet'
-      discriminator:
-        propertyName: typ
-        mapping:
-          orgnr: '#/components/schemas/JuridiskPerson'
       example: {"id": "5560038860", "typ": "orgnr", "namn": "Testbolag AB"}
     FullmaktSignatar:
       description: |
@@ -712,7 +671,7 @@ components:
           description: |
             Prioritering mellan behörighetstyper för att säkerställa att en transportfullmakt 
             aldrig kan ge mer behörighet men kan ge mindre behörighet 
-            (från aktiv till passiv är ok, men inte från passiv till aktiv).    
+            (från aktiv till passiv är ok, men inte från passiv till aktiv).
       required: [typ, vald, niva]
     Behorighetsobjekt:
       type: object
@@ -882,7 +841,7 @@ components:
             praktisk att kommunicera mellan kund och tredje man.
             Visas efter inskickad fullmakt. Är unikt för alla fullmakter
             MOP -> givare person
-            MOF -> givare Företag            
+            MOF -> givare Företag
           example: MOF1234567890
         registreringstidpunkt:
           type: string
@@ -1039,7 +998,7 @@ components:
             | namn desc                    | Sortera på namn i omvänd ordning | 
             | fornamn,efternamn            | Sortera på fornamn och efternamn | 
             | namn ignorecase              | Sortera på namn i stigande ordning utan hänsyn till stora/små bokstäver | 
-            | namn desc ignorecase         | Sortera på namn i omvänd ordning utan hänsyn till stora/små bokstäver | 
+            | namn desc ignorecase         | Sortera på namn i omvänd ordning utan hänsyn till stora/små bokstäver |
       example: {"page": 0, "size": 20, "sort": ""}
     HamtaBehorigheterRequest:
       title: HamtaBehorigheterRequest
@@ -1119,7 +1078,7 @@ components:
         Beskriver en eller flera behörigheter i en kontext med fullmaktsgivare, fullmaktshavare och tredje man.
 
         Denna information signeras tillsammans med en tidpunkt och kan användas som ett intyg för en behörighet
-        under en begränsad tid. 
+        under en begränsad tid.
       properties:
         fullmaktsgivare:
           $ref: '#/components/schemas/Fullmaktsgivare'
@@ -1226,7 +1185,7 @@ components:
         aterkallad:
           type: boolean
           description: |
-            Ange true/false för att filtrera på återkallade/inte återkallade fullmakter. 
+            Ange true/false för att filtrera på återkallade/inte återkallade fullmakter.
         referenstidpunkt:
           type: string
           format: date-time
