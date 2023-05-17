@@ -17,19 +17,16 @@ public class MandatesRequestMapper {
     public static final String THIRD_PARTY = "2120002411";
 
     public HamtaBehorigheterRequest createBehorigheterRequest(MandatesRequest mandatesRequest) {
-        return new HamtaBehorigheterRequest()
+        HamtaBehorigheterRequest hamtaBehorigheterRequest = new HamtaBehorigheterRequest(createIdentitetsbeteckningForAcquirer(mandatesRequest.getMandateAcquirer()), THIRD_PARTY);
+        return hamtaBehorigheterRequest
                 .fullmaktsgivare(createIdentitetsbeteckningForIssuer(mandatesRequest.getMandateIssuer()))
-                .fullmaktshavare(createIdentitetsbeteckningForAcquirer(mandatesRequest.getMandateAcquirer()))
                 .behorigheter(mandatesRequest.getMandates())
-                .tredjeman(THIRD_PARTY)
                 .page(createPageParameters(mandatesRequest));
     }
 
     private Identitetsbeteckning createIdentitetsbeteckningForIssuer(GetIssuer issuer) {
         if(issuer != null) {
-            return new Identitetsbeteckning()
-                    .id(issuer.getLegalId())
-                    .typ(issuer.getType());
+            return new Identitetsbeteckning(issuer.getLegalId(), issuer.getType());
         } else {
             return null;
         }
@@ -37,9 +34,7 @@ public class MandatesRequestMapper {
 
     private Identitetsbeteckning createIdentitetsbeteckningForAcquirer(GetAcquirer issuer) {
         if(issuer != null) {
-            return new Identitetsbeteckning()
-                    .id(issuer.getLegalId())
-                    .typ(issuer.getType());
+            return new Identitetsbeteckning(issuer.getLegalId(), issuer.getType());
         } else {
             return null;
         }

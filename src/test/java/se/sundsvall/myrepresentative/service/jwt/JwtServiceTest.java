@@ -23,7 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import se.sundsvall.myrepresentative.MyRepresentatives;
 import se.sundsvall.myrepresentative.api.model.jwks.Jwks;
 
-@SpringBootTest(classes = { MyRepresentatives.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("junit")
 class JwtServiceTest {
 

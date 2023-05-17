@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.ThrowableProblem;
 
@@ -29,7 +28,7 @@ import se.sundsvall.myrepresentative.TestObjectFactory;
 import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 
 @ExtendWith({MockitoExtension.class, ResourceLoaderExtension.class})
-class SignatureValidatorTest {
+class SignatureVerificatorTest {
 
     //A header so we can test parsing ({"kid":"557b26296b7e7fbe41d0711b21c2d7bf8804507a","alg":"RS256"})
     private static final String PROTECTED_HEADER = "eyJraWQiOiI1NTdiMjYyOTZiN2U3ZmJlNDFkMDcxMWIyMWMyZDdiZjg4MDQ1MDdhIiwiYWxnIjoiUlMyNTYifQ";
@@ -38,7 +37,7 @@ class SignatureValidatorTest {
     private JwksHelper mockJwksHelper;
 
     @InjectMocks
-    private SignatureValidator signatureValidator;
+    private SignatureVerificator signatureVerificator;
 
     private JWK jwk;
 
@@ -55,21 +54,21 @@ class SignatureValidatorTest {
     }
 
     @Test
-    void testvalidateSignatures(@Load(value = "junit/behorigheter.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
+    void testVerifySignatures(@Load(value = "junit/behorigheter.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
         HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
         when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);
 
-        signatureValidator.validateSignatures(hamtaBehorigheterResponse);
+        signatureVerificator.verifySignatures(hamtaBehorigheterResponse);
     }
 
     @Test
-    void testValidateSignature_shouldFailIfSignatureValidationFails(@Load(value = "junit/behorigheter-faulty.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
+    void testVerifySignature_shouldFailIfSignatureVerificationFails(@Load(value = "junit/behorigheter-faulty.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
         //Altered response so that the calculated signature is invalid.
         HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
         when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);
 
         assertThatExceptionOfType(ThrowableProblem.class)
-                .isThrownBy(() ->signatureValidator.validateSignatures(hamtaBehorigheterResponse))
+                .isThrownBy(() -> signatureVerificator.verifySignatures(hamtaBehorigheterResponse))
                 .withMessage("Couldn't verify response from bolagsverket");
     }
 }

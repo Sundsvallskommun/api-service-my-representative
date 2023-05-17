@@ -1,14 +1,13 @@
 package se.sundsvall.myrepresentative.api.model.authorities;
 
-import javax.annotation.Nullable;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import se.sundsvall.myrepresentative.api.model.GetAcquirer;
 import se.sundsvall.myrepresentative.api.model.GetIssuer;
 import se.sundsvall.myrepresentative.api.model.ParameterBase;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
