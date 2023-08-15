@@ -1,6 +1,5 @@
 package se.sundsvall.myrepresentative.service.authorities;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -15,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
+import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesResponse;
@@ -22,31 +23,28 @@ import se.sundsvall.myrepresentative.integration.minaombud.ombud.OmbudIntegratio
 import se.sundsvall.myrepresentative.integration.party.PartyClient;
 import se.sundsvall.myrepresentative.service.jwt.JwtService;
 
-import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
-import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
-
 @ExtendWith(MockitoExtension.class)
 class AuthoritiesServiceTest {
 
-    @Mock
-    private PartyClient mockPartyClient;
+	@Mock
+	private PartyClient mockPartyClient;
 
-    @Mock
-    private OmbudIntegration mockOmbudIntegration;
+	@Mock
+	private OmbudIntegration mockOmbudIntegration;
 
-    @Mock
-    private AuthoritiesRequestMapper mockRequestMapper;
+	@Mock
+	private AuthoritiesRequestMapper mockRequestMapper;
 
-    @Mock
-    private AuthoritiesResponseMapper mockResponseMapper;
+	@Mock
+	private AuthoritiesResponseMapper mockResponseMapper;
 
-    @Mock
-    private JwtService mockJwtService;
+	@Mock
+	private JwtService mockJwtService;
 
-    @InjectMocks
-    private AuthoritiesService authoritiesService;
+	@InjectMocks
+	private AuthoritiesService authoritiesService;
 
-    @Test
+	@Test
     void getAuthorities() {
 
         when(mockPartyClient.getLegalIdFromPartyId("acquirerPartyId", "orgnr")).thenReturn("1234567890");
@@ -60,7 +58,7 @@ class AuthoritiesServiceTest {
         when(mockOmbudIntegration.getFullmakter(anyString(), any(HamtaFullmakterRequest.class))).thenReturn(new HamtaFullmakterResponse());
         when(mockResponseMapper.mapFullmakterResponse(any(HamtaFullmakterResponse.class))).thenReturn(TestObjectFactory.createAuthorityResponse());
 
-        AuthoritiesResponse authoritiesResponse = authoritiesService.getAuthorities(TestObjectFactory.createAuthorityRequest());
+        final AuthoritiesResponse authoritiesResponse = authoritiesService.getAuthorities(TestObjectFactory.createAuthorityRequest());
 
         assertThat(authoritiesResponse).isNotNull();
 
