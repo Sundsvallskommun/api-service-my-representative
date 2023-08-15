@@ -8,13 +8,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.nimbusds.jose.JOSEException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.nimbusds.jose.JOSEException;
+
+import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
+import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
@@ -22,27 +25,24 @@ import se.sundsvall.myrepresentative.integration.minaombud.ombud.OmbudIntegratio
 import se.sundsvall.myrepresentative.integration.party.PartyClient;
 import se.sundsvall.myrepresentative.service.jwt.JwtService;
 
-import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
-import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
-
 @ExtendWith(MockitoExtension.class)
 class MandatesServiceTest {
 
-    @Mock
-    private OmbudIntegration mockOmbudIntegration;
-    @Mock
-    private PartyClient mockPartyClient;
-    @Mock
-    private MandatesResponseMapper mockMandatesResponseMapper;
-    @Mock
-    private MandatesRequestMapper mockMandatesRequestMapper;
-    @Mock
-    private JwtService mockJwtService;
+	@Mock
+	private OmbudIntegration mockOmbudIntegration;
+	@Mock
+	private PartyClient mockPartyClient;
+	@Mock
+	private MandatesResponseMapper mockMandatesResponseMapper;
+	@Mock
+	private MandatesRequestMapper mockMandatesRequestMapper;
+	@Mock
+	private JwtService mockJwtService;
 
-    @InjectMocks
-    private MandatesService mandatesService;
+	@InjectMocks
+	private MandatesService mandatesService;
 
-    @Test
+	@Test
     void testGetPermissions() throws JOSEException {
         when(mockPartyClient.getLegalIdFromPartyId("acquirerPartyId", "orgnr")).thenReturn("1234567890");
         when(mockPartyClient.getLegalIdFromPartyId("issuerPartyId", "orgnr")).thenReturn("0987654321");
@@ -55,7 +55,7 @@ class MandatesServiceTest {
         when(mockOmbudIntegration.getBehorigheter(anyString(), any(HamtaBehorigheterRequest.class))).thenReturn(new HamtaBehorigheterResponse());
         when(mockMandatesResponseMapper.mapFullmakterResponse(any(HamtaBehorigheterResponse.class))).thenReturn(TestObjectFactory.createMandatesResponse());
 
-        MandatesResponse permissions = mandatesService.getMandates(TestObjectFactory.createMandatesRequest());
+        final MandatesResponse permissions = mandatesService.getMandates(TestObjectFactory.createMandatesRequest());
 
         assertThat(permissions).isNotNull();
 
