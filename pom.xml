@@ -18,12 +18,8 @@
 	<properties>
 		<docker.image.name>ms-myrepresentative</docker.image.name>
 		<exposed.app.port>8080</exposed.app.port>
-		<published.container.port.sandbox>8760</published.container.port.sandbox>
 		<published.container.port.test>8760</published.container.port.test>
 		<published.container.port.production>8760</published.container.port.production>
-		<sandbox.wiremock>true</sandbox.wiremock>
-		<sandbox.db>false</sandbox.db>
-
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<minaombud-generated-sources-folder>${project.build.directory}/minaombud-sources</minaombud-generated-sources-folder>
 		<party-generated-sources-folder>${project.build.directory}/party-sources</party-generated-sources-folder>
