@@ -1,0 +1,15 @@
+integration:
+  minaombud:
+    oauth2-client-id: override
+    oauth2-client-secret: override
+    oauth2-token-url: http://nowhere.com
+    url: http://nowhere.com
+  party:
+    oauth2-client-id: override
+    oauth2-client-secret: override
+    oauth2-token-url: http://nowhere.com
+    url: http://nowhere.com
+minaombud:
+  jwt:
+    audience: test-audience
+    issuer: test-issuer

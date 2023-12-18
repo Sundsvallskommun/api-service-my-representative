@@ -2,13 +2,13 @@ integration:
   minaombud:
     oauth2-client-id: override
     oauth2-client-secret: override
-    oauth2-token-url: http://localhost:9090/ombudtoken
-    url: http://localhost:9090/
+    oauth2-token-url: http://localhost:${wiremock.server.port}/ombudtoken
+    url: http://localhost:${wiremock.server.port}/
   party:
     oauth2-client-id: override
     oauth2-client-secret: override
-    oauth2-token-url: http://localhost:9090/partytoken
-    url: http://localhost:9090/party
+    oauth2-token-url: http://localhost:${wiremock.server.port}/partytoken
+    url: http://localhost:${wiremock.server.port}/party
 minaombud:
   jwk:
     ttl: PT30S
@@ -18,3 +18,6 @@ minaombud:
     issuer: test-issuer
   keypair:
     ttl: PT30S
+spring:
+  cache:
+    type: none
