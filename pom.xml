@@ -5,16 +5,14 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>3.4</version>
+		<version>4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-
 	<groupId>se.sundsvall</groupId>
 	<artifactId>my-representative</artifactId>
 	<version>0.1</version>
 	<name>My Representative</name>
 	<description>My Representative</description>
-
 	<properties>
 		<docker.image.name>ms-myrepresentative</docker.image.name>
 		<exposed.app.port>8080</exposed.app.port>
@@ -23,86 +21,72 @@
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<minaombud-generated-sources-folder>${project.build.directory}/minaombud-sources</minaombud-generated-sources-folder>
 		<party-generated-sources-folder>${project.build.directory}/party-sources</party-generated-sources-folder>
-
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
 		<jackson.databind-version>0.2.6</jackson.databind-version>
 		<java.json.canonicalization-version>1.1</java.json.canonicalization-version>
 		<jjwt-version>0.12.3</jjwt-version>
 		<openapi.generator.maven.plugin-version>6.6.0</openapi.generator.maven.plugin-version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-starter-test</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-common-validators</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-starter-feign</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.ben-manes.caffeine</groupId>
 			<artifactId>caffeine</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
-
 		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>${jjwt-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>${jjwt-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
 			<version>${jjwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
-
 		<!-- Needed for generating classes for mina ombud -->
 		<dependency>
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>${jackson.databind-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>io.github.erdtman</groupId>
 			<artifactId>java-json-canonicalization</artifactId>
 			<version>${java.json.canonicalization-version}</version>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -154,10 +138,10 @@
 							<output>${generated-sources-path}</output>
 							<generatorName>spring</generatorName>
 							<generateApis>false</generateApis>
+							<generateSupportingFiles>false</generateSupportingFiles>
 							<configOptions>
 								<dateLibrary>java8</dateLibrary>
 								<generatePom>false</generatePom>
-								<generateSupportingFiles>false</generateSupportingFiles>
 								<interfaceOnly>true</interfaceOnly>
 								<modelPackage>generated.se.sundsvall.minaombud</modelPackage>
 								<useBeanValidation>true</useBeanValidation>
@@ -177,10 +161,10 @@
 							<output>${generated-sources-path}</output>
 							<generatorName>spring</generatorName>
 							<generateApis>false</generateApis>
+							<generateSupportingFiles>false</generateSupportingFiles>
 							<configOptions>
 								<dateLibrary>java8</dateLibrary>
 								<generatePom>false</generatePom>
-								<generateSupportingFiles>false</generateSupportingFiles>
 								<interfaceOnly>true</interfaceOnly>
 								<modelPackage>generated.se.sundsvall.party</modelPackage>
 								<useBeanValidation>true</useBeanValidation>

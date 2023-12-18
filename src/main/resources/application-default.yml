@@ -1,0 +1,18 @@
+integration:
+  minaombud:
+    oauth2-client-id: override
+    oauth2-client-secret: override
+    oauth2-token-url: http://localhost:9090/ombudtoken
+    url: http://localhost:9090/
+  party:
+    oauth2-client-id: override
+    oauth2-client-secret: override
+    oauth2-token-url: http://localhost:9090/partytoken
+    url: http://localhost:9090/party
+minaombud:
+  jwk:
+    ttl: PT10M
+  jwt:
+    audience: minaombud
+    expiration: PT10M
+    issuer: sundsvall.se

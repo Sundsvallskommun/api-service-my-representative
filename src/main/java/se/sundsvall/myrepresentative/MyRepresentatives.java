@@ -1,6 +1,7 @@
 package se.sundsvall.myrepresentative;
 
-import org.springframework.boot.SpringApplication;
+import static org.springframework.boot.SpringApplication.run;
+
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,7 +14,7 @@ import se.sundsvall.dept44.ServiceApplication;
 @EnableScheduling
 public class MyRepresentatives {
 	public static void main(String[] args) {
-		SpringApplication.run(MyRepresentatives.class, args);
+		run(MyRepresentatives.class, args);
 	}
 
 }
