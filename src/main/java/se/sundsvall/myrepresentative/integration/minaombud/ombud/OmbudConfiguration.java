@@ -9,53 +9,51 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
+import feign.Request;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.interceptor.OAuth2RequestInterceptor;
 import se.sundsvall.myrepresentative.integration.minaombud.OmbudProperties;
 
-import feign.Request;
-
 @Import(FeignConfiguration.class)
 public class OmbudConfiguration {
 
-    private static final String REGISTRATION_ID = "minaombud";
-    private static final String X_SERVICE_NAME = "X-Service-Name";
-    private static final String X_SERVICE_VALUE = "myrepresentatives";
-    private static final String SCOPE_USER_SELF = "user:self";    //Used when getting token
+	private static final String REGISTRATION_ID = "minaombud";
+	private static final String X_SERVICE_NAME = "X-Service-Name";
+	private static final String X_SERVICE_VALUE = "myrepresentatives";
+	private static final String SCOPE_USER_SELF = "user:self";    // Used when getting token
 
-    private final OmbudProperties ombudProperties;
+	private final OmbudProperties ombudProperties;
 
-    public OmbudConfiguration(OmbudProperties ombudProperties) {
-        this.ombudProperties = ombudProperties;
-    }
+	public OmbudConfiguration(OmbudProperties ombudProperties) {
+		this.ombudProperties = ombudProperties;
+	}
 
-    @Bean
-    public FeignBuilderCustomizer feignBuilderCustomizer() {
-        return FeignMultiCustomizer.create()
-                .withRequestOptions(feignOptions())
-                .withRequestInterceptor(requst -> requst.header(X_SERVICE_NAME, X_SERVICE_VALUE)) //Add required static header for bolagsverket / minaombud
-                .withCustomizer(builder -> {
-                    final var oAuth2RequestInterceptor = new OAuth2RequestInterceptor(clientRegistration(), Set.of(SCOPE_USER_SELF));
-                    builder.requestInterceptor(oAuth2RequestInterceptor);
-                })
-                .composeCustomizersToOne();
-    }
+	@Bean
+	FeignBuilderCustomizer feignBuilderCustomizer() {
+		return FeignMultiCustomizer.create()
+			.withRequestOptions(feignOptions())
+			.withRequestInterceptor(requst -> requst.header(X_SERVICE_NAME, X_SERVICE_VALUE)) // Add required static header for bolagsverket / minaombud
+			.withCustomizer(builder -> {
+				final var oAuth2RequestInterceptor = new OAuth2RequestInterceptor(clientRegistration(), Set.of(SCOPE_USER_SELF));
+				builder.requestInterceptor(oAuth2RequestInterceptor);
+			})
+			.composeCustomizersToOne();
+	}
 
-    private ClientRegistration clientRegistration() {
-        return ClientRegistration.withRegistrationId(REGISTRATION_ID)
-                .tokenUri(ombudProperties.getOauth2TokenUrl())
-                .clientId(ombudProperties.getOauth2ClientId())
-                .clientSecret(ombudProperties.getOauth2ClientSecret())
-                .authorizationGrantType(new AuthorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))
-                .build();
-    }
+	private ClientRegistration clientRegistration() {
+		return ClientRegistration.withRegistrationId(REGISTRATION_ID)
+			.tokenUri(ombudProperties.getOauth2TokenUrl())
+			.clientId(ombudProperties.getOauth2ClientId())
+			.clientSecret(ombudProperties.getOauth2ClientSecret())
+			.authorizationGrantType(new AuthorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))
+			.build();
+	}
 
-    Request.Options feignOptions() {
-        return new Request.Options(
-                ombudProperties.getConnectTimeout().toMillis(), TimeUnit.MILLISECONDS,
-                ombudProperties.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS,
-                true
-        );
-    }
+	Request.Options feignOptions() {
+		return new Request.Options(
+			ombudProperties.getConnectTimeout().toMillis(), TimeUnit.MILLISECONDS,
+			ombudProperties.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS,
+			true);
+	}
 }

@@ -1,0 +1,23 @@
+integration:
+  minaombud:
+    oauth2-client-id: override
+    oauth2-client-secret: override
+    oauth2-token-url: http://localhost:${wiremock.server.port}/ombudtoken
+    url: http://localhost:${wiremock.server.port}/
+  party:
+    oauth2-client-id: override
+    oauth2-client-secret: override
+    oauth2-token-url: http://localhost:${wiremock.server.port}/partytoken
+    url: http://localhost:${wiremock.server.port}/party
+minaombud:
+  jwk:
+    ttl: PT30S
+  jwt:
+    audience: test-audience
+    expiration: PT20M
+    issuer: test-issuer
+  keypair:
+    ttl: PT30S
+spring:
+  cache:
+    type: none

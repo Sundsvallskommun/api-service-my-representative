@@ -1,0 +1,25 @@
+integration:
+  minaombud:
+    connect-timeout: PT5S
+    read-timeout: PT15S
+  party:
+    connect-timeout: PT5S
+    read-timeout: PT10S
+minaombud:
+  jwk:
+    initialCapacity: 10
+    maximumSize: 100
+    ttl: PT1H
+  jwt:
+    expiration: PT20M
+  keypair:
+    ttl: 3600000
+openapi:
+  name: api-my-representative
+  title: api-my-representative
+  version: 1.0
+spring:
+  application:
+    name: api-myrepresentatives
+  main:
+    banner-mode: 'off'
