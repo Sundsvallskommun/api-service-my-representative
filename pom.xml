@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
-	<artifactId>api-servie-my-representative</artifactId>
+	<artifactId>api-service-my-representative</artifactId>
 	<version>0.1</version>
-	<name>api-servie-my-representative</name>
+	<name>api-service-my-representative</name>
 	<description>My Representative</description>
 	<properties>
 		<docker.image.name>ms-myrepresentative</docker.image.name>
