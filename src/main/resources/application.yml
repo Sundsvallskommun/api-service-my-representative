@@ -6,14 +6,13 @@ integration:
     connect-timeout: PT5S
     read-timeout: PT10S
 minaombud:
-  jwk:
-    initialCapacity: 10
-    maximumSize: 100
-    ttl: PT1H
   jwt:
-    expiration: PT20M
-  keypair:
-    ttl: 3600000
+    expiration: PT1H
+    clock-skew: PT20S
+  scheduling:
+    # cron should match jwt expiration
+    cron: '0 0 * * * *'
+    lock-at-most-for: PT10M
 openapi:
   name: api-my-representative
   title: api-my-representative

@@ -1,5 +1,6 @@
 package se.sundsvall.myrepresentative.service.jwt;
 
+import static java.time.OffsetDateTime.*;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
 import java.nio.charset.StandardCharsets;
@@ -9,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Calendar;
@@ -28,17 +30,23 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.zalando.problem.Problem;
 
 import se.sundsvall.dept44.requestid.RequestId;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Getter;
+import se.sundsvall.myrepresentative.api.model.jwks.Jwks;
+import se.sundsvall.myrepresentative.integration.db.JwkRepository;
+import se.sundsvall.myrepresentative.integration.db.model.JwkEntity;
 
 @Component
 @Getter
@@ -50,16 +58,17 @@ public class JwtService {
     private static final String PERSONAL_NUMBER_CLAIM = "https://claims.oidc.se/1.0/personalNumber";
 
     private final JwtConfigProperties properties;
-    private final JwksCache jwksCache;
+    private final JwkRepository jwkRepository;
 
     private KeyPair keyPair;
     private String keyId;
-    private RSAKey rsaKey;
 
-    public JwtService(JwtConfigProperties properties, JwksCache jwksCache) throws NoSuchAlgorithmException {
+    public JwtService(JwtConfigProperties properties, JwkRepository jwkRepository) throws NoSuchAlgorithmException {
         this.properties = properties;
-        this.jwksCache = jwksCache;
-        generateAndCacheKey();
+        this.jwkRepository = jwkRepository;
+        if(!jwkRepository.existsByValidUntilAfter(now())) {
+            generateAndSaveKey();
+        }
     }
 
     /**
@@ -83,7 +92,7 @@ public class JwtService {
 
         SignedJWT signedJWT;
         try {
-            signedJWT = signJWT(rsaKey, claimsSet);
+            signedJWT = signJWT(getLatestKey(), claimsSet);
         } catch (JOSEException e) {
             throw Problem.builder()
                     .withTitle("Error while creating request towards Mina Ombud")
@@ -93,6 +102,20 @@ public class JwtService {
         }
 
         return signedJWT.serialize();
+    }
+
+    public Jwks getJwks() {
+        var maps = jwkRepository.findAll().stream()
+            .map(JwkEntity::getJwkJson)
+            .map(rsaKey -> {
+                try {
+                    return RSAKey.parse(rsaKey).toPublicJWK().toJSONObject();
+                } catch (ParseException e) {
+                    throw Problem.builder().withTitle("Error parsing keys").withStatus(INTERNAL_SERVER_ERROR).withDetail(e.getMessage()).build();
+                }
+            })
+            .toList();
+        return new Jwks(maps);
     }
 
     /**
@@ -113,10 +136,32 @@ public class JwtService {
         return signedJWT;
     }
 
-    void cacheJWK(RSAKey rsaKey) {
-        RSAKey jwk = rsaKey.toPublicJWK();
-        jwksCache.addJwk(jwk);
+    void storeJWK(RSAKey rsaKey) {
+        // Set validity to double the time of JWT in case a JWT is created just before a new key is generated
+        var validUntil = now()
+            .plus(properties.getExpiration().multipliedBy(2))
+            .plus(properties.getClockSkew());
+        jwkRepository.save(JwkEntity.builder()
+            .withJwkJson(rsaKey.toJSONString())
+            .withValidUntil(validUntil)
+            .build());
     }
+
+    private void cleanOldJWK() {
+        jwkRepository.deleteByValidUntilBefore(now());
+    }
+
+    private RSAKey getLatestKey() {
+        var keyString = jwkRepository.findAll(Sort.by(Sort.Direction.DESC, "validUntil")).stream()
+            .findFirst()
+            .map(JwkEntity::getJwkJson)
+            .orElseThrow(() -> Problem.builder().withStatus(INTERNAL_SERVER_ERROR).withTitle("No RSAKey found in database").build());
+        try {
+            return RSAKey.parse(keyString);
+        } catch (ParseException e) {
+			throw Problem.builder().withStatus(INTERNAL_SERVER_ERROR).withTitle("Error parsing key").withDetail(e.getMessage()).build();
+		}
+	}
 
     /**
      * Create the X5tSHA256 thumbprint.
@@ -153,20 +198,24 @@ public class JwtService {
     }
 
     /**
-     * Generate a new keypair and cache the JWK.
-     * This method runs on application startup and every time the duration has passed.
+     * Generate a new keypair and save the JWK.
+     * This method runs on application startup if no valid key exists and
+     * according to cron expression.
      *
      * @throws NoSuchAlgorithmException if the algorithm is not supported
      */
-    @Scheduled(initialDelayString = "${minaombud.keypair.ttl}", fixedRateString = "${minaombud.keypair.ttl}")
-    public void generateAndCacheKey() throws NoSuchAlgorithmException {
+    @Transactional
+    @Scheduled(cron = "${minaombud.scheduling.cron}")
+    @SchedulerLock(name = "generateAndSaveKey", lockAtMostFor = "${minaombud.scheduling.lock-at-most-for}")
+    public void generateAndSaveKey() throws NoSuchAlgorithmException {
         LOG.debug("Generating new keypair and JWK");
         KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALGORITHM.getFamilyName());
         kpg.initialize(2048, SecureRandom.getInstanceStrong());
         this.keyPair = kpg.generateKeyPair();
         this.keyId = UUID.randomUUID().toString();
-        this.rsaKey = createRSAKey();
-        cacheJWK(rsaKey);
+        var rsaKey = createRSAKey();
+        storeJWK(rsaKey);
         LOG.info("Generated new keypair and JWK");
+        cleanOldJWK();
     }
 }

@@ -21,7 +21,7 @@ import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
 import se.sundsvall.myrepresentative.api.validation.RequestValidator;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
-import se.sundsvall.myrepresentative.service.jwt.JwksCache;
+import se.sundsvall.myrepresentative.service.jwt.JwtService;
 
 @RestController
 @RequestMapping(value = "/")
@@ -34,13 +34,13 @@ public class RepresentativesResource {
 	public static final String JWKS_ENDPOINT = "/jwks";
 
 	private final RepresentativesService representativesService;
-	private final JwksCache jwksCache;
 	private final RequestValidator requestValidator;
+	private final JwtService jwtService;
 
-	public RepresentativesResource(final RepresentativesService representativesService, JwksCache jwksCache, RequestValidator requestValidator) {
+	public RepresentativesResource(final RepresentativesService representativesService, RequestValidator requestValidator, JwtService jwtService) {
 		this.representativesService = representativesService;
-		this.jwksCache = jwksCache;
 		this.requestValidator = requestValidator;
+		this.jwtService = jwtService;
 	}
 
 	@ApiResponse(responseCode = "200", description = "Successful Operation", content = @Content(schema = @Schema(implementation = MandatesResponse.class)))
@@ -60,6 +60,6 @@ public class RepresentativesResource {
 	@ApiResponse(responseCode = "200", description = "Successful Operation", content = @Content(schema = @Schema(implementation = Jwks.class)))
 	@GetMapping(value = JWKS_ENDPOINT, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<Jwks> jwks() {
-		return ResponseEntity.ok(jwksCache.getJwks());
+		return ResponseEntity.ok(jwtService.getJwks());
 	}
 }
