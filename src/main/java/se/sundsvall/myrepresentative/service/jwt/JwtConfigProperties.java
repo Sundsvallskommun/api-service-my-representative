@@ -17,4 +17,5 @@ public class JwtConfigProperties {
     private String issuer;
     private String audience;
     private Duration expiration;
+    private Duration clockSkew;
 }
