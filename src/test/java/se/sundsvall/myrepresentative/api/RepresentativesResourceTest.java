@@ -21,7 +21,7 @@ import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
 import se.sundsvall.myrepresentative.api.validation.RequestValidator;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
-import se.sundsvall.myrepresentative.service.jwt.JwksCache;
+import se.sundsvall.myrepresentative.service.jwt.JwtService;
 
 @ExtendWith(MockitoExtension.class)
 class RepresentativesResourceTest {
@@ -30,7 +30,7 @@ class RepresentativesResourceTest {
     private RepresentativesService mockService;
 
     @Mock
-    private JwksCache mockJwksCache;
+    private JwtService mockJwtService;
 
     @Mock
     private RequestValidator mockValidator;
@@ -45,17 +45,17 @@ class RepresentativesResourceTest {
 
         assertNotNull(representativesResource.getMandates(TestObjectFactory.createMandatesRequest()));
 
-        verify(mockJwksCache, times(0)).getJwks();
+        verify(mockJwtService, times(0)).getJwks();
         verify(mockService, times(1)).getMandates(any(MandatesRequest.class));
     }
 
     @Test
     void jwks() {
-        when(mockJwksCache.getJwks()).thenReturn(new Jwks());
+        when(mockJwtService.getJwks()).thenReturn(new Jwks());
 
         assertNotNull(representativesResource.jwks());
 
-        verify(mockJwksCache, times(1)).getJwks();
+        verify(mockJwtService, times(1)).getJwks();
         verify(mockService, times(0)).getMandates(any(MandatesRequest.class));
     }
 
@@ -66,7 +66,7 @@ class RepresentativesResourceTest {
 
         assertNotNull(representativesResource.getAuthorities(TestObjectFactory.createAuthorityRequest()));
 
-        verify(mockJwksCache, times(0)).getJwks();
+        verify(mockJwtService, times(0)).getJwks();
         verify(mockService, times(1)).getAuthorities(any(AuthoritiesRequest.class));
     }
 }

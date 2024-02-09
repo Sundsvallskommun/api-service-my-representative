@@ -10,14 +10,26 @@ integration:
     oauth2-token-url: http://localhost:${wiremock.server.port}/partytoken
     url: http://localhost:${wiremock.server.port}/party
 minaombud:
-  jwk:
-    ttl: PT30S
   jwt:
     audience: test-audience
     expiration: PT20M
     issuer: test-issuer
+    clock-skew: PT1S
   keypair:
     ttl: PT30S
 spring:
   cache:
     type: none
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mariadb:10.6:////
+  flyway:
+    enabled: true
+  jpa:
+    properties:
+      jakarta:
+        persistence:
+          schema-generation:
+            database:
+              action: validate
+
