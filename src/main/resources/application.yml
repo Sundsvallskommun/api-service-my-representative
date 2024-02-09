@@ -22,3 +22,7 @@ spring:
     name: api-myrepresentatives
   main:
     banner-mode: 'off'
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+  flyway:
+    enabled: false
