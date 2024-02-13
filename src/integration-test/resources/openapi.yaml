@@ -7,43 +7,10 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:62438
     description: Generated server url
 paths:
-  /jwks:
-    get:
-      tags:
-        - MyRepresentatives
-      operationId: jwks
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "200":
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Jwks'
-      x-auth-type: None
-      x-throttling-tier: Unlimited
-      x-wso2-mutual-ssl: Optional
-  /getMandates:
+  /mandates:
     get:
       tags:
         - MyRepresentatives
@@ -126,14 +93,14 @@ paths:
             default: "100"
           example: 100
       responses:
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -150,7 +117,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MandatesResponse'
-  /getAuthorities:
+  /jwks:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: jwks
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jwks'
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+      x-wso2-mutual-ssl: Optional
+  /authorities:
     get:
       tags:
         - MyRepresentatives
@@ -222,14 +222,14 @@ paths:
             default: "100"
           example: 100
       responses:
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -277,12 +277,12 @@ components:
           type: object
           additionalProperties:
             type: object
+        status:
+          $ref: '#/components/schemas/StatusType'
         title:
           type: string
         detail:
           type: string
-        status:
-          $ref: '#/components/schemas/StatusType'
     StatusType:
       type: object
       properties:
@@ -291,16 +291,6 @@ components:
         statusCode:
           type: integer
           format: int32
-    Jwks:
-      type: object
-      properties:
-        keys:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: object
-      description: Simple representation of the JSON Web Key Set (JWKS).
     Mandate:
       type: object
       properties:
@@ -411,6 +401,16 @@ components:
           type: string
           description: "LegalId for person, sole trader or organization"
       description: Base response information for the issuer of mandates / authorities
+    Jwks:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+      description: Simple representation of the JSON Web Key Set (JWKS).
     AuthoritiesResponse:
       type: object
       properties:

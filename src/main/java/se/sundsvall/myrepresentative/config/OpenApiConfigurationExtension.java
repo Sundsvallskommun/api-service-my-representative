@@ -1,7 +1,5 @@
 package se.sundsvall.myrepresentative.config;
 
-import static se.sundsvall.myrepresentative.api.RepresentativesResource.JWKS_ENDPOINT;
-
 import java.util.Optional;
 
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -15,6 +13,8 @@ import io.swagger.v3.oas.models.Operation;
  */
 @Configuration
 public class OpenApiConfigurationExtension {
+
+    public static final String JWKS_ENDPOINT = "/jwks";
 
     @Bean
     public OpenApiCustomizer addNoAuthEndpoint() {
