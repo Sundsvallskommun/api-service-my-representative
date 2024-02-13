@@ -19,7 +19,7 @@ class MandatesIT extends AbstractAppTest {
     void test1_getMandates_shouldReturnCompleteResponse() {
         CommonStubs.stubAllTokens();
         setupCall()
-                .withServicePath("/getMandates?mandateIssuer.partyId=fb2f0290-3820-11ed-a261-0242ac120005&&mandateIssuer.type=orgnr&mandateAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120002&mandateAcquirer.type=pnr&page=0&limit=100")
+                .withServicePath("/mandates?mandateIssuer.partyId=fb2f0290-3820-11ed-a261-0242ac120005&&mandateIssuer.type=orgnr&mandateAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120002&mandateAcquirer.type=pnr&page=0&limit=100")
                 .withHttpMethod(HttpMethod.GET)
                 .withExpectedResponseStatus(HttpStatus.OK)
                 .withExpectedResponse("expected.json")
@@ -30,7 +30,7 @@ class MandatesIT extends AbstractAppTest {
     void test2_404FromParty_shouldThrow404() {
         CommonStubs.stubPartyToken();
         setupCall()
-                .withServicePath("/getMandates?mandateAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120012&mandateAcquirer.type=pnr&page=0&limit=100")
+                .withServicePath("/mandates?mandateAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120012&mandateAcquirer.type=pnr&page=0&limit=100")
                 .withHttpMethod(HttpMethod.GET)
                 .withExpectedResponseStatus(HttpStatus.NOT_FOUND)
                 .withExpectedResponse("expected.json")
@@ -41,7 +41,7 @@ class MandatesIT extends AbstractAppTest {
     void test3_noResponseFromMinaOmbud_shouldReturnEmptyResponse() {
         CommonStubs.stubAllTokens();
         setupCall()
-                .withServicePath("/getMandates?mandateAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120002&mandateAcquirer.type=pnr&page=0&limit=100")
+                .withServicePath("/mandates?mandateAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120002&mandateAcquirer.type=pnr&page=0&limit=100")
                 .withHttpMethod(HttpMethod.GET)
                 .withExpectedResponseStatus(HttpStatus.OK)
                 .withExpectedResponse("expected.json")

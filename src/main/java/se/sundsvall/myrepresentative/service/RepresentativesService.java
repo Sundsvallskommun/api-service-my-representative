@@ -27,8 +27,6 @@ public class RepresentativesService {
 		return mandatesService.getMandates(mandatesRequest);
 	}
 
-	
-
 	public AuthoritiesResponse getAuthorities(AuthoritiesRequest request) {
 		return authoritiesService.getAuthorities(request);
 	}
