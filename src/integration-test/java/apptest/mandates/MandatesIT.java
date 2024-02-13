@@ -1,5 +1,6 @@
 package apptest.mandates;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import se.sundsvall.myrepresentative.MyRepresentatives;
 import apptest.CommonStubs;
 
 @WireMockAppTestSuite(files = "classpath:/Mandates/", classes = {MyRepresentatives.class})
+@Disabled("Needs updated signed data from bolagsverket. Martin is looking into getting new keys to generate this")
 class MandatesIT extends AbstractAppTest {
 
     @Test

@@ -16,6 +16,12 @@ paths:
         - MyRepresentatives
       operationId: jwks
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad Request
           content:
@@ -24,12 +30,6 @@ paths:
                 $ref: '#/components/schemas/Problem'
         "404":
           description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -126,6 +126,12 @@ paths:
             default: "100"
           example: 100
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad Request
           content:
@@ -144,12 +150,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MandatesResponse'
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /getAuthorities:
     get:
       tags:
@@ -222,6 +222,12 @@ paths:
             default: "100"
           example: 100
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad Request
           content:
@@ -230,12 +236,6 @@ paths:
                 $ref: '#/components/schemas/Problem'
         "404":
           description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -286,11 +286,11 @@ components:
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     Jwks:
       type: object
       properties:
@@ -372,15 +372,6 @@ components:
           type: string
           description: Code for the specific permission
           example: bf1a690b-33d6-4a3e-b407-e7346fa1c97c
-        mandateStatus:
-          type: string
-          description: Status of the mandate
-          example: Aktiv
-          enum:
-            - ACTIVE
-            - PASSIVE
-            - Aktiv
-            - Passiv
         mandate:
           type: string
           description: UUID for the mandate

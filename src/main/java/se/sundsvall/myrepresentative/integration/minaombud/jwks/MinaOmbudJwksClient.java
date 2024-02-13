@@ -20,7 +20,7 @@ public class MinaOmbudJwksClient {
     private final MinaOmbudJwksIntegration jwksIntegration;
 
 
-    public MinaOmbudJwksClient(MinaOmbudJwksIntegration jwksIntegration) {
+    public MinaOmbudJwksClient(final MinaOmbudJwksIntegration jwksIntegration) {
         this.jwksIntegration = jwksIntegration;
     }
 
@@ -29,16 +29,16 @@ public class MinaOmbudJwksClient {
      * @param thirdParty The third party to fetch the jwks for
      * @return  A com.nimbusds.jose.jwk.JWKSet
      */
-    public JWKSet getJwks(String thirdParty) {
-        JwkSet jwks = jwksIntegration.getJwks(thirdParty);
-        List<JWK> jwkList = new ArrayList<>();  //Temp list used to initialize the JWKSet at the end
+    public JWKSet getJwks(final String thirdParty) {
+        final JwkSet jwks = jwksIntegration.getJwks(thirdParty);
+        final List<JWK> jwkList = new ArrayList<>();  //Temp list used to initialize the JWKSet at the end
 
-        for (Jwk jwk : jwks.getKeys()) {
+        for (final Jwk jwk : jwks.getKeys()) {
             //Parse the JWK to a JOSE JWK
             try {
                 JWK parsedJwk = JWK.parse(jwk);
                 jwkList.add(parsedJwk);
-            } catch (ParseException e) {
+            } catch (final ParseException e) {
                 throw Problem.builder()
                         .withTitle("Couldn't parse JWK set from Mina Ombud")
                         .withStatus(INTERNAL_SERVER_ERROR)

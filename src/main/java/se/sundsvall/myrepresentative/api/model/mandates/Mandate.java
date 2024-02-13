@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
 import se.sundsvall.myrepresentative.api.model.ResponseIssuer;
 import se.sundsvall.myrepresentative.api.model.Role;
-import se.sundsvall.myrepresentative.api.model.MandateStatus;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,9 +43,6 @@ public class Mandate {
 
         @Schema(description = "Code for the specific permission", example = "bf1a690b-33d6-4a3e-b407-e7346fa1c97c")
         private String code;
-
-        @Schema(description = "If the current permission is active or passive", example = "Aktiv", allowableValues = {"Aktiv", "Passiv"})
-        private MandateStatus mandateStatus;
 
         @Schema(description = "UUID for the mandate", example = "95189b70-c0cc-432f-a1ef-bb75b876ab75")
         private String mandate;

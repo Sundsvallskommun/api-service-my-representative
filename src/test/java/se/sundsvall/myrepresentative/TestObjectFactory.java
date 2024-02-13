@@ -18,16 +18,15 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 
-import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
 import se.sundsvall.myrepresentative.api.model.AuthorityStatus;
 import se.sundsvall.myrepresentative.api.model.GetAcquirer;
 import se.sundsvall.myrepresentative.api.model.GetIssuer;
+import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
 import se.sundsvall.myrepresentative.api.model.ResponseIssuer;
-import se.sundsvall.myrepresentative.api.model.MandateStatus;
 import se.sundsvall.myrepresentative.api.model.Role;
-import se.sundsvall.myrepresentative.api.model.authorities.Authority;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesResponse;
+import se.sundsvall.myrepresentative.api.model.authorities.Authority;
 import se.sundsvall.myrepresentative.api.model.mandates.Mandate;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
@@ -80,11 +79,9 @@ public class TestObjectFactory {
                         .withPermissions(List.of(Mandate.Permission.builder()
                                 .withMandate("mandate1")
                                 .withCode("code1")
-                                .withMandateStatus(MandateStatus.ACTIVE)
                                 .build(), Mandate.Permission.builder()
                                 .withMandate("mandate2")
                                 .withCode("code2")
-                                .withMandateStatus(MandateStatus.ACTIVE)
                                 .build()))
                         .withMandateIssuer(ResponseIssuer.builder()
                                 .withPartyId("issuerPartyId")
