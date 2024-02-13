@@ -4,13 +4,12 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
-import se.sundsvall.myrepresentative.api.model.MandateStatus;
-import se.sundsvall.myrepresentative.api.model.Role;
 import se.sundsvall.myrepresentative.api.model.MetaData;
-import se.sundsvall.myrepresentative.api.model.mandates.Mandate;
-import se.sundsvall.myrepresentative.api.model.mandates.Mandate.Permission;
 import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
 import se.sundsvall.myrepresentative.api.model.ResponseIssuer;
+import se.sundsvall.myrepresentative.api.model.Role;
+import se.sundsvall.myrepresentative.api.model.mandates.Mandate;
+import se.sundsvall.myrepresentative.api.model.mandates.Mandate.Permission;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
 
 import generated.se.sundsvall.minaombud.Fullmaktshavare;
@@ -19,7 +18,7 @@ import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 @Component
 public class MandatesResponseMapper {
 
-    public MandatesResponse mapFullmakterResponse(HamtaBehorigheterResponse behorigheterResponse) {
+    public MandatesResponse mapFullmakterResponse(final HamtaBehorigheterResponse behorigheterResponse) {
         return MandatesResponse.builder()
                 .withMandates(behorigheterResponse.getKontext().stream()
                         .filter(Objects::nonNull)
@@ -39,7 +38,6 @@ public class MandatesResponseMapper {
                                 .withPermissions(kontext.getBehorigheter().stream()
                                         .map(behorighet -> Permission.builder()
                                                 .withCode(behorighet.getKod())
-                                                .withMandateStatus(MandateStatus.fromBolagsverketValue(behorighet.getTyp()))
                                                 .withMandate(behorighet.getFullmakt().toString())
                                                 .build())
                                         .toList())
@@ -56,8 +54,8 @@ public class MandatesResponseMapper {
                 .build();
     }
 
-    String mapMandateAcquirerName(Fullmaktshavare fullmaktshavare) {
-        String name;
+    String mapMandateAcquirerName(final Fullmaktshavare fullmaktshavare) {
+        final String name;
         if(fullmaktshavare.getTyp().equals("orgnr")) {
             name = fullmaktshavare.getNamn();
         } else {
