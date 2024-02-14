@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-  - url: http://localhost:51145
+  - url: http://localhost:52854
     description: Generated server url
 paths:
   /mandates:
@@ -93,6 +93,12 @@ paths:
             default: "100"
           example: 100
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
@@ -101,30 +107,30 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful Operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/MandatesResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /jwks:
     get:
       tags:
         - MyRepresentatives
       operationId: jwks
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
@@ -133,24 +139,18 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful Operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Jwks'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
       x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-mutual-ssl: Optional
@@ -226,6 +226,12 @@ paths:
             default: "100"
           example: 100
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
@@ -234,24 +240,18 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful Operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthoritiesResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /api-docs:
     get:
       tags:
@@ -292,11 +292,11 @@ components:
     StatusType:
       type: object
       properties:
-        reasonPhrase:
-          type: string
         statusCode:
           type: integer
           format: int32
+        reasonPhrase:
+          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -485,9 +485,19 @@ components:
           description: Date when the mandate was issued
           format: date-time
         permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Permission'
+          type: object
+          additionalProperties:
+            type: array
+            description: Map of UUIDs to lists of permissions.
+            example:
+              "3bfb975d-c2a9-4f16-b8e5-11c22a318fad":
+                - code: db0023d9-3d19-482f-b43c-47e0073484a2
+            items:
+              $ref: '#/components/schemas/Permission'
+          description: Map of UUIDs to lists of permissions.
+          example:
+            "3bfb975d-c2a9-4f16-b8e5-11c22a318fad":
+              - code: db0023d9-3d19-482f-b43c-47e0073484a2
       description: Mandate information model.
     MandatesResponse:
       type: object
@@ -538,7 +548,11 @@ components:
         description:
           type: string
           description: Description for the specific permission
-          example: Fullmakt för att hantera ansökan om standskyddsdispens
+          example: Fullmakt för att hantera ansökan om strandskyddsdispens
+      description: Map of UUIDs to lists of permissions.
+      example:
+        "3bfb975d-c2a9-4f16-b8e5-11c22a318fad":
+          - code: db0023d9-3d19-482f-b43c-47e0073484a2
     ResponseAcquirer:
       type: object
       properties:
