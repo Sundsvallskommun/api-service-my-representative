@@ -2,6 +2,8 @@ package se.sundsvall.myrepresentative.api.model.mandates;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -34,7 +36,7 @@ public class Mandate {
     private LocalDateTime issuedDate;
 
     @ArraySchema(schema = @Schema(implementation = Permission.class))
-    private List<Permission> permissions;
+    private Map<UUID, List<Permission>> permissions;
 
     @Getter
     @Setter
@@ -44,7 +46,7 @@ public class Mandate {
         @Schema(description = "Code for the specific permission", example = "bf1a690b-33d6-4a3e-b407-e7346fa1c97c")
         private String code;
 
-        @Schema(description = "UUID for the mandate", example = "95189b70-c0cc-432f-a1ef-bb75b876ab75")
-        private String mandate;
+        @Schema(description = "Description for the specific permission", example = "Fullmakt för att hantera ansökan om standskyddsdispens")
+        private String description;
     }
 }

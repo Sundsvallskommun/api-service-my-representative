@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-  - url: http://localhost:49667
+  - url: http://localhost:51145
     description: Generated server url
 paths:
   /mandates:
@@ -93,18 +93,6 @@ paths:
             default: "100"
           example: 100
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
@@ -113,6 +101,18 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful Operation
           content:
@@ -125,18 +125,6 @@ paths:
         - MyRepresentatives
       operationId: jwks
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
@@ -145,6 +133,18 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful Operation
           content:
@@ -226,18 +226,6 @@ paths:
             default: "100"
           example: 100
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
@@ -246,6 +234,18 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "200":
           description: Successful Operation
           content:
@@ -535,10 +535,10 @@ components:
           type: string
           description: Code for the specific permission
           example: bf1a690b-33d6-4a3e-b407-e7346fa1c97c
-        mandate:
+        description:
           type: string
-          description: UUID for the mandate
-          example: 95189b70-c0cc-432f-a1ef-bb75b876ab75
+          description: Description for the specific permission
+          example: Fullmakt för att hantera ansökan om standskyddsdispens
     ResponseAcquirer:
       type: object
       properties:

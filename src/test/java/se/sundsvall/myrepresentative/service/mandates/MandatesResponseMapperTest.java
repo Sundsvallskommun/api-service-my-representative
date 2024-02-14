@@ -28,6 +28,8 @@ class MandatesResponseMapperTest {
 	@Test
 	void test(@Load(value = "junit/behorigheter.json", as = Load.ResourceType.JSON) final HamtaBehorigheterResponse response, final SoftAssertions softly) {
 		final MandatesResponse mandatesResponse = mandatesResponseMapper.mapFullmakterResponse(response);
+		final var fullmakt = response.getKontext().getFirst().getBehorigheter().getFirst().getFullmakt();
+
 		assertThat(mandatesResponse).isNotNull();
 		final Mandate mandate = mandatesResponse.getMandates().getFirst();
 		softly.assertThat(mandate.getMandateIssuer().getPartyId()).isNull();
@@ -40,8 +42,7 @@ class MandatesResponseMapperTest {
 		softly.assertThat(mandate.getMandateAcquirers().getFirst().getName()).isEqualTo("Karin Andersson");
 		softly.assertThat(mandate.getMandateAcquirers().getFirst().getLegalId()).isEqualTo("198101032384");
 
-		softly.assertThat(mandate.getPermissions().getFirst().getCode()).isEqualTo("d7b1de6e-8ef2-49e8-81b0-002646e3a0ff");
-		softly.assertThat(mandate.getPermissions().getFirst().getMandate()).isEqualTo("3bfb975d-c2a9-4f16-b8e5-11c22a318fac");
+		softly.assertThat(mandate.getPermissions().get(fullmakt).getFirst().getCode()).isEqualTo("d7b1de6e-8ef2-49e8-81b0-002646e3a0ff");
 
 		softly.assertThat(mandate.getMandateRole()).isEqualByComparingTo(Role.ORGANIZATION);
 		softly.assertThat(mandate.getIssuedDate()).isEqualTo(LocalDateTime.parse("2023-01-11T10:57:06.043136"));

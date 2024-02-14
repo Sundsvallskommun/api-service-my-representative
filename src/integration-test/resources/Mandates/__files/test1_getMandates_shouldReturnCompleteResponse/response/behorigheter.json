@@ -1,1 +1,79 @@
-{"kontext":[{"fullmaktsgivare":{"id":"5563454502","typ":"orgnr","namn":"TB Valls Golv AB"},"fullmaktsgivarroll":"ORGANISATION","fullmaktshavare":[{"id":"198101032384","typ":"pnr","fornamn":"Karin","namn":"Andersson"}],"tredjeman":"2120002411","behorigheter":[{"kod":"d7b1de6e-8ef2-49e8-81b0-002646e3a0ff","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"db0023d9-3d19-482f-b43c-47e0073484a2","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"e5fcf2cd-45e1-4725-a4ff-72a478e5690e","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"5bfa26bc-47f7-4252-b474-bf7c60ba30e7","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"caf5b8e8-cab1-4baf-b644-8ec049e3a346","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"5182f213-767f-4e43-a891-86c6747482ca","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"db3005dd-4d8e-4b20-91a5-d898337c35f1","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"02d4c196-f91a-4797-b706-894bba30eaff","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"},{"kod":"b21bd8b3-bebd-4733-b536-eba88057a3a4","typ":"aktiv","fullmakt":"3bfb975d-c2a9-4f16-b8e5-11c22a318fac"}],"tidpunkt":"2023-01-11T11:57:06.043136+01:00","_sig":{"protected":"eyJraWQiOiI1NTdiMjYyOTZiN2U3ZmJlNDFkMDcxMWIyMWMyZDdiZjg4MDQ1MDdhIiwiYWxnIjoiUlMyNTYifQ","signature":"P_C3bT80SV2xMeYPy60RUMb_b0ownYwSs3XvUuqgu_1m5IJhEU69UsLqQ6HhixXnTZQxHFYLDOn6qNxgxZiYQ22RLg0gNtuPG8-uUeOGxlddQnntmyBbRHoufhpyNdD7nvmXbti-DNrwYigebmEtog8-l5SWUS61C5SBBDyh6g9hweSO8cvjf0Tu7Zp3A8gs34mUFqBw_eweoaCbDSNQcPHsVsY8lF8AKFDQgz0uayEqzoiqL6ugc1qE64RukiY5uOInZFYXgjPZfEs_IzyuFKX9G3ZcXPjrhl7KiklYQpDEhHV2lL4PomQ1DxKKE9bfZTKvWy37nbqPPBTBm5nZOw"}}],"page":{"size":20,"totalElements":1,"totalPages":1,"number":0}}
+{
+  "kontext": [
+    {
+      "fullmaktsgivare": {
+        "id": "5563454502",
+        "typ": "orgnr",
+        "namn": "TB Valls Golv AB"
+      },
+      "fullmaktsgivarroll": "ORGANISATION",
+      "fullmaktshavare": [
+        {
+          "id": "198101032384",
+          "typ": "pnr",
+          "fornamn": "Karin",
+          "namn": "Andersson"
+        }
+      ],
+      "tredjeman": "2120002411",
+      "behorigheter": [
+        {
+          "kod": "d7b1de6e-8ef2-49e8-81b0-002646e3a0ff",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "kod": "db0023d9-3d19-482f-b43c-47e0073484a2",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fad"
+        },
+        {
+          "kod": "e5fcf2cd-45e1-4725-a4ff-72a478e5690e",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fad"
+        },
+        {
+          "kod": "5bfa26bc-47f7-4252-b474-bf7c60ba30e7",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fad"
+        },
+        {
+          "kod": "caf5b8e8-cab1-4baf-b644-8ec049e3a346",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "kod": "5182f213-767f-4e43-a891-86c6747482ca",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "kod": "db3005dd-4d8e-4b20-91a5-d898337c35f1",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "kod": "02d4c196-f91a-4797-b706-894bba30eaff",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        },
+        {
+          "kod": "b21bd8b3-bebd-4733-b536-eba88057a3a4",
+          "typ": "aktiv",
+          "fullmakt": "3bfb975d-c2a9-4f16-b8e5-11c22a318fac"
+        }
+      ],
+      "tidpunkt": "2023-01-11T11:57:06.043136+01:00",
+      "_sig": {
+        "protected": "eyJraWQiOiI1NTdiMjYyOTZiN2U3ZmJlNDFkMDcxMWIyMWMyZDdiZjg4MDQ1MDdhIiwiYWxnIjoiUlMyNTYifQ",
+        "signature": "P_C3bT80SV2xMeYPy60RUMb_b0ownYwSs3XvUuqgu_1m5IJhEU69UsLqQ6HhixXnTZQxHFYLDOn6qNxgxZiYQ22RLg0gNtuPG8-uUeOGxlddQnntmyBbRHoufhpyNdD7nvmXbti-DNrwYigebmEtog8-l5SWUS61C5SBBDyh6g9hweSO8cvjf0Tu7Zp3A8gs34mUFqBw_eweoaCbDSNQcPHsVsY8lF8AKFDQgz0uayEqzoiqL6ugc1qE64RukiY5uOInZFYXgjPZfEs_IzyuFKX9G3ZcXPjrhl7KiklYQpDEhHV2lL4PomQ1DxKKE9bfZTKvWy37nbqPPBTBm5nZOw"
+      }
+    }
+  ],
+  "page": {
+    "size": 20,
+    "totalElements": 1,
+    "totalPages": 1,
+    "number": 0
+  }
+}

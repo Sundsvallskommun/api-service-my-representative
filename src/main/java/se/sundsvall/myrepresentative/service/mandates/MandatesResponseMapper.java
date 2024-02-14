@@ -1,6 +1,7 @@
 package se.sundsvall.myrepresentative.service.mandates;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
 
 import generated.se.sundsvall.minaombud.Fullmaktshavare;
 import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
+import generated.se.sundsvall.minaombud.UtdeladBehorighet;
 
 @Component
 public class MandatesResponseMapper {
@@ -23,27 +25,29 @@ public class MandatesResponseMapper {
                 .withMandates(behorigheterResponse.getKontext().stream()
                         .filter(Objects::nonNull)
                         .map(kontext -> Mandate.builder()
-                                .withMandateIssuer(ResponseIssuer.builder()
-                                        .withLegalId(kontext.getFullmaktsgivare().getId())
-                                        .withType(kontext.getFullmaktsgivare().getTyp())
-                                        .withName(kontext.getFullmaktsgivare().getNamn())
-                                        .build())
-                                .withMandateAcquirers(kontext.getFullmaktshavare().stream()
-                                        .map(singleAquirer -> ResponseAcquirer.builder()
-                                                .withLegalId(singleAquirer.getId())
-                                                .withType(singleAquirer.getTyp())
-                                                .withName(mapMandateAcquirerName(singleAquirer))
-                                                .build())
-                                        .toList())
-                                .withPermissions(kontext.getBehorigheter().stream()
-                                        .map(behorighet -> Permission.builder()
-                                                .withCode(behorighet.getKod())
-                                                .withMandate(behorighet.getFullmakt().toString())
-                                                .build())
-                                        .toList())
-                                .withIssuedDate(kontext.getTidpunkt().toLocalDateTime())
-                                .withMandateRole(Role.fromBolagsverketValue(kontext.getFullmaktsgivarroll().toString()))
-                                .build())
+	                        .withMandateIssuer(ResponseIssuer.builder()
+		                        .withLegalId(kontext.getFullmaktsgivare().getId())
+		                        .withType(kontext.getFullmaktsgivare().getTyp())
+		                        .withName(kontext.getFullmaktsgivare().getNamn())
+		                        .build())
+	                        .withMandateAcquirers(kontext.getFullmaktshavare().stream()
+		                        .map(singleAcquirer -> ResponseAcquirer.builder()
+			                        .withLegalId(singleAcquirer.getId())
+			                        .withType(singleAcquirer.getTyp())
+			                        .withName(mapMandateAcquirerName(singleAcquirer))
+			                        .build())
+		                        .toList())
+	                        .withPermissions( kontext.getBehorigheter().stream()
+		                        .collect(Collectors.groupingBy(
+			                        UtdeladBehorighet::getFullmakt,
+			                        Collectors.mapping(
+				                        behorighet -> Permission.builder()
+					                        .withCode(behorighet.getKod()).build(),
+				                        Collectors.toList())
+		                        )))
+	                        .withIssuedDate(kontext.getTidpunkt().toLocalDateTime())
+	                        .withMandateRole(Role.fromBolagsverketValue(kontext.getFullmaktsgivarroll().toString()))
+	                        .build())
                         .toList())
                 .withMetaData(MetaData.builder()
                         .withPage(behorigheterResponse.getPage().getNumber())

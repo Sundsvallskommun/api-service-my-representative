@@ -8,6 +8,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -76,13 +78,11 @@ public class TestObjectFactory {
                 .withMandates(List.of(Mandate.builder()
                         .withMandateRole(Role.ORGANIZATION)
                         .withIssuedDate(LocalDateTime.now())
-                        .withPermissions(List.of(Mandate.Permission.builder()
-                                .withMandate("mandate1")
+                        .withPermissions(Map.of(UUID.randomUUID(),List.of(Mandate.Permission.builder()
                                 .withCode("code1")
                                 .build(), Mandate.Permission.builder()
-                                .withMandate("mandate2")
                                 .withCode("code2")
-                                .build()))
+                                .build())))
                         .withMandateIssuer(ResponseIssuer.builder()
                                 .withPartyId("issuerPartyId")
                                 .withName("Issuer name")
