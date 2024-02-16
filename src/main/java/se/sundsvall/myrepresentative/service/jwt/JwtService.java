@@ -105,7 +105,7 @@ public class JwtService {
     }
 
     public Jwks getJwks() {
-        var maps = jwkRepository.findAll().stream()
+        var maps = jwkRepository.findByValidUntilAfter(now()).stream()
             .map(JwkEntity::getJwkJson)
             .map(rsaKey -> {
                 try {
