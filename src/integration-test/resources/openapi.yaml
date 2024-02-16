@@ -1,15 +1,206 @@
 openapi: 3.0.1
 info:
   title: api-myrepresentatives
-  contact: {}
+  contact: { }
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-  - url: http://localhost:52854
+  - url: http://localhost:55477
     description: Generated server url
+tags:
+  - name: Mandate Templates
+    description: Resources for managing mandate templates
 paths:
+  /mandates/templates/{id}:
+    get:
+      tags:
+        - Mandate Templates
+      description: Get a mandate template by id
+      operationId: getMandateTemplate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK - Successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MandateTemplate'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+    put:
+      tags:
+        - Mandate Templates
+      description: Update Mandate Template
+      operationId: updateMandateTemplate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MandateTemplate'
+        required: true
+      responses:
+        "204":
+          description: No Content - Successful operation
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+    delete:
+      tags:
+        - Mandate Templates
+      description: Delete Mandate Template
+      operationId: deleteMandateTemplate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content - Successful operation
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+  /mandates/templates:
+    get:
+      tags:
+        - Mandate Templates
+      description: Get all mandate templates
+      operationId: getAllMandateTemplates
+      responses:
+        "200":
+          description: OK - Successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MandateTemplate'
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+    post:
+      tags:
+        - Mandate Templates
+      description: Create Mandate Template
+      operationId: createMandateTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MandateTemplate'
+        required: true
+      responses:
+        "201":
+          description: Created - Successful operation
+          headers:
+            Location:
+              description: Location of the created resource.
+              style: simple
+              schema:
+                type: string
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
   /mandates:
     get:
       tags:
@@ -93,44 +284,24 @@ paths:
             default: "100"
           example: 100
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "404":
           description: Not Found
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "400":
-          description: Bad request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
         "200":
           description: Successful Operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/MandatesResponse'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-  /jwks:
-    get:
-      tags:
-        - MyRepresentatives
-      operationId: jwks
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad request
           content:
@@ -139,18 +310,38 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "200":
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Jwks'
+  /jwks:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: jwks
+      responses:
         "500":
           description: Internal Server Error
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jwks'
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
       x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-mutual-ssl: Optional
@@ -226,12 +417,24 @@ paths:
             default: "100"
           example: 100
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "404":
           description: Not Found
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthoritiesResponse'
         "400":
           description: Bad request
           content:
@@ -240,18 +443,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "200":
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthoritiesResponse'
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /api-docs:
     get:
       tags:
@@ -270,6 +461,27 @@ paths:
       x-wso2-mutual-ssl: Optional
 components:
   schemas:
+    MandateTemplate:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code for the specific template
+          example: bf1a690b-33d6-4a3e-b407-e7346fa1c97c
+        title:
+          type: string
+          description: Title for the specific template
+          example: Fullmakt för att göra och hantera anmälan
+        description:
+          type: string
+          description: Description for the specific template
+          example: "Behörigheten ger fullmaktshavaren rätt att upprätta anmälan, ta\
+            \ del av eget utrymme och ändra uppgifter gällande åtgärden samt på annat\
+            \ sätt företräda byggherren i åtgärder enligt 6 kap. 5 § plan- och byggfö\
+            rordningen (2011:338). Behörigheten omfattar även rätt att upprätta, se\
+            \ och ändra uppgifter gällande start- och slutbesked enligt 10 kap. 3\
+            \ och 4 §§ plan- och bygglagen (2010:900)."
+      description: Mandate Template information. Contains details about mandate templates.
     Problem:
       type: object
       properties:
@@ -292,11 +504,11 @@ components:
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -657,4 +869,4 @@ components:
           description: Date to when the authority ceased to be valid
           format: date
       description: Authority information model.
-  securitySchemes: {}
+  securitySchemes: { }
