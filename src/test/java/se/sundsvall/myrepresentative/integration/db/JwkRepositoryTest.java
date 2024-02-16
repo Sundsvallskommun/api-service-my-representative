@@ -12,6 +12,7 @@ import se.sundsvall.myrepresentative.integration.db.model.JwkEntity;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
 import static java.time.OffsetDateTime.now;
@@ -124,5 +125,23 @@ class JwkRepositoryTest {
 		repository.saveAndFlush(jwkEntity);
 
 		assertThat(repository.existsByValidUntilAfter(now())).isTrue();
+	}
+
+	@Test
+	void findByValidUntilAfter() {
+		assertThat(repository.findByValidUntilAfter(now())).isEmpty();
+
+		var jwk = "body";
+		var validUntil = now().plusMinutes(1);
+		var jwkEntity = JwkEntity.builder()
+			.withJwkJson(jwk)
+			.withValidUntil(validUntil)
+			.build();
+
+		repository.saveAndFlush(jwkEntity);
+
+		assertThat(repository.findByValidUntilAfter(now()))
+			.filteredOn(entity -> entity.getJwkJson().equals("body"))
+			.hasSize(1);
 	}
 }
