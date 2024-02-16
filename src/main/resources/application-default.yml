@@ -15,4 +15,20 @@ minaombud:
   jwt:
     audience: minaombud
     expiration: PT10M
-    issuer: sundsvall.se
+    issuer: https://sundsvall.se
+spring:
+  datasource:
+    username: dbmyrepresentative
+    password: dbmyrepresentative
+    url: jdbc:mariadb://localhost:3306/myrepresentative
+  flyway:
+    enabled: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+      jakarta:
+        persistence:
+          schema-generation:
+            database:
+              action: validate

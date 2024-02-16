@@ -60,9 +60,6 @@ public class JwtService {
     private final JwtConfigProperties properties;
     private final JwkRepository jwkRepository;
 
-    private KeyPair keyPair;
-    private String keyId;
-
     public JwtService(JwtConfigProperties properties, JwkRepository jwkRepository) throws NoSuchAlgorithmException {
         this.properties = properties;
         this.jwkRepository = jwkRepository;
@@ -76,7 +73,7 @@ public class JwtService {
      * @param legalId The legal id of the person we want to fetch data for
      * @return a signed JWT token to be used in the X-Service-Name header
      */
-    public String createSignedJwt(String legalId) {
+    public String createSignedJwt(final String legalId) {
         //Use request-ID as "subject"" for the jwt, if the requestid for some reason is null, we cannot build the token.
         String requestId = Optional.ofNullable(RequestId.get())
                 .orElse(UUID.randomUUID().toString());
@@ -93,6 +90,7 @@ public class JwtService {
         SignedJWT signedJWT;
         try {
             signedJWT = signJWT(getLatestKey(), claimsSet);
+
         } catch (JOSEException e) {
             throw Problem.builder()
                     .withTitle("Error while creating request towards Mina Ombud")
@@ -122,13 +120,13 @@ public class JwtService {
      * Sign the JWT with our keypair
      * @return a RSAKey
      */
-    private SignedJWT signJWT(RSAKey rsaKey, JWTClaimsSet claimsSet) throws JOSEException {
+    private SignedJWT signJWT(final RSAKey rsaKey, final JWTClaimsSet claimsSet) throws JOSEException {
         //Create a new signer with the rsaKey
         JWSSigner signer = new RSASSASigner(rsaKey);
 
         //Sign the JWT with the signer
         SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256)
-                .keyID(keyId)
+                .keyID(rsaKey.getKeyID())
                 .build(), claimsSet);
 
         signedJWT.sign(signer);
@@ -136,7 +134,7 @@ public class JwtService {
         return signedJWT;
     }
 
-    void storeJWK(RSAKey rsaKey) {
+    void storeJWK(final RSAKey rsaKey) {
         // Set validity to double the time of JWT in case a JWT is created just before a new key is generated
         var validUntil = now()
             .plus(properties.getExpiration().multipliedBy(2))
@@ -168,7 +166,7 @@ public class JwtService {
      * Haven't found a way to create the thumbprint via the JOSE-framework.
      * @return
      */
-    Base64URL createX5tSha256Thumbprint() {
+    Base64URL createX5tSha256Thumbprint(final KeyPair keyPair) {
         byte[] sha256Bytes = DigestUtils.sha256(keyPair.getPrivate().getEncoded());
         return new Base64URL(new String(Base64.getUrlEncoder().encode(sha256Bytes), StandardCharsets.UTF_8));
     }
@@ -187,13 +185,13 @@ public class JwtService {
      * Generate the JWK.
      * @return
      */
-    private RSAKey createRSAKey() {
+    private RSAKey createRSAKey(final String keyId, final KeyPair keyPair) {
         return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                 .privateKey((RSAPrivateKey) keyPair.getPrivate())
                 .algorithm(Algorithm.parse(ALGORITHM.getValue()))
                 .keyID(keyId)
                 .keyUse(KeyUse.SIGNATURE)
-                .x509CertSHA256Thumbprint(createX5tSha256Thumbprint())
+                .x509CertSHA256Thumbprint(createX5tSha256Thumbprint(keyPair))
                 .build();
     }
 
@@ -211,9 +209,8 @@ public class JwtService {
         LOG.debug("Generating new keypair and JWK");
         KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALGORITHM.getFamilyName());
         kpg.initialize(2048, SecureRandom.getInstanceStrong());
-        this.keyPair = kpg.generateKeyPair();
-        this.keyId = UUID.randomUUID().toString();
-        var rsaKey = createRSAKey();
+        var keyPair = kpg.generateKeyPair();
+        var rsaKey = createRSAKey(UUID.randomUUID().toString(), keyPair);
         storeJWK(rsaKey);
         LOG.info("Generated new keypair and JWK");
         cleanOldJWK();
