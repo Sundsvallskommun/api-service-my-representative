@@ -66,13 +66,10 @@ public class MandatesResponseMapper {
 	}
 
 	String mapMandateAcquirerName(final Fullmaktshavare fullmaktshavare) {
-		final String name;
 		if (fullmaktshavare.getTyp().equals("orgnr")) {
-			name = fullmaktshavare.getNamn();
-		} else {
-			name = fullmaktshavare.getFornamn() + " " + fullmaktshavare.getNamn();
+			return fullmaktshavare.getNamn();
 		}
-		return name;
+		return "%s %s".formatted(fullmaktshavare.getFornamn(), fullmaktshavare.getNamn());
 	}
 
 }

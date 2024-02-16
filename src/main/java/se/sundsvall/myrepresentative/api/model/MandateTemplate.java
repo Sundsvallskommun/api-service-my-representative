@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder(setterPrefix = "with")
-@Schema(description = "Base information for the issuer of mandates / authorities if provided, 'partyId' and 'type' must be set.")
+@Schema(description = "Mandate Template information. Contains details about mandate templates.")
 @AllArgsConstructor
 @NoArgsConstructor
 public class MandateTemplate {

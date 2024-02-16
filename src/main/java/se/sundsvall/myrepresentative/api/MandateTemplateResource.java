@@ -41,11 +41,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
 	@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 })
-public class MandateTemplateResource {
+class MandateTemplateResource {
 
 	private final MandateTemplateService service;
 
-	public MandateTemplateResource(final MandateTemplateService service) {this.service = service;}
+	MandateTemplateResource(final MandateTemplateService service) {this.service = service;}
 
 	@GetMapping
 	@Operation(description = "Get all mandate templates", responses = {
