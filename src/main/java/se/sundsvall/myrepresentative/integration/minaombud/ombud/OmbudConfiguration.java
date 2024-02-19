@@ -34,10 +34,7 @@ public class OmbudConfiguration {
 		return FeignMultiCustomizer.create()
 			.withRequestOptions(feignOptions())
 			.withRequestInterceptor(requst -> requst.header(X_SERVICE_NAME, X_SERVICE_VALUE)) // Add required static header for bolagsverket / minaombud
-			.withCustomizer(builder -> {
-				final var oAuth2RequestInterceptor = new OAuth2RequestInterceptor(clientRegistration(), Set.of(SCOPE_USER_SELF));
-				builder.requestInterceptor(oAuth2RequestInterceptor);
-			})
+			.withRetryableOAuth2InterceptorForClientRegistration(clientRegistration(), Set.of(SCOPE_USER_SELF))
 			.composeCustomizersToOne();
 	}
 
