@@ -27,7 +27,7 @@
 		<java.json.canonicalization-version>1.1</java.json.canonicalization-version>
 		<jjwt-version>0.12.5</jjwt-version>
 		<openapi.generator.maven.plugin-version>6.6.0</openapi.generator.maven.plugin-version>
-		<shedlock.version>5.10.2</shedlock.version>
+		<shedlock.version>5.11.0</shedlock.version>
 	</properties>
 	<dependencies>
 		<dependency>
