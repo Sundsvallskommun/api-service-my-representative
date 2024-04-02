@@ -1,61 +1,35 @@
 {
+  "_meta": {
+    "limit": 100,
+    "page": 0,
+    "totalPages": 1,
+    "totalRecords": 1
+  },
   "mandates": [
     {
-      "mandateIssuer": {
-        "partyId": "fb2f0290-3820-11ed-a261-0242ac120005",
-        "type": "orgnr",
-        "name": "TB Valls Golv AB",
-        "legalId": "5563454502"
-      },
+      "issuedDate": "2024-03-25T11:23:20.143115555",
       "mandateAcquirers": [
         {
-          "partyId": "ffaf692e-6686-11ed-9022-0242ac120002",
-          "type": "pnr",
-          "name": "Karin Andersson",
-          "legalId": "198101032384"
+          "legalId": "198602262381",
+          "name": "Beri Ylles",
+          "partyId": "16df33c8-73af-4be6-ac3a-154306516789",
+          "type": "pnr"
         }
       ],
+      "mandateIssuer": {
+        "legalId": "5561929323",
+        "name": "TB Bokföringsbyrå AB",
+        "partyId": "9082c663-d38c-439b-aa43-c04aa39d5fe4",
+        "type": "orgnr"
+      },
       "mandateRole": "ORGANIZATION",
-      "issuedDate": "2023-01-11T11:57:06.043136",
       "permissions": {
-        "3bfb975d-c2a9-4f16-b8e5-11c22a318fad": [
+        "8ba13558-f639-40ca-a009-52c0cad0414f": [
           {
-            "code": "db0023d9-3d19-482f-b43c-47e0073484a2"
-          },
-          {
-            "code": "e5fcf2cd-45e1-4725-a4ff-72a478e5690e"
-          },
-          {
-            "code": "5bfa26bc-47f7-4252-b474-bf7c60ba30e7"
-          }
-        ],
-        "3bfb975d-c2a9-4f16-b8e5-11c22a318fac": [
-          {
-            "code": "d7b1de6e-8ef2-49e8-81b0-002646e3a0ff"
-          },
-          {
-            "code": "caf5b8e8-cab1-4baf-b644-8ec049e3a346"
-          },
-          {
-            "code": "5182f213-767f-4e43-a891-86c6747482ca"
-          },
-          {
-            "code": "db3005dd-4d8e-4b20-91a5-d898337c35f1"
-          },
-          {
-            "code": "02d4c196-f91a-4797-b706-894bba30eaff"
-          },
-          {
-            "code": "b21bd8b3-bebd-4733-b536-eba88057a3a4"
+            "code": "573fcb75-eb8f-4226-8201-33212086544a"
           }
         ]
       }
     }
-  ],
-  "_meta": {
-    "page": 0,
-    "limit": 20,
-    "totalRecords": 1,
-    "totalPages": 1
-  }
+  ]
 }

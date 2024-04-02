@@ -1,10 +1,10 @@
 {
     "request": {
         "method": "GET",
-        "url": "/party/PRIVATE/ffaf692e-6686-11ed-9022-0242ac120002/legalId"
+        "url": "/party/PRIVATE/16df33c8-73af-4be6-ac3a-154306516789/legalId"
     },
     "response": {
-        "body": "195809132896",
+        "body": "198602262381",
         "headers": {
             "Content-Type": "text/plain"
         },

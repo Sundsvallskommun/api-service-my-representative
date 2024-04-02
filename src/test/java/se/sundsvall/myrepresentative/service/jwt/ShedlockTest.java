@@ -28,6 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static java.time.LocalDateTime.now;
 
 @SpringBootTest(properties = {
 	"minaombud.scheduling.cron=* * * * * *", // Setup to execute every second
@@ -69,7 +70,7 @@ class ShedlockTest {
 		}).when(jwkRepositoryMock).save(any());
 
 		// Make sure scheduling occurs multiple times
-		await().until(() -> mockCalledTime != null && mockCalledTime.isBefore(mockCalledTime.plusSeconds(2)));
+		await().until(() -> mockCalledTime != null && now().isAfter(mockCalledTime.plusSeconds(2)));
 
 		// Verify lock
 		await().atMost(5, SECONDS)

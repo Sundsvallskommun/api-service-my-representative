@@ -15,8 +15,6 @@ minaombud:
     expiration: PT20M
     issuer: test-issuer
     clock-skew: PT1S
-  keypair:
-    ttl: PT30S
 spring:
   cache:
     type: none
