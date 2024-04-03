@@ -1,10 +1,10 @@
 {
     "request": {
         "method": "GET",
-        "url": "/party/ENTERPRISE/5563454502/partyId"
+        "url": "/party/ENTERPRISE/9082c663-d38c-439b-aa43-c04aa39d5fe4/legalId"
     },
     "response": {
-        "body": "fb2f0290-3820-11ed-a261-0242ac120005",
+        "body": "5561929323",
         "headers": {
             "Content-Type": "text/plain"
         },

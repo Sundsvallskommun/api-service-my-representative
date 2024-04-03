@@ -14,7 +14,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,8 +30,8 @@ import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 @ExtendWith({MockitoExtension.class, ResourceLoaderExtension.class})
 class SignatureVerificatorTest {
 
-    //A header so we can test parsing ({"kid":"557b26296b7e7fbe41d0711b21c2d7bf8804507a","alg":"RS256"})
-    private static final String PROTECTED_HEADER = "eyJraWQiOiI1NTdiMjYyOTZiN2U3ZmJlNDFkMDcxMWIyMWMyZDdiZjg4MDQ1MDdhIiwiYWxnIjoiUlMyNTYifQ";
+    //A header so we can test parsing ({"kid":"18d461edff91adc8a2b3cfd01d71ff703e0afb20","alg":"RS256"})
+    private static final String PROTECTED_HEADER = "eyJraWQiOiIxOGQ0NjFlZGZmOTFhZGM4YTJiM2NmZDAxZDcxZmY3MDNlMGFmYjIwIiwiYWxnIjoiUlMyNTYifQ";
 
     @Mock
     private JwksHelper mockJwksHelper;
@@ -55,7 +54,6 @@ class SignatureVerificatorTest {
     }
 
     @Test
-    @Disabled("Needs updated signed data from bolagsverket. Martin is looking into getting new keys to generate this")
     void testVerifySignatures(@Load(value = "junit/behorigheter.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
         HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
         when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);

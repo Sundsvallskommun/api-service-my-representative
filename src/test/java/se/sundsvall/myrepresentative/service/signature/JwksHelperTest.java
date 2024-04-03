@@ -27,8 +27,8 @@ import se.sundsvall.myrepresentative.integration.minaombud.jwks.MinaOmbudJwksCli
 @ExtendWith({MockitoExtension.class, ResourceLoaderExtension.class})
 class JwksHelperTest {
 
-    //A header so we can test parsing ({"kid":"557b26296b7e7fbe41d0711b21c2d7bf8804507a","alg":"RS256"})
-    private static final String PROTECTED_HEADER = "eyJraWQiOiI1NTdiMjYyOTZiN2U3ZmJlNDFkMDcxMWIyMWMyZDdiZjg4MDQ1MDdhIiwiYWxnIjoiUlMyNTYifQ";
+    //A header so we can test parsing ({"kid":"18d461edff91adc8a2b3cfd01d71ff703e0afb20","alg":"RS256"})
+    private static final String PROTECTED_HEADER = "eyJraWQiOiIxOGQ0NjFlZGZmOTFhZGM4YTJiM2NmZDAxZDcxZmY3MDNlMGFmYjIwIiwiYWxnIjoiUlMyNTYifQ";
 
     @Mock
     private MinaOmbudJwksClient mockJwksClient;
@@ -48,7 +48,7 @@ class JwksHelperTest {
         when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
 
         JWK jwkFromProtectedHeader = jwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER);
-        assertThat(jwkFromProtectedHeader.getKeyID()).isEqualTo("557b26296b7e7fbe41d0711b21c2d7bf8804507a");
+        assertThat(jwkFromProtectedHeader.getKeyID()).isEqualTo("18d461edff91adc8a2b3cfd01d71ff703e0afb20");
         verify(mockJwksClient, times(1)).getJwks(THIRD_PARTY);
     }
 
@@ -69,7 +69,7 @@ class JwksHelperTest {
         when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
         jwksHelper.populateJwksIfMissing();
 
-        jwksHelper.validateKidIsCached("557b26296b7e7fbe41d0711b21c2d7bf8804507a");
+        jwksHelper.validateKidIsCached("18d461edff91adc8a2b3cfd01d71ff703e0afb20");
 
         //1 time for when the test populates the cache, no more if it's found, which it is.
         verify(mockJwksClient, times(1)).getJwks(THIRD_PARTY);
@@ -81,7 +81,7 @@ class JwksHelperTest {
         when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
         jwksHelper.populateJwksIfMissing();
 
-        boolean kidMissingInKeySet = jwksHelper.isKidMissingInKeySet("557b26296b7e7fbe41d0711b21c2d7bf8804507a");
+        boolean kidMissingInKeySet = jwksHelper.isKidMissingInKeySet("18d461edff91adc8a2b3cfd01d71ff703e0afb20");
         assertThat(kidMissingInKeySet).isFalse();
     }
 
@@ -103,7 +103,7 @@ class JwksHelperTest {
 
 
         String kidFromProtectedHeader = jwksHelper.getKidFromProtectedHeader(PROTECTED_HEADER);
-        assertThat(kidFromProtectedHeader).isEqualTo("557b26296b7e7fbe41d0711b21c2d7bf8804507a");
+        assertThat(kidFromProtectedHeader).isEqualTo("18d461edff91adc8a2b3cfd01d71ff703e0afb20");
     }
 
     @Test

@@ -60,7 +60,7 @@ class JwtServiceTest {
 		final SignedJWT parse = SignedJWT.parse(signedJwt);
 
 		final JWSHeader header = parse.getHeader();
-		assertThat(header.getAlgorithm()).hasToString(ALGORITHM.getValue());
+		assertThat(header.getAlgorithm()).hasToString(ALGORITHM.getName());
 		assertThat(header.getKeyID()).isNotNull();
 
 		final JWTClaimsSet jwtClaimsSet = parse.getJWTClaimsSet();

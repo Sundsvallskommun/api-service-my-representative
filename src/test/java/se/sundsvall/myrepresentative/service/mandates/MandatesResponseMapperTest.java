@@ -44,21 +44,21 @@ class MandatesResponseMapperTest {
 		final Mandate mandate = mandatesResponse.getMandates().getFirst();
 		softly.assertThat(mandate.getMandateIssuer().getPartyId()).isNull();
 		softly.assertThat(mandate.getMandateIssuer().getType()).isEqualTo("orgnr");
-		softly.assertThat(mandate.getMandateIssuer().getName()).isEqualTo("TB Valls Golv AB");
-		softly.assertThat(mandate.getMandateIssuer().getLegalId()).isEqualTo("5563454502");
+		softly.assertThat(mandate.getMandateIssuer().getName()).isEqualTo("TB Bokföringsbyrå AB");
+		softly.assertThat(mandate.getMandateIssuer().getLegalId()).isEqualTo("5561929323");
 
 		softly.assertThat(mandate.getMandateAcquirers().getFirst().getPartyId()).isNull();
 		softly.assertThat(mandate.getMandateAcquirers().getFirst().getType()).isEqualTo("pnr");
-		softly.assertThat(mandate.getMandateAcquirers().getFirst().getName()).isEqualTo("Karin Andersson");
-		softly.assertThat(mandate.getMandateAcquirers().getFirst().getLegalId()).isEqualTo("198101032384");
+		softly.assertThat(mandate.getMandateAcquirers().getFirst().getName()).isEqualTo("Beri Ylles");
+		softly.assertThat(mandate.getMandateAcquirers().getFirst().getLegalId()).isEqualTo("198602262381");
 
 		softly.assertThat(mandate.getPermissions().keySet()).hasSize(1);
-		softly.assertThat(mandate.getPermissions().get(fullmakt)).hasSize(9);
-		softly.assertThat(mandate.getPermissions().get(fullmakt).getFirst().getCode()).isEqualTo("d7b1de6e-8ef2-49e8-81b0-002646e3a0ff");
+		softly.assertThat(mandate.getPermissions().get(fullmakt)).hasSize(1);
+		softly.assertThat(mandate.getPermissions().get(fullmakt).getFirst().getCode()).isEqualTo("573fcb75-eb8f-4226-8201-33212086544a");
 		softly.assertThat(mandate.getPermissions().get(fullmakt).getFirst().getDescription()).isEqualTo("someDescription");
 
 		softly.assertThat(mandate.getMandateRole()).isEqualByComparingTo(Role.ORGANIZATION);
-		softly.assertThat(mandate.getIssuedDate()).isEqualTo(LocalDateTime.parse("2023-01-11T10:57:06.043136"));
+		softly.assertThat(mandate.getIssuedDate()).isEqualTo(LocalDateTime.parse("2024-03-25T10:23:20.143115555"));
 	}
 
 }

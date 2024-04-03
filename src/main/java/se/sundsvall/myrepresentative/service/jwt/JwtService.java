@@ -1,25 +1,6 @@
 package se.sundsvall.myrepresentative.service.jwt;
 
-import static java.time.OffsetDateTime.*;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
-import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.text.ParseException;
-import java.time.temporal.ChronoUnit;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.TimeZone;
-import java.util.UUID;
-
-import com.nimbusds.jose.Algorithm;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -27,11 +8,11 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import lombok.Getter;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -39,14 +20,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.zalando.problem.Problem;
-
 import se.sundsvall.dept44.requestid.RequestId;
-
-import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Getter;
 import se.sundsvall.myrepresentative.api.model.jwks.Jwks;
 import se.sundsvall.myrepresentative.integration.db.JwkRepository;
 import se.sundsvall.myrepresentative.integration.db.model.JwkEntity;
+
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
+import java.util.TimeZone;
+import java.util.UUID;
+
+import static java.time.OffsetDateTime.now;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
 @Component
 @Getter
@@ -54,13 +43,13 @@ public class JwtService {
 
     private static final Logger LOG = LoggerFactory.getLogger(JwtService.class);
 
-    public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.RS256;
+    public static final JWSAlgorithm ALGORITHM = JWSAlgorithm.RS256;
     private static final String PERSONAL_NUMBER_CLAIM = "https://claims.oidc.se/1.0/personalNumber";
 
     private final JwtConfigProperties properties;
     private final JwkRepository jwkRepository;
 
-    public JwtService(JwtConfigProperties properties, JwkRepository jwkRepository) throws NoSuchAlgorithmException {
+    public JwtService(JwtConfigProperties properties, JwkRepository jwkRepository) throws JOSEException {
         this.properties = properties;
         this.jwkRepository = jwkRepository;
         if(!jwkRepository.existsByValidUntilAfter(now())) {
@@ -125,9 +114,11 @@ public class JwtService {
         JWSSigner signer = new RSASSASigner(rsaKey);
 
         //Sign the JWT with the signer
-        SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256)
-                .keyID(rsaKey.getKeyID())
-                .build(), claimsSet);
+        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
+            .keyID(rsaKey.getKeyID())
+            .build();
+
+        SignedJWT signedJWT = new SignedJWT(header, claimsSet);
 
         signedJWT.sign(signer);
 
@@ -162,16 +153,6 @@ public class JwtService {
 	}
 
     /**
-     * Create the X5tSHA256 thumbprint.
-     * Haven't found a way to create the thumbprint via the JOSE-framework.
-     * @return
-     */
-    Base64URL createX5tSha256Thumbprint(final KeyPair keyPair) {
-        byte[] sha256Bytes = DigestUtils.sha256(keyPair.getPrivate().getEncoded());
-        return new Base64URL(new String(Base64.getUrlEncoder().encode(sha256Bytes), StandardCharsets.UTF_8));
-    }
-
-    /**
      * Sets the validity of the token.
      * @return expiration as a {@link Date}
      */
@@ -185,14 +166,12 @@ public class JwtService {
      * Generate the JWK.
      * @return
      */
-    private RSAKey createRSAKey(final String keyId, final KeyPair keyPair) {
-        return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
-                .privateKey((RSAPrivateKey) keyPair.getPrivate())
-                .algorithm(Algorithm.parse(ALGORITHM.getValue()))
-                .keyID(keyId)
-                .keyUse(KeyUse.SIGNATURE)
-                .x509CertSHA256Thumbprint(createX5tSha256Thumbprint(keyPair))
-                .build();
+    private RSAKey createRSAKey() throws JOSEException {
+        return new RSAKeyGenerator(2048)
+            .keyID(UUID.randomUUID().toString())
+            .keyUse(KeyUse.SIGNATURE)
+            .algorithm(ALGORITHM)
+            .generate();
     }
 
     /**
@@ -205,13 +184,9 @@ public class JwtService {
     @Transactional
     @Scheduled(cron = "${minaombud.scheduling.cron}")
     @SchedulerLock(name = "generateAndSaveKey", lockAtMostFor = "${minaombud.scheduling.lock-at-most-for}")
-    public void generateAndSaveKey() throws NoSuchAlgorithmException {
+    public void generateAndSaveKey() throws JOSEException {
         LOG.debug("Generating new keypair and JWK");
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALGORITHM.getFamilyName());
-        kpg.initialize(2048, SecureRandom.getInstanceStrong());
-        var keyPair = kpg.generateKeyPair();
-        var rsaKey = createRSAKey(UUID.randomUUID().toString(), keyPair);
-        storeJWK(rsaKey);
+        storeJWK(createRSAKey());
         LOG.info("Generated new keypair and JWK");
         cleanOldJWK();
     }

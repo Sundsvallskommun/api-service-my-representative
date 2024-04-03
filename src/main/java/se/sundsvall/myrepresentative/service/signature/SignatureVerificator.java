@@ -5,7 +5,6 @@ import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.util.Base64;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -15,10 +14,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jwt.SignedJWT;
+import com.nimbusds.jose.util.Base64URL;
+import generated.se.sundsvall.minaombud.JwsSig;
 import org.erdtman.jcs.JsonCanonicalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,11 +80,11 @@ public class SignatureVerificator {
         try {
             //Find the JWK (in the JwkSet) matching the kid in the signature, then use the JWK to verify the signature
             JWK jwkForVerifying = jwksHelper.getJWKFromProtectedHeader(kontext.getSig().getProtected());
-            String kontextStringWithRemovedSig = removeSig(kontext);
+            String kontextStringWithRemovedSig = removeSigAndCanonicalize(kontext);
 
             //use the public key to verify the signature
-            RSAKey publicRSAKey = jwkForVerifying.toRSAKey();
-            return runVerification(publicRSAKey, kontextStringWithRemovedSig, kontext);
+            RSASSAVerifier rsassaVerifier = new RSASSAVerifier(jwkForVerifying.toRSAKey());
+            return runVerification(rsassaVerifier, kontextStringWithRemovedSig, kontext.getSig());
 
         } catch (Exception e) {
             //Catch everything, bottom line is we couldn't verify the signature.
@@ -92,9 +93,9 @@ public class SignatureVerificator {
         }
     }
 
-    private String removeSig(Behorighetskontext behorighetskontext) throws IOException {
-        String kontextAsJsonString = mapper.writeValueAsString(behorighetskontext);
-        JsonNode rootNode = mapper.readTree(kontextAsJsonString);
+    private String removeSigAndCanonicalize(Object object) throws IOException {
+        String jsonString = mapper.writeValueAsString(object);
+        JsonNode rootNode = mapper.readTree(jsonString);
 
         //Remove the "_sig" object from the JSON
         ((ObjectNode) rootNode).remove("_sig");
@@ -104,27 +105,24 @@ public class SignatureVerificator {
             }
         });
 
-        String noSigKontext = mapper.writeValueAsString(rootNode);
-        return canonicalizeJsonData(noSigKontext);
+        String noSigJsonString = mapper.writeValueAsString(rootNode);
+        return canonicalizeJsonData(noSigJsonString);
     }
 
-    private String canonicalizeJsonData(String noSigKontext) throws IOException {
-        JsonCanonicalizer jsonCanonicalizer = new JsonCanonicalizer(noSigKontext);
+    private String canonicalizeJsonData(String noSigJsonString) throws IOException {
+        JsonCanonicalizer jsonCanonicalizer = new JsonCanonicalizer(noSigJsonString);
         return jsonCanonicalizer.getEncodedString();
     }
 
-    private boolean runVerification(RSAKey publicRSAKey, String kontextWithRemovedSig, Behorighetskontext kontext) throws JOSEException, ParseException {
-        RSASSAVerifier rsassaVerifier = new RSASSAVerifier(publicRSAKey);
+    private boolean runVerification(JWSVerifier verifier, String jsonPayload, JwsSig jwsSig) throws JOSEException, ParseException {
 
-        //Url-encode the payload to base64
-        String kontextAsBase64 = Base64.getUrlEncoder().encodeToString(kontextWithRemovedSig.getBytes(StandardCharsets.UTF_8));
+        var hdr = Base64URL.from(jwsSig.getProtected());
+        var payload = Base64URL.encode(jsonPayload.getBytes(StandardCharsets.UTF_8));
+        var signature = Base64URL.from(jwsSig.getSignature());
 
-        //Construct the JWT.
-        String base64 = kontext.getSig().getProtected() + "." + kontextAsBase64 + "." + kontext.getSig().getSignature();
+        var jws = new JWSObject(hdr, payload, signature);
 
-        SignedJWT signedJWT = SignedJWT.parse(base64);
-
-        boolean verified = signedJWT.verify(rsassaVerifier);
+        boolean verified = jws.verify(verifier);
 
         LOG.info("Signature verified? {}", verified);
         return verified;
