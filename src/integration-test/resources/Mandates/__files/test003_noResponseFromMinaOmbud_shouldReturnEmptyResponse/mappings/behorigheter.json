@@ -27,13 +27,13 @@
         "payload": {
           "aud" : "test-audience",
           "iss" : "test-issuer",
-          "https://claims.oidc.se/1.0/personalNumber" : "198602262381"
+          "https://claims.oidc.se/1.0/personalNumber" : "195809132896"
         }
       }
     }
   },
   "response": {
-    "bodyFileName": "test1_getMandates_shouldReturnCompleteResponse/response/behorigheter.json",
+    "bodyFileName": "test003_noResponseFromMinaOmbud_shouldReturnEmptyResponse/response/behorigheter.json",
     "headers": {
       "Content-Type": "application/json"
     },

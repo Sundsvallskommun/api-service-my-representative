@@ -33,7 +33,7 @@
     }
   },
   "response": {
-    "bodyFileName": "test3_noResponseFromMinaOmbud_shouldReturnEmptyResponse/response/behorigheter.json",
+    "bodyFileName": "test001_getAuthorities_shouldReturnCompleteResponse/response/fullmakter.json",
     "headers": {
       "Content-Type": "application/json"
     },

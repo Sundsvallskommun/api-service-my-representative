@@ -17,7 +17,7 @@ import apptest.CommonStubs;
 class MandatesIT extends AbstractAppTest {
 
     @Test
-    void test1_getMandates_shouldReturnCompleteResponse() {
+    void test001_getMandates_shouldReturnCompleteResponse() {
 
         CommonStubs.stubAllTokens();
         setupCall()
@@ -30,7 +30,7 @@ class MandatesIT extends AbstractAppTest {
     }
 
     @Test
-    void test2_404FromParty_shouldThrow404() {
+    void test002_404FromParty_shouldThrow404() {
         CommonStubs.stubPartyToken();
         setupCall()
             .withServicePath("/mandates?mandateAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120012&mandateAcquirer.type=pnr&page=0&limit=100")
@@ -41,7 +41,7 @@ class MandatesIT extends AbstractAppTest {
     }
 
     @Test
-    void test3_noResponseFromMinaOmbud_shouldReturnEmptyResponse() {
+    void test003_noResponseFromMinaOmbud_shouldReturnEmptyResponse() {
         CommonStubs.stubAllTokens();
         setupCall()
             .withExtensions(new JwtRequestMatchExtension(false))

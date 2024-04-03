@@ -20,7 +20,7 @@ import apptest.CommonStubs;
 class AuthorityIT extends AbstractAppTest {
 
     @Test
-    void test1_getAuthorities_shouldReturnCompleteResponse() {
+    void test001_getAuthorities_shouldReturnCompleteResponse() {
         CommonStubs.stubAllTokens();
         setupCall()
             .withExtensions(new JwtRequestMatchExtension(false))
@@ -32,7 +32,7 @@ class AuthorityIT extends AbstractAppTest {
     }
 
     @Test
-    void test2_404FromParty_shouldThrow404() {
+    void test002_404FromParty_shouldThrow404() {
         CommonStubs.stubPartyToken();
         setupCall()
             .withServicePath("/authorities?authorityAcquirer.partyId=ffaf692e-6686-11ed-9022-0242ac120012&authorityAcquirer.type=pnr&page=0&limit=100")
@@ -43,7 +43,7 @@ class AuthorityIT extends AbstractAppTest {
     }
 
     @Test
-    void test3_noResponseFromMinaOmbud_shouldReturnEmptyResponse() {
+    void test003_noResponseFromMinaOmbud_shouldReturnEmptyResponse() {
         CommonStubs.stubAllTokens();
         setupCall()
             .withExtensions(new JwtRequestMatchExtension(false))

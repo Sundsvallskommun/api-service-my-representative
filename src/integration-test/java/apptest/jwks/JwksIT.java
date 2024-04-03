@@ -1,7 +1,5 @@
 package apptest.jwks;
 
-import apptest.CommonStubs;
-import apptest.mandates.JwtRequestMatchExtension;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,7 @@ import se.sundsvall.myrepresentative.MyRepresentatives;
 public class JwksIT extends AbstractAppTest {
 
 	@Test
-	void test1_getJwks() {
+	void test001_getJwks() {
 		setupCall()
 			.withServicePath("/jwks")
 			.withHttpMethod(HttpMethod.GET)
