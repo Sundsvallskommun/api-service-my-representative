@@ -26,7 +26,6 @@
 		<jackson.databind-version>0.2.6</jackson.databind-version>
 		<java.json.canonicalization-version>1.1</java.json.canonicalization-version>
 		<jjwt-version>0.12.5</jjwt-version>
-		<openapi.generator.maven.plugin-version>6.6.0</openapi.generator.maven.plugin-version>
 		<shedlock.version>5.12.0</shedlock.version>
 	</properties>
 	<dependencies>
@@ -148,7 +147,6 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>${openapi.generator.maven.plugin-version}</version>
 				<executions>
 					<execution>
 						<id>mina-ombud-api</id>
