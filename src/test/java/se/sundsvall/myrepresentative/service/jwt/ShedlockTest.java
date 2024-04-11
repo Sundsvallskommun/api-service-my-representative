@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import se.sundsvall.myrepresentative.integration.db.JwkRepository;
 
@@ -20,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 import static java.time.Clock.systemUTC;
+import static java.time.LocalDateTime.now;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.within;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -28,7 +28,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static java.time.LocalDateTime.now;
 
 @SpringBootTest(properties = {
 	"minaombud.scheduling.cron=* * * * * *", // Setup to execute every second
@@ -46,6 +45,14 @@ class ShedlockTest {
 			var mock = Mockito.mock(JwkRepository.class);
 			// Skip creation of keys from constructor
 			when(mock.existsByValidUntilAfter(any())).thenReturn(true);
+			// Let mock hang forever for simulating long-running task
+			doAnswer( invocation -> {
+				mockCalledTime = LocalDateTime.now();
+				await().forever()
+					.until(() -> false);
+				return null;
+			}).when(mock).save(any());
+
 			return mock;
 		}
 	}
@@ -56,18 +63,10 @@ class ShedlockTest {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	private LocalDateTime mockCalledTime;
+	private static LocalDateTime mockCalledTime;
 
 	@Test
 	void verifySchedLock() {
-
-		// Let mock hang
-		doAnswer( invocation -> {
-			mockCalledTime = LocalDateTime.now();
-			await().forever()
-				.until(() -> false);
-			return null;
-		}).when(jwkRepositoryMock).save(any());
 
 		// Make sure scheduling occurs multiple times
 		await().until(() -> mockCalledTime != null && now().isAfter(mockCalledTime.plusSeconds(2)));
