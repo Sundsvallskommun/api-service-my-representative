@@ -1,9 +1,9 @@
 {
-  "mandates": [],
-  "_meta": {
-    "page": 0,
-    "limit": 20,
-    "totalRecords": 0,
-    "totalPages": 0
-  }
+	"mandates": [],
+	"_meta": {
+		"page": 0,
+		"limit": 20,
+		"totalRecords": 0,
+		"totalPages": 0
+	}
 }

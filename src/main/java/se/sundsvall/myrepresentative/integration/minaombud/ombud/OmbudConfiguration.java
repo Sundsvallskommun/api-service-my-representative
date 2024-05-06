@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import feign.Request;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
-import se.sundsvall.dept44.configuration.feign.interceptor.OAuth2RequestInterceptor;
 import se.sundsvall.myrepresentative.integration.minaombud.OmbudProperties;
 
 @Import(FeignConfiguration.class)

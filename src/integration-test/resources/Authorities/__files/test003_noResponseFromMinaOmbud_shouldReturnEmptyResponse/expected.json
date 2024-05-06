@@ -1,9 +1,9 @@
 {
-  "authorities": [],
-  "_meta": {
-    "page": 0,
-    "limit": 100,
-    "totalRecords": 0,
-    "totalPages": 0
-  }
+	"authorities": [],
+	"_meta": {
+		"page": 0,
+		"limit": 100,
+		"totalRecords": 0,
+		"totalPages": 0
+	}
 }
