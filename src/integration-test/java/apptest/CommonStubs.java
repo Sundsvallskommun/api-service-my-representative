@@ -20,9 +20,9 @@ public class CommonStubs {
 				.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.withBody("""
 					{
-					    "access_token": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
+					    "access_token": "0000000000000000AAAAAAAAAAAAAAAA",
 					    "expires_in": -1,
-					    "refresh_token": "IwOGYzYTlmM2YxOTQ5MGE3YmNmMDFkNTVk",
+					    "refresh_token": "1111111111111111BBBBBBBBBBBBBBBB",
 					    "scope": "create",
 					    "token_type": "bearer"
 					}
@@ -35,9 +35,9 @@ public class CommonStubs {
 				.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.withBody("""
 					{
-					    "access_token": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI4",
+					    "access_token": "2222222222222222CCCCCCCCCCCCCCCC",
 					    "expires_in": -1,
-					    "refresh_token": "IwOGYzYTlmM2YxOTQ5MGE3YmNmMDFkNTVl",
+					    "refresh_token": "3333333333333333DDDDDDDDDDDDDDDD",
 					    "scope": "create",
 					    "token_type": "bearer"
 					}

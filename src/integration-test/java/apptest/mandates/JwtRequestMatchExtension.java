@@ -1,6 +1,9 @@
 package apptest.mandates;
 
 
+import java.text.ParseException;
+import java.util.Map;
+
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier;
 import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.http.Request;
@@ -12,10 +15,8 @@ import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.SignedJWT;
-import wiremock.com.google.common.collect.Maps;
 
-import java.text.ParseException;
-import java.util.Map;
+import wiremock.com.google.common.collect.Maps;
 
 
 public class JwtRequestMatchExtension extends RequestMatcherExtension {
@@ -32,6 +33,7 @@ public class JwtRequestMatchExtension extends RequestMatcherExtension {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public MatchResult match(Request request, Parameters parameters) {
 

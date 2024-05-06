@@ -101,11 +101,6 @@ info:
     - vidaredelning
     - transportfullmakt
 
-
-servers:
-- url: https://fullmakt-test.minaombud.se/dfm/formedlare/v2
-  description: Test
-
 security:
 - BearerAuth: []
 - OAuth2: []

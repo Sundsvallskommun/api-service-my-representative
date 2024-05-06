@@ -70,11 +70,6 @@ info:
     // Verifiera signatur
     verify_signature(_sig.signature, signing_input, key);    
     ```
-
-servers:
-  - url: https://fullmakt-test.minaombud.se/dfm/formedlare/v1
-    description: Test
-
 security:
   - BearerAuth: []
   - OAuth2: []

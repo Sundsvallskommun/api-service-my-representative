@@ -1,13 +1,18 @@
 {
-    "request": {
-        "method": "GET",
-        "url": "/party/PRIVATE/198602262381/partyId"
-    },
-    "response": {
-        "body": "16df33c8-73af-4be6-ac3a-154306516789",
-        "headers": {
-            "Content-Type": "text/plain"
-        },
-        "status": "200"
-    }
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"
+			}
+		},
+		"method": "GET",
+		"url": "/party/PRIVATE/198602262381/partyId"
+	},
+	"response": {
+		"body": "16df33c8-73af-4be6-ac3a-154306516789",
+		"headers": {
+			"Content-Type": "text/plain"
+		},
+		"status": "200"
+	}
 }

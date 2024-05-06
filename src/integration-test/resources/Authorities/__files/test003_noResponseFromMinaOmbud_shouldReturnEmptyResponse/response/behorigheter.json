@@ -1,9 +1,9 @@
 {
-  "fullmakter": [],
-  "page": {
-    "size": 100,
-    "totalElements": 0,
-    "totalPages": 0,
-    "number": 0
-  }
+	"fullmakter": [],
+	"page": {
+		"size": 100,
+		"totalElements": 0,
+		"totalPages": 0,
+		"number": 0
+	}
 }
