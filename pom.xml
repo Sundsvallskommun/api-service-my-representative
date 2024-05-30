@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
@@ -14,10 +14,7 @@
 	<name>api-service-my-representative</name>
 	<description>My Representative</description>
 	<properties>
-		<docker.image.name>ms-myrepresentative</docker.image.name>
 		<exposed.app.port>8080</exposed.app.port>
-		<published.container.port.test>8760</published.container.port.test>
-		<published.container.port.production>8760</published.container.port.production>
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<minaombud-generated-sources-folder>${project.build.directory}/minaombud-sources</minaombud-generated-sources-folder>
 		<party-generated-sources-folder>${project.build.directory}/party-sources</party-generated-sources-folder>
