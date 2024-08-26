@@ -2,7 +2,9 @@ package se.sundsvall.myrepresentative.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,27 +22,25 @@ import se.sundsvall.myrepresentative.service.mandates.MandatesService;
 @ExtendWith(MockitoExtension.class)
 class RepresentativesServiceTest {
 
-    @Mock
-    private AuthoritiesService mockAuthoritiesService;
+	@Mock
+	private AuthoritiesService mockAuthoritiesService;
 
-    @Mock
-    private MandatesService mockMandatesService;
+	@Mock
+	private MandatesService mockMandatesService;
 
-    @InjectMocks
-    private RepresentativesService representativesService;
+	@InjectMocks
+	private RepresentativesService representativesService;
 
-    //Kinda useless tests but...
+	@Test
+	void testgetMandates() {
+		when(mockMandatesService.getMandates(eq(MUNICIPALITY_ID), any(MandatesRequest.class))).thenReturn(new MandatesResponse());
+		assertThat(representativesService.getMandates(MUNICIPALITY_ID, new MandatesRequest())).isNotNull();
+	}
 
-    @Test
-    void testgetMandates() {
-        when(mockMandatesService.getMandates(any(MandatesRequest.class))).thenReturn(new MandatesResponse());
-        assertThat(representativesService.getMandates(new MandatesRequest())).isNotNull();
-    }
-
-    @Test
-    void getAuthorities() {
-        when(mockAuthoritiesService.getAuthorities(any(AuthoritiesRequest.class))).thenReturn(new AuthoritiesResponse());
-        assertThat(representativesService.getAuthorities(new AuthoritiesRequest())).isNotNull();
-    }
+	@Test
+	void getAuthorities() {
+		when(mockAuthoritiesService.getAuthorities(eq(MUNICIPALITY_ID), any(AuthoritiesRequest.class))).thenReturn(new AuthoritiesResponse());
+		assertThat(representativesService.getAuthorities(MUNICIPALITY_ID, new AuthoritiesRequest())).isNotNull();
+	}
 
 }

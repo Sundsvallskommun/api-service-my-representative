@@ -3,10 +3,12 @@ package se.sundsvall.myrepresentative.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ class MandateTemplateResourceTest {
 	@Test
 	void getMandateTemplates() {
 		// Mock
-		when(mandateTemplateServiceMock.getTemplates()).thenReturn(List.of(MandateTemplate.builder()
+		when(mandateTemplateServiceMock.getTemplates(MUNICIPALITY_ID)).thenReturn(List.of(MandateTemplate.builder()
 			.withDescription("someDescription")
 			.withTitle("someTitle")
 			.withCode(UUID.randomUUID().toString())
@@ -46,7 +48,7 @@ class MandateTemplateResourceTest {
 
 		//Act
 		final var response = webTestClient.get()
-			.uri("/mandates/templates")
+			.uri(builder -> builder.path("/{municipalityId}/mandates/templates").build(Map.of("municipalityId", MUNICIPALITY_ID)))
 			.exchange()
 			.expectStatus().isOk()
 			.expectBodyList(MandateTemplate.class)
@@ -56,14 +58,14 @@ class MandateTemplateResourceTest {
 		// Assert
 		assertThat(response).isNotNull().isNotEmpty().hasSize(1);
 		assertThat(response.getFirst()).hasNoNullFieldsOrProperties();
-		verify(mandateTemplateServiceMock).getTemplates();
+		verify(mandateTemplateServiceMock).getTemplates(MUNICIPALITY_ID);
 		verifyNoMoreInteractions(mandateTemplateServiceMock);
 	}
 
 	@Test
 	void getMandateTemplate() {
 		// Mock
-		when(mandateTemplateServiceMock.getTemplate(anyString())).thenReturn(MandateTemplate.builder()
+		when(mandateTemplateServiceMock.getTemplate(eq(MUNICIPALITY_ID), anyString())).thenReturn(MandateTemplate.builder()
 			.withDescription("someDescription")
 			.withTitle("someTitle")
 			.withCode(UUID.randomUUID().toString())
@@ -71,7 +73,7 @@ class MandateTemplateResourceTest {
 
 		// Act
 		final var response = webTestClient.get()
-			.uri(builder -> builder.path("/mandates/templates/{id}").build(Map.of("id", "someId")))
+			.uri(builder -> builder.path("/{municipalityId}/mandates/templates/{id}").build(Map.of("municipalityId", MUNICIPALITY_ID, "id", "someId")))
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(MandateTemplate.class)
@@ -80,19 +82,19 @@ class MandateTemplateResourceTest {
 
 		// Assert
 		assertThat(response).isNotNull().hasNoNullFieldsOrProperties();
-		verify(mandateTemplateServiceMock).getTemplate(anyString());
+		verify(mandateTemplateServiceMock).getTemplate(eq(MUNICIPALITY_ID), anyString());
 		verifyNoMoreInteractions(mandateTemplateServiceMock);
 	}
 
 	@Test
 	void createMandateTemplate() {
 		// Mock
-		when(mandateTemplateServiceMock.createTemplate(any(MandateTemplate.class))).thenReturn("someValue");
+		when(mandateTemplateServiceMock.createTemplate(eq(MUNICIPALITY_ID), any(MandateTemplate.class))).thenReturn("someValue");
 
 		//Act
 		final var response = webTestClient
 			.post()
-			.uri("/mandates/templates")
+			.uri(builder -> builder.path("/{municipalityId}/mandates/templates").build(Map.of("municipalityId", MUNICIPALITY_ID)))
 			.bodyValue(MandateTemplate.builder().build())
 			.exchange()
 			.expectStatus().isCreated()
@@ -101,8 +103,8 @@ class MandateTemplateResourceTest {
 			.getResponseHeaders();
 
 		// Assert
-		assertThat(response).isNotNull().containsEntry("location", List.of("/mandates/templates/someValue"));
-		verify(mandateTemplateServiceMock).createTemplate(any(MandateTemplate.class));
+		assertThat(response).isNotNull().containsEntry("location", List.of("/" + MUNICIPALITY_ID + "/mandates/templates/someValue"));
+		verify(mandateTemplateServiceMock).createTemplate(eq(MUNICIPALITY_ID), any(MandateTemplate.class));
 		verifyNoMoreInteractions(mandateTemplateServiceMock);
 	}
 
@@ -111,27 +113,27 @@ class MandateTemplateResourceTest {
 		//Act
 		webTestClient
 			.put()
-			.uri(builder -> builder.path("/mandates/templates/{id}").build(Map.of("id", "someId")))
+			.uri(builder -> builder.path("/{municipalityId}/mandates/templates/{id}").build(Map.of("municipalityId", MUNICIPALITY_ID, "id", "someId")))
 			.bodyValue(MandateTemplate.builder().build())
 			.exchange()
 			.expectStatus().isNoContent()
 			.expectBody().isEmpty();
 
 		// Assert
-		verify(mandateTemplateServiceMock).updateTemplate(anyString(), any(MandateTemplate.class));
+		verify(mandateTemplateServiceMock).updateTemplate(eq(MUNICIPALITY_ID), anyString(), any(MandateTemplate.class));
 	}
 
 	@Test
 	void deleteMandateTemplate() {
 		// Act
 		webTestClient.delete()
-			.uri(builder -> builder.path("/mandates/templates/{id}").build(Map.of("id", "someId")))
+			.uri(builder -> builder.path("/{municipalityId}/mandates/templates/{id}").build(Map.of("municipalityId", MUNICIPALITY_ID, "id", "someId")))
 			.exchange()
 			.expectStatus().isNoContent()
 			.expectBody().isEmpty();
 
 		// Assert
-		verify(mandateTemplateServiceMock).deleteTemplate(anyString());
+		verify(mandateTemplateServiceMock).deleteTemplate(eq(MUNICIPALITY_ID), anyString());
 
 	}
 

@@ -6,7 +6,7 @@
 			}
 		},
 		"method": "GET",
-		"url": "/party/ENTERPRISE/5560107053/partyId"
+		"url": "/party/2281/ENTERPRISE/5560107053/partyId"
 	},
 	"response": {
 		"body": "fb2f0290-3820-11ed-a261-0242ac120005",

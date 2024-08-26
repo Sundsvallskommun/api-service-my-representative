@@ -17,12 +17,13 @@ public final class MandateTemplateMapper {
 			.build();
 	}
 
-	public static MandateTemplateEntity toEntity(final MandateTemplate template) {
+	public static MandateTemplateEntity toEntity(final MandateTemplate template, final String municipalityId) {
 
 		return MandateTemplateEntity.builder()
 			.withCode(template.getCode())
 			.withTitle(template.getTitle())
 			.withDescription(template.getDescription())
+			.withMunicipalityId(municipalityId)
 			.build();
 	}
 

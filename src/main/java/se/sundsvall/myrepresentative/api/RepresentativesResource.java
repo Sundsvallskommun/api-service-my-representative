@@ -8,12 +8,15 @@ import jakarta.validation.Valid;
 
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
+import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesResponse;
 import se.sundsvall.myrepresentative.api.model.jwks.Jwks;
@@ -23,14 +26,16 @@ import se.sundsvall.myrepresentative.api.validation.RequestValidator;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
 import se.sundsvall.myrepresentative.service.jwt.JwtService;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "/{municipalityId}/")
 @Tag(name = "MyRepresentatives")
+@Validated
 @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class})))
 @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -50,22 +55,30 @@ class RepresentativesResource {
 
 	@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true)
 	@GetMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<MandatesResponse> getMandates(@Valid @ParameterObject final MandatesRequest request) {
+	ResponseEntity<MandatesResponse> getMandates(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
+		@ValidMunicipalityId @PathVariable final String municipalityId,
+		@Valid @ParameterObject final MandatesRequest request) {
 		requestValidator.validate(request);
-		return ResponseEntity.ok(representativesService.getMandates(request));
+		return ResponseEntity.ok(representativesService.getMandates(municipalityId, request));
 	}
 
 	@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true)
 	@GetMapping(value = "/authorities", produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<AuthoritiesResponse> getAuthorities(@Valid @ParameterObject final AuthoritiesRequest request) {
+	ResponseEntity<AuthoritiesResponse> getAuthorities(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
+		@ValidMunicipalityId @PathVariable final String municipalityId,
+		@Valid @ParameterObject final AuthoritiesRequest request) {
 		requestValidator.validate(request);
-		return ResponseEntity.ok(representativesService.getAuthorities(request));
+		return ResponseEntity.ok(representativesService.getAuthorities(municipalityId, request));
 	}
 
 	@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true)
 	@GetMapping(value = JWKS_ENDPOINT, produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<Jwks> jwks() {
-		return ResponseEntity.ok(jwtService.getJwks());
+	ResponseEntity<Jwks> jwks(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
+		@ValidMunicipalityId @PathVariable final String municipalityId) {
+		return ResponseEntity.ok(jwtService.getJwks(municipalityId));
 	}
 
 }

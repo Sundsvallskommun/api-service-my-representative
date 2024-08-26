@@ -30,19 +30,22 @@ class MandateTemplateEntityTest {
 		final var code = "someCode";
 		final var title = "someTitle";
 		final var description = "someDescription";
+		final var municipalityId = "2281";
 
 		//Act
 		final var result = MandateTemplateEntity.builder()
 			.withCode(code)
 			.withTitle(title)
 			.withDescription(description)
+			.withMunicipalityId(municipalityId)
 			.build();
-		
+
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getCode()).isEqualTo(code);
 		assertThat(result.getTitle()).isEqualTo(title);
 		assertThat(result.getDescription()).isEqualTo(description);
+		assertThat(result.getMunicipalityId()).isEqualTo(municipalityId);
 	}
 
 }

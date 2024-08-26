@@ -14,7 +14,7 @@ import se.sundsvall.myrepresentative.service.mandates.MandatesService;
  */
 @Service
 public class RepresentativesService {
-	
+
 	private final AuthoritiesService authoritiesService;
 	private final MandatesService mandatesService;
 
@@ -23,11 +23,11 @@ public class RepresentativesService {
 		this.mandatesService = mandatesService;
 	}
 
-	public MandatesResponse getMandates(MandatesRequest mandatesRequest) {
-		return mandatesService.getMandates(mandatesRequest);
+	public MandatesResponse getMandates(final String municipalityId, final MandatesRequest mandatesRequest) {
+		return mandatesService.getMandates(municipalityId, mandatesRequest);
 	}
 
-	public AuthoritiesResponse getAuthorities(AuthoritiesRequest request) {
-		return authoritiesService.getAuthorities(request);
+	public AuthoritiesResponse getAuthorities(final String municipalityId, final AuthoritiesRequest request) {
+		return authoritiesService.getAuthorities(municipalityId, request);
 	}
 }

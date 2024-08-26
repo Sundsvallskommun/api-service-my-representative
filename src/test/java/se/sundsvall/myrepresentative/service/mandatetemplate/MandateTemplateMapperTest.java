@@ -1,6 +1,7 @@
 package se.sundsvall.myrepresentative.service.mandatetemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +47,7 @@ class MandateTemplateMapperTest {
 			.build();
 
 		// Act
-		final var result = MandateTemplateMapper.toEntity(template);
+		final var result = MandateTemplateMapper.toEntity(template, MUNICIPALITY_ID);
 
 		// Assert
 		assertThat(result.getTitle()).isEqualTo(title);

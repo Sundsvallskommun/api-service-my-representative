@@ -42,6 +42,9 @@ public class JwkEntity {
 	@Column(name = "jwk_json", nullable = false, length = LONG32)
 	private String jwkJson;
 
+	@Column(name = "municipality_id")
+	private String municipalityId;
+
 	@Column(name = "created")
 	@TimeZoneStorage(NORMALIZE)
 	private OffsetDateTime created;

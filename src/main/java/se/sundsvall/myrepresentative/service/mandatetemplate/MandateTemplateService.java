@@ -18,37 +18,37 @@ public class MandateTemplateService {
 
 	public MandateTemplateService(final MandateTemplateRepository repository) {this.repository = repository;}
 
-	public List<MandateTemplate> getTemplates() {
-		return repository.findAll().stream().map(MandateTemplateMapper::toTemplate).toList();
+	public List<MandateTemplate> getTemplates(final String municipalityId) {
+		return repository.findAllByMunicipalityId(municipalityId).stream().map(MandateTemplateMapper::toTemplate).toList();
 	}
 
-	public MandateTemplate getTemplate(final String id) {
+	public MandateTemplate getTemplate(final String municipalityId, final String id) {
 
-		return MandateTemplateMapper.toTemplate(repository.findById(id).orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Could not find template with id %s".formatted(id))));
+		return MandateTemplateMapper.toTemplate(repository.findByMunicipalityIdAndCode(municipalityId, id).orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Could not find template with municipalityId %s and id %s".formatted(municipalityId, id))));
 	}
 
-	public String createTemplate(final MandateTemplate template) {
+	public String createTemplate(final String municipalityId, final MandateTemplate template) {
 
-		final var result = repository.save(MandateTemplateMapper.toEntity(template));
+		final var result = repository.save(MandateTemplateMapper.toEntity(template, municipalityId));
 
 		return result.getCode();
 	}
 
-	public void updateTemplate(final String id, final MandateTemplate template) {
+	public void updateTemplate(final String municipalityId, final String id, final MandateTemplate template) {
 
-		final var entity = repository.findById(id).orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Could not find template with id %s to update".formatted(id)));
+		final var entity = repository.findByMunicipalityIdAndCode(municipalityId, id).orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Could not find template with municipalityId %s and id %s to update".formatted(municipalityId, id)));
 		MandateTemplateMapper.updateEntity(entity, template);
 		repository.save(entity);
 	}
 
-	public void deleteTemplate(final String id) {
+	public void deleteTemplate(final String municipalityId, final String id) {
 
-		repository.deleteById(id);
+		repository.deleteByMunicipalityIdAndCode(municipalityId, id);
 	}
 
-	public String getDescriptionForTemplate(final String id) {
+	public String getDescriptionForTemplate(final String municipalityId, final String id) {
 
-		return repository.findById(id)
+		return repository.findByMunicipalityIdAndCode(municipalityId, id)
 			.map(MandateTemplateEntity::getDescription)
 			.orElse(null);
 	}
