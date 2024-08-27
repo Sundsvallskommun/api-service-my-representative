@@ -6,7 +6,7 @@
 			}
 		},
 		"method": "GET",
-		"url": "/party/ENTERPRISE/9082c663-d38c-439b-aa43-c04aa39d5fe4/legalId"
+		"url": "/party/2281/ENTERPRISE/9082c663-d38c-439b-aa43-c04aa39d5fe4/legalId"
 	},
 	"response": {
 		"body": "5561929323",

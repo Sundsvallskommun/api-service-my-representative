@@ -1,17 +1,10 @@
 package se.sundsvall.myrepresentative.service.jwt;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.service.jwt.JwtService.ALGORITHM;
 
 import java.util.Map;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSObject;
@@ -20,6 +13,13 @@ import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import se.sundsvall.myrepresentative.api.model.jwks.Jwks;
 
@@ -41,7 +41,7 @@ class JwtServiceTest {
 	void testCreateJwtAndVerifyUsingJwksEndpoint() throws Exception {
 		final String signedJwt = jwtService.createSignedJwt("1234567890");
 
-		final Jwks jwks = restTemplate.getForObject("http://localhost:" + port + "/jwks", Jwks.class);
+		final Jwks jwks = restTemplate.getForObject("http://localhost:" + port + "/" + MUNICIPALITY_ID + "/jwks", Jwks.class);
 
 		final Map<String, Object> jwkMap = jwks.getKeys().stream().findFirst().get(); // We will only have one entry in this map
 		final JWK jwk = JWK.parse(jwkMap);    // Parse the JWK from the map

@@ -2,7 +2,9 @@ package se.sundsvall.myrepresentative.service.mandates;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
 import java.time.LocalDateTime;
 
@@ -35,9 +37,9 @@ class MandatesResponseMapperTest {
 	@Test
 	void test(@Load(value = "junit/behorigheter.json", as = Load.ResourceType.JSON) final HamtaBehorigheterResponse response, final SoftAssertions softly) {
 
-		when(service.getDescriptionForTemplate(anyString())).thenReturn("someDescription");
+		when(service.getDescriptionForTemplate(eq(MUNICIPALITY_ID), anyString())).thenReturn("someDescription");
 
-		final MandatesResponse mandatesResponse = mandatesResponseMapper.mapFullmakterResponse(response);
+		final MandatesResponse mandatesResponse = mandatesResponseMapper.mapFullmakterResponse(MUNICIPALITY_ID, response);
 		final var fullmakt = response.getKontext().getFirst().getBehorigheter().getFirst().getFullmakt();
 
 		assertThat(mandatesResponse).isNotNull().hasNoNullFieldsOrProperties();

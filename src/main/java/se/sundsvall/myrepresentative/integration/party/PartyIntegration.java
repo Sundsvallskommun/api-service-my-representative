@@ -1,42 +1,52 @@
 package se.sundsvall.myrepresentative.integration.party;
 
-import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
-import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
+import static generated.se.sundsvall.party.PartyType.ENTERPRISE;
+import static generated.se.sundsvall.party.PartyType.PRIVATE;
+import static org.zalando.problem.Status.NOT_FOUND;
 
-import java.util.Optional;
-
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Component;
+import org.zalando.problem.Problem;
 
 import generated.se.sundsvall.party.PartyType;
 
-@FeignClient(
-        name = "party",
-        url = "${integration.party.url}",
-        configuration = PartyConfiguration.class,
-        dismiss404 = true
-)
-public interface PartyIntegration {
+@Component
+public class PartyIntegration {
 
-    /**
-     * Get legalID by partyId
-     * @param partyType "ENERPRISE" or "PRIVATE"
-     * @param partyId uuid of the person or organization
-     * @return legalId of the person or organization, Optional.empty() if not found.
-     */
-    @Cacheable("legalIds")
-    @GetMapping(path = "/{type}/{partyId}/legalId", produces = { TEXT_PLAIN_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
-    Optional<String> getLegalId(@PathVariable("type") PartyType partyType, @PathVariable("partyId") String partyId);
+	private final PartyClient partyClient;
 
-    /**
-     * Get partyId for a legalId
-     * @param partyType "ENTERPRISE" or "PRIVATE"
-     * @param legalId legalid of the person or organization
-     * @return partyId of the person or organization, Optional.empty() if not found.
-     */
-    @Cacheable("partyIds")
-    @GetMapping(path = "/{type}/{legalId}/partyId", produces = { TEXT_PLAIN_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
-    Optional<String> getPartyId(@PathVariable("type") PartyType partyType, @PathVariable("legalId") String legalId);
+	public PartyIntegration(PartyClient partyClient) {
+		this.partyClient = partyClient;
+	}
+
+	/**
+	 * Fetch partyId for a private person or organization.
+	 * @param legalId
+	 * @return partyId or empty string if not found.
+	 */
+	public String getPartyIdFromLegalId(String municipalityId, String legalId, String type) {
+		return partyClient.getPartyId(municipalityId, getPartyTypeFromRequest(type), legalId)
+				.orElse("");
+	}
+
+	/**
+	 * Fetch legal id for an organization.
+	 * @param partyId
+	 * @return
+	 */
+	public String getLegalIdFromPartyId(String municipalityId, String partyId, String type) {
+		return partyClient.getLegalId(municipalityId, getPartyTypeFromRequest(type), partyId)
+				.orElseThrow(() -> Problem.builder()
+						.withTitle("Couldn't find any organization number / person for partyId: " + partyId)
+						.withStatus(NOT_FOUND)
+						.build()
+				);
+	}
+
+	private PartyType getPartyTypeFromRequest(String type) {
+		return switch (type) {
+			case "pnr" -> PRIVATE;
+			case "orgnr" -> ENTERPRISE;
+			default -> throw new IllegalArgumentException("Unknown party type: " + type);
+		};
+	}
 }

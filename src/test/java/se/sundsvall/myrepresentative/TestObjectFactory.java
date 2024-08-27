@@ -40,6 +40,8 @@ import generated.se.sundsvall.minaombud.JwkSet;
 
 public class TestObjectFactory {
 
+    public static final String MUNICIPALITY_ID = "2281";
+
     public static ObjectMapper createObjectMapperWithOffsetDateTimeSupport() {
         ObjectMapper objectMapper = new ObjectMapper();
 

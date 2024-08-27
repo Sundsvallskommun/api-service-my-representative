@@ -6,6 +6,7 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -56,7 +57,7 @@ class JwkRepositoryTest {
 		var jwk = "jwk_body_100";
 		var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
 		var created = ZonedDateTime.parse("2024-02-05 12:14:32.234", formatter).toOffsetDateTime();
-		var validUntil = ZonedDateTime.parse("2024-02-05 13:14:32.234",formatter).toOffsetDateTime();
+		var validUntil = ZonedDateTime.parse("2024-02-05 13:14:32.234", formatter).toOffsetDateTime();
 
 		var result = repository.findById(100L).orElseThrow(() -> new RuntimeException("Missing test data"));
 
@@ -75,7 +76,7 @@ class JwkRepositoryTest {
 
 		var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
 		var created = ZonedDateTime.parse("2024-02-05 12:14:32.234", formatter).toOffsetDateTime();
-		var validUntil = ZonedDateTime.parse("2024-02-05 13:14:32.234",formatter).toOffsetDateTime();
+		var validUntil = ZonedDateTime.parse("2024-02-05 13:14:32.234", formatter).toOffsetDateTime();
 
 		assertThat(result.getJwkJson()).isEqualTo("new_jwk_body");
 		assertThat(result.getCreated()).isEqualTo(created);
@@ -98,7 +99,7 @@ class JwkRepositoryTest {
 		assertThat(repository.findById(100L)).isPresent();
 
 		var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
-		var dateTime = ZonedDateTime.parse("2024-02-05 13:14:32.234",formatter).toOffsetDateTime();
+		var dateTime = ZonedDateTime.parse("2024-02-05 13:14:32.234", formatter).toOffsetDateTime();
 
 		repository.deleteByValidUntilBefore(dateTime);
 		repository.flush();
@@ -113,7 +114,7 @@ class JwkRepositoryTest {
 
 	@Test
 	void existsByValidUntilAfter() {
-		assertThat(repository.existsByValidUntilAfter(now())).isFalse();
+		assertThat(repository.findAll()).hasSize(1);
 
 		var jwk = "body";
 		var validUntil = now().plusMinutes(1);
@@ -124,23 +125,22 @@ class JwkRepositoryTest {
 
 		repository.saveAndFlush(jwkEntity);
 
-		assertThat(repository.existsByValidUntilAfter(now())).isTrue();
+		assertThat(repository.findAll()).hasSize(2);
 	}
 
 	@Test
-	void findByValidUntilAfter() {
-		assertThat(repository.findByValidUntilAfter(now())).isEmpty();
-
+	void findByMunicipalityIdAndValidUntilAfter() {
 		var jwk = "body";
 		var validUntil = now().plusMinutes(1);
 		var jwkEntity = JwkEntity.builder()
 			.withJwkJson(jwk)
 			.withValidUntil(validUntil)
+			.withMunicipalityId(MUNICIPALITY_ID)
 			.build();
 
 		repository.saveAndFlush(jwkEntity);
 
-		assertThat(repository.findByValidUntilAfter(now()))
+		assertThat(repository.findByMunicipalityIdAndValidUntilAfter(MUNICIPALITY_ID, now()))
 			.filteredOn(entity -> entity.getJwkJson().equals("body"))
 			.hasSize(1);
 	}

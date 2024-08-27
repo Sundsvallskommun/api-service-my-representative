@@ -28,4 +28,7 @@ public class MandateTemplateEntity {
 	@Column(length = 2000)
 	private String description;
 
+	@Column
+	private String municipalityId;
+
 }

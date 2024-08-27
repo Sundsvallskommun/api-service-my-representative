@@ -25,7 +25,7 @@ public class MandatesResponseMapper {
 
 	public MandatesResponseMapper(final MandateTemplateService service) {this.service = service;}
 
-	public MandatesResponse mapFullmakterResponse(final HamtaBehorigheterResponse behorigheterResponse) {
+	public MandatesResponse mapFullmakterResponse(final String municipalityId, final HamtaBehorigheterResponse behorigheterResponse) {
 		return MandatesResponse.builder()
 			.withMandates(behorigheterResponse.getKontext().stream()
 				.filter(Objects::nonNull)
@@ -48,7 +48,7 @@ public class MandatesResponseMapper {
 							Collectors.mapping(
 								behorighet -> Permission.builder()
 									.withCode(behorighet.getKod())
-									.withDescription(service.getDescriptionForTemplate(behorighet.getKod()))
+									.withDescription(service.getDescriptionForTemplate(municipalityId, behorighet.getKod()))
 									.build(),
 								Collectors.toList())
 						)))
