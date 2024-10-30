@@ -11,15 +11,15 @@ import lombok.Setter;
 @Schema(description = "Base response information for the issuer of mandates / authorities")
 public class ResponseIssuer {
 
-    @Schema(description = "PartyId for the sole trader or organization", example = "fb2f0290-3820-11ed-a261-0242ac120002")
-    private String partyId;
+	@Schema(description = "PartyId for the sole trader or organization", example = "fb2f0290-3820-11ed-a261-0242ac120002")
+	private String partyId;
 
-    @Schema(description = "Type, private person (pnr) or sole trader / organization (orgnr)")
-    private String type;
+	@Schema(description = "Type, private person (pnr) or sole trader / organization (orgnr)")
+	private String type;
 
-    @Schema(description = "Name of company / person")
-    private String name;
+	@Schema(description = "Name of company / person")
+	private String name;
 
-    @Schema(description = "LegalId for person, sole trader or organization")
-    private String legalId;
+	@Schema(description = "LegalId for person, sole trader or organization")
+	private String legalId;
 }

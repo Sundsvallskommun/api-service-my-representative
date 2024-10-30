@@ -39,13 +39,12 @@ public class Mandate {
 		description = "Map of UUIDs to lists of permissions.",
 		example = """
 			{
-			    "3bfb975d-c2a9-4f16-b8e5-11c22a318fad": [
-			        {
-			            "code": "db0023d9-3d19-482f-b43c-47e0073484a2"
-			        }
-			    ]
-			}"""
-	)
+				"3bfb975d-c2a9-4f16-b8e5-11c22a318fad": [
+					{
+						"code": "db0023d9-3d19-482f-b43c-47e0073484a2"
+					}
+				]
+			}""")
 	private Map<UUID, List<Permission>> permissions;
 
 	@Getter

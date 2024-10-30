@@ -7,27 +7,27 @@ import org.junit.jupiter.api.Test;
 
 class AuthorityStatusTest {
 
-    @Test
-    void fromAktuellToActual() {
-        AuthorityStatus aktiv = AuthorityStatus.fromBolagsverketValue("AKTUELL");
-        assertThat(aktiv).isEqualByComparingTo(AuthorityStatus.ACTUAL);
-    }
+	@Test
+	void fromAktuellToActual() {
+		AuthorityStatus aktiv = AuthorityStatus.fromBolagsverketValue("AKTUELL");
+		assertThat(aktiv).isEqualByComparingTo(AuthorityStatus.ACTUAL);
+	}
 
-    @Test
-    void fromGiltigToValid() {
-        AuthorityStatus giltig = AuthorityStatus.fromBolagsverketValue("GILTIG");
-        assertThat(giltig).isEqualByComparingTo(AuthorityStatus.VALID);
-    }
+	@Test
+	void fromGiltigToValid() {
+		AuthorityStatus giltig = AuthorityStatus.fromBolagsverketValue("GILTIG");
+		assertThat(giltig).isEqualByComparingTo(AuthorityStatus.VALID);
+	}
 
-    @Test
-    void fromHistoriskToHistorical() {
-        AuthorityStatus historisk = AuthorityStatus.fromBolagsverketValue("HISTORISK");
-        assertThat(historisk).isEqualByComparingTo(AuthorityStatus.HISTORICAL);
-    }
+	@Test
+	void fromHistoriskToHistorical() {
+		AuthorityStatus historisk = AuthorityStatus.fromBolagsverketValue("HISTORISK");
+		assertThat(historisk).isEqualByComparingTo(AuthorityStatus.HISTORICAL);
+	}
 
-    @Test
-    void fromNullToNull() {
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> AuthorityStatus.fromBolagsverketValue("Not supported"));
-    }
+	@Test
+	void fromNullToNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() -> AuthorityStatus.fromBolagsverketValue("Not supported"));
+	}
 }

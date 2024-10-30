@@ -36,7 +36,7 @@ public class MandatesService {
 	}
 
 	public MandatesResponse getMandates(final String municipalityId, final MandatesRequest mandatesRequest) {
-		//Set legalId of the issuer and acquirer
+		// Set legalId of the issuer and acquirer
 		Optional.ofNullable(mandatesRequest.getMandateIssuer())
 			.ifPresent(issuer -> issuer.setLegalId(partyIntegration.getLegalIdFromPartyId(municipalityId, issuer.getPartyId(), issuer.getType())));
 		mandatesRequest.getMandateAcquirer().setLegalId(partyIntegration.getLegalIdFromPartyId(municipalityId, mandatesRequest.getMandateAcquirer().getPartyId(), mandatesRequest.getMandateAcquirer().getType()));
@@ -46,11 +46,10 @@ public class MandatesService {
 		HamtaBehorigheterRequest behorigheterRequest = mandatesRequestMapper.createBehorigheterRequest(mandatesRequest);
 		HamtaBehorigheterResponse behorigheterResponse = ombudClient.getBehorigheter(xIdTokenHeader, behorigheterRequest);
 
-		//Validate the signature from bolagsverket, should throw exception if we cannot validate the signature.
+		// Validate the signature from bolagsverket, should throw exception if we cannot validate the signature.
 		MandatesResponse mandatesResponse = validateAndMapResponseFromBolagsverket(municipalityId, behorigheterResponse);
 
-
-		//Populate the response with legalIds
+		// Populate the response with legalIds
 		mapLegalIdsToPartyIds(municipalityId, mandatesResponse);
 
 		return mandatesResponse;
@@ -69,9 +68,7 @@ public class MandatesService {
 	}
 
 	void mapLegalIdToPartyForAcquirers(final String municipalityId, final List<Mandate> mandates) {
-		mandates.forEach(mandate ->
-			mandate.getMandateAcquirers().forEach(acquirer ->
-				acquirer.setPartyId(partyIntegration.getPartyIdFromLegalId(municipalityId, acquirer.getLegalId(), acquirer.getType()))));
+		mandates.forEach(mandate -> mandate.getMandateAcquirers().forEach(acquirer -> acquirer.setPartyId(partyIntegration.getPartyIdFromLegalId(municipalityId, acquirer.getLegalId(), acquirer.getType()))));
 	}
 
 	MandatesResponse validateAndMapResponseFromBolagsverket(final String municipalityId, final HamtaBehorigheterResponse behorigheterResponse) {

@@ -24,14 +24,14 @@ import lombok.Setter;
 @Schema(description = "Mandate response model")
 public class AuthoritiesResponse {
 
-    @Builder.Default
-    private List<Authority> authorities = new ArrayList<>();
+	@Builder.Default
+	private List<Authority> authorities = new ArrayList<>();
 
-    public void addAuthority(Authority authority) {
-        authorities.add(authority);
-    }
+	public void addAuthority(Authority authority) {
+		authorities.add(authority);
+	}
 
-    @JsonProperty("_meta")
-    @Schema(implementation = MetaData.class, accessMode = READ_ONLY)
-    private MetaData metaData;
+	@JsonProperty("_meta")
+	@Schema(implementation = MetaData.class, accessMode = READ_ONLY)
+	private MetaData metaData;
 }

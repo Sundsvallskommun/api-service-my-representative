@@ -43,7 +43,7 @@ public class JwksHelper {
 
 		populateJwksIfMissing();
 
-		//Check for a cached Jwk, if we don't have it (or couldn't find it after a second fetch) we will throw an exception
+		// Check for a cached Jwk, if we don't have it (or couldn't find it after a second fetch) we will throw an exception
 		validateKidIsCached(kidToFind);
 
 		return jwkSet.getKeys().stream()
@@ -63,11 +63,11 @@ public class JwksHelper {
 	 * @param kidToFind from the "Sig"-object from Mina Ombud
 	 */
 	void validateKidIsCached(String kidToFind) {
-		//If the kid is missing, update the JWK-set and then check again.
+		// If the kid is missing, update the JWK-set and then check again.
 		if (isKidMissingInKeySet(kidToFind)) {
 			updateJwkSet();
 
-			//If we still couldn't find it log an error, exception will be thrown later.
+			// If we still couldn't find it log an error, exception will be thrown later.
 			if (isKidMissingInKeySet(kidToFind)) {
 				LOG.error("Could not find kid in JWK-set");
 			}
@@ -77,11 +77,11 @@ public class JwksHelper {
 	/**
 	 * Check if there's no match between the kid (from the response) and the kid in the JWK-set.
 	 *
-	 * @param kidToFind
-	 * @return true if no match, false if it exists.
+	 * @param  kidToFind
+	 * @return           true if no match, false if it exists.
 	 */
 	boolean isKidMissingInKeySet(String kidToFind) {
-		//Check if no kid in the jwks is matching the one we want.
+		// Check if no kid in the jwks is matching the one we want.
 		return jwkSet.getKeys().stream()
 			.noneMatch(jwk -> jwk.getKeyID().equals(kidToFind));
 	}
@@ -89,19 +89,19 @@ public class JwksHelper {
 	/**
 	 * Extracts the "kid" parameter value from a "protected header"
 	 *
-	 * @param protectedHeader from the "Sig"-object from Mina Ombud
-	 * @return the kid value as a String
+	 * @param  protectedHeader         from the "Sig"-object from Mina Ombud
+	 * @return                         the kid value as a String
 	 * @throws JsonProcessingException if the BASE64-urldecoded protectedHeader is not a valid JSON
 	 */
 	String getKidFromProtectedHeader(String protectedHeader) throws JsonProcessingException {
-		//The protected parameter contains the kid to find the correct JWK to use
-		//Base64-decode the protected parameter to get the JSON, which will contain the kid.
+		// The protected parameter contains the kid to find the correct JWK to use
+		// Base64-decode the protected parameter to get the JSON, which will contain the kid.
 		String decodedProtected = new String(Base64.getUrlDecoder().decode(protectedHeader));
 
-		//Parse to a JSON object
+		// Parse to a JSON object
 		JsonNode jsonNode = new ObjectMapper().readTree(decodedProtected);
 
-		//Get the kid parameter value from the JSON object
+		// Get the kid parameter value from the JSON object
 		return jsonNode.get("kid").asText();
 	}
 

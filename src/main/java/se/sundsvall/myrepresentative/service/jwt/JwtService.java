@@ -1,6 +1,5 @@
 package se.sundsvall.myrepresentative.service.jwt;
 
-
 import static java.time.OffsetDateTime.now;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
@@ -62,11 +61,11 @@ public class JwtService {
 	/**
 	 * Create a signed JWT token
 	 *
-	 * @param legalId The legal id of the person we want to fetch data for
-	 * @return a signed JWT token to be used in the X-Service-Name header
+	 * @param  legalId The legal id of the person we want to fetch data for
+	 * @return         a signed JWT token to be used in the X-Service-Name header
 	 */
 	public String createSignedJwt(final String legalId) {
-		//Use request-ID as "subject"" for the jwt, if the requestid for some reason is null, we cannot build the token.
+		// Use request-ID as "subject"" for the jwt, if the requestid for some reason is null, we cannot build the token.
 		String requestId = Optional.ofNullable(RequestId.get())
 			.orElse(UUID.randomUUID().toString());
 
@@ -114,10 +113,10 @@ public class JwtService {
 	 * @return a RSAKey
 	 */
 	private SignedJWT signJWT(final RSAKey rsaKey, final JWTClaimsSet claimsSet) throws JOSEException {
-		//Create a new signer with the rsaKey
+		// Create a new signer with the rsaKey
 		JWSSigner signer = new RSASSASigner(rsaKey);
 
-		//Sign the JWT with the signer
+		// Sign the JWT with the signer
 		JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
 			.keyID(rsaKey.getKeyID())
 			.build();

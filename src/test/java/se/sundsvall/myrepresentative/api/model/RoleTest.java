@@ -7,21 +7,21 @@ import org.junit.jupiter.api.Test;
 
 class RoleTest {
 
-    @Test
-    void fromPrivatToPrivate() {
-        Role role = Role.fromBolagsverketValue("Privat");
-        assertThat(role).isEqualByComparingTo(Role.PRIVATE);
-    }
+	@Test
+	void fromPrivatToPrivate() {
+		Role role = Role.fromBolagsverketValue("Privat");
+		assertThat(role).isEqualByComparingTo(Role.PRIVATE);
+	}
 
-    @Test
-    void fromOrganisationToOrganization() {
-        Role role = Role.fromBolagsverketValue("Organisation");
-        assertThat(role).isEqualByComparingTo(Role.ORGANIZATION);
-    }
+	@Test
+	void fromOrganisationToOrganization() {
+		Role role = Role.fromBolagsverketValue("Organisation");
+		assertThat(role).isEqualByComparingTo(Role.ORGANIZATION);
+	}
 
-    @Test
-    void fromNotSupportedToNull() {
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> Role.fromBolagsverketValue("Not supported"));
-    }
+	@Test
+	void fromNotSupportedToNull() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() -> Role.fromBolagsverketValue("Not supported"));
+	}
 }

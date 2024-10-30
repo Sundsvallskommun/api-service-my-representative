@@ -62,8 +62,6 @@ public class AuthoritiesService {
 	}
 
 	void mapLegalIdToPartyForAcquirers(final String municipalityId, final List<Authority> mandates) {
-		mandates.forEach(authority ->
-			authority.getAuthorityAcquirers().forEach(acquirer ->
-				acquirer.setPartyId(partyIntegration.getPartyIdFromLegalId(municipalityId, acquirer.getLegalId(), acquirer.getType()))));
+		mandates.forEach(authority -> authority.getAuthorityAcquirers().forEach(acquirer -> acquirer.setPartyId(partyIntegration.getPartyIdFromLegalId(municipalityId, acquirer.getLegalId(), acquirer.getType()))));
 	}
 }

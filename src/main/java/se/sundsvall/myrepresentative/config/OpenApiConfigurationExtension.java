@@ -14,17 +14,17 @@ import io.swagger.v3.oas.models.Operation;
 @Configuration
 public class OpenApiConfigurationExtension {
 
-    public static final String JWKS_ENDPOINT = "/jwks";
+	public static final String JWKS_ENDPOINT = "/jwks";
 
-    @Bean
-    public OpenApiCustomizer addNoAuthEndpoint() {
-        return openApi -> Optional.ofNullable(openApi.getPaths().get(JWKS_ENDPOINT))
-                .flatMap(openApiPath -> Optional.ofNullable(openApiPath.getGet())).ifPresent(this::extendOperation);
-    }
+	@Bean
+	public OpenApiCustomizer addNoAuthEndpoint() {
+		return openApi -> Optional.ofNullable(openApi.getPaths().get(JWKS_ENDPOINT))
+			.flatMap(openApiPath -> Optional.ofNullable(openApiPath.getGet())).ifPresent(this::extendOperation);
+	}
 
-    void extendOperation(Operation operation) {
-        operation.addExtension("x-auth-type", "None");
-        operation.addExtension("x-throttling-tier", "Unlimited");
-        operation.addExtension("x-wso2-mutual-ssl", "Optional");
-    }
+	void extendOperation(Operation operation) {
+		operation.addExtension("x-auth-type", "None");
+		operation.addExtension("x-throttling-tier", "Unlimited");
+		operation.addExtension("x-wso2-mutual-ssl", "Optional");
+	}
 }

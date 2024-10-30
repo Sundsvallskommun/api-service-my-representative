@@ -23,35 +23,35 @@ import lombok.Setter;
 @Schema(description = "Authority information model.")
 public class Authority {
 
-    private ResponseIssuer authorityIssuer;
+	private ResponseIssuer authorityIssuer;
 
-    @ArraySchema(schema = @Schema(implementation = ResponseAcquirer.class))
-    private List<ResponseAcquirer> authorityAcquirers;
+	@ArraySchema(schema = @Schema(implementation = ResponseAcquirer.class))
+	private List<ResponseAcquirer> authorityAcquirers;
 
-    @Schema(description = "If the issuer is an organization or private person", example = "ORGANIZATION")
-    private Role authorityRole;
+	@Schema(description = "If the issuer is an organization or private person", example = "ORGANIZATION")
+	private Role authorityRole;
 
-    @Schema(description = "Reference number intended as a reference between client and third party", example = "MOF1234567890")
-    private String referenceNumber;
+	@Schema(description = "Reference number intended as a reference between client and third party", example = "MOF1234567890")
+	private String referenceNumber;
 
-    @Schema(description = "Status of the authority", example = "ACTIVE")
-    private AuthorityStatus status;
+	@Schema(description = "Status of the authority", example = "ACTIVE")
+	private AuthorityStatus status;
 
-    @Schema(description = "Unique ID for the authority", example = "bf31188a-bfbb-4f23-a60a-89c75d009b53")
-    private String id;
+	@Schema(description = "Unique ID for the authority", example = "bf31188a-bfbb-4f23-a60a-89c75d009b53")
+	private String id;
 
-    @Schema(description = "What the authority represents")
-    private String description;
+	@Schema(description = "What the authority represents")
+	private String description;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Schema(description = "Date when the authority was issued")
-    private LocalDateTime issuedDate;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	@Schema(description = "Date when the authority was issued")
+	private LocalDateTime issuedDate;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Schema(description = "Date from when the authority is valid")
-    private LocalDate validFrom;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	@Schema(description = "Date from when the authority is valid")
+	private LocalDate validFrom;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Schema(description = "Date to when the authority ceased to be valid")
-    private LocalDate validTo;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	@Schema(description = "Date to when the authority ceased to be valid")
+	private LocalDate validTo;
 }

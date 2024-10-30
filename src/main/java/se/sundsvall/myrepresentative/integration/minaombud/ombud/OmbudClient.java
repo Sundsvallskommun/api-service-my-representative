@@ -15,15 +15,14 @@ import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 @FeignClient(
 	name = "minaombud",
 	url = "${integration.minaombud.url}",
-	configuration = OmbudConfiguration.class
-)
+	configuration = OmbudConfiguration.class)
 public interface OmbudClient {
 
 	/**
 	 * Find all mandates for a person/organization.
 	 *
-	 * @param request {@link HamtaBehorigheterRequest
-	 * @return {@link HamtaBehorigheterResponse}
+	 * @param  request {@link HamtaBehorigheterRequest
+	 * @return         {@link HamtaBehorigheterResponse}
 	 */
 	@PostMapping(path = "/sok/behorigheter", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	HamtaBehorigheterResponse getBehorigheter(@RequestHeader("X-Id-Token") String token, @RequestBody HamtaBehorigheterRequest request);
@@ -31,8 +30,8 @@ public interface OmbudClient {
 	/**
 	 * Find all authorities for a person/organization.
 	 *
-	 * @param request {@link HamtaFullmakterRequest}
-	 * @return {@link HamtaFullmakterResponse} response
+	 * @param  request {@link HamtaFullmakterRequest}
+	 * @return         {@link HamtaFullmakterResponse} response
 	 */
 	@PostMapping(path = "/sok/fullmakter", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	HamtaFullmakterResponse getFullmakter(@RequestHeader("X-Id-Token") String token, @RequestBody HamtaFullmakterRequest request);

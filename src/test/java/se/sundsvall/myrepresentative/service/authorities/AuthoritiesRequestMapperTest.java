@@ -11,31 +11,31 @@ import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
 
 class AuthoritiesRequestMapperTest {
 
-    private final AuthoritiesRequestMapper requestMapper = new AuthoritiesRequestMapper();
+	private final AuthoritiesRequestMapper requestMapper = new AuthoritiesRequestMapper();
 
-    @Test
-    void testCreateBehorigheterRequest() {
-        AuthoritiesRequest authoritiesRequest = TestObjectFactory.createAuthorityRequest();
-        HamtaFullmakterRequest fullmakterRequest = requestMapper.createFullmakterRequest(authoritiesRequest);
+	@Test
+	void testCreateBehorigheterRequest() {
+		AuthoritiesRequest authoritiesRequest = TestObjectFactory.createAuthorityRequest();
+		HamtaFullmakterRequest fullmakterRequest = requestMapper.createFullmakterRequest(authoritiesRequest);
 
-        assertThat(fullmakterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
-        assertThat(fullmakterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
+		assertThat(fullmakterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
+		assertThat(fullmakterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
 
-        assertThat(fullmakterRequest.getFullmaktsgivare().getId()).isEqualTo("issuerLegalId");
-        assertThat(fullmakterRequest.getFullmaktsgivare().getTyp()).isEqualTo("orgnr");
-    }
+		assertThat(fullmakterRequest.getFullmaktsgivare().getId()).isEqualTo("issuerLegalId");
+		assertThat(fullmakterRequest.getFullmaktsgivare().getTyp()).isEqualTo("orgnr");
+	}
 
-    @Test
-    void testMissingIssuer_shouldNotBeMapped() {
-        AuthoritiesRequest authoritiesRequest = TestObjectFactory.createAuthorityRequest();
-        authoritiesRequest.setAuthorityIssuer(null);
+	@Test
+	void testMissingIssuer_shouldNotBeMapped() {
+		AuthoritiesRequest authoritiesRequest = TestObjectFactory.createAuthorityRequest();
+		authoritiesRequest.setAuthorityIssuer(null);
 
-        HamtaFullmakterRequest fullmakterRequest = requestMapper.createFullmakterRequest(authoritiesRequest);
+		HamtaFullmakterRequest fullmakterRequest = requestMapper.createFullmakterRequest(authoritiesRequest);
 
-        assertThat(fullmakterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
-        assertThat(fullmakterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
+		assertThat(fullmakterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
+		assertThat(fullmakterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
 
-        assertThat(fullmakterRequest.getFullmaktsgivare()).isNull();
+		assertThat(fullmakterRequest.getFullmaktsgivare()).isNull();
 
-    }
+	}
 }

@@ -25,11 +25,11 @@ import lombok.Setter;
 @Schema(description = "Mandate response model")
 public class MandatesResponse {
 
-    @Builder.Default
-    @ArraySchema(schema = @Schema(implementation = Mandate.class))
-    private List<Mandate> mandates = new ArrayList<>();
+	@Builder.Default
+	@ArraySchema(schema = @Schema(implementation = Mandate.class))
+	private List<Mandate> mandates = new ArrayList<>();
 
-    @JsonProperty("_meta")
-    @Schema(implementation = MetaData.class, accessMode = READ_ONLY)
-    private MetaData metaData;
+	@JsonProperty("_meta")
+	@Schema(implementation = MetaData.class, accessMode = READ_ONLY)
+	private MetaData metaData;
 }

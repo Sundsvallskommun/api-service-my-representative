@@ -16,5 +16,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Jwks {
 
-    private List<Map<String, Object>> keys;
+	private List<Map<String, Object>> keys;
 }

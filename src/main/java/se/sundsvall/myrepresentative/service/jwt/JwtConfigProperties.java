@@ -14,8 +14,8 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "minaombud.jwt")
 public class JwtConfigProperties {
 
-    private String issuer;
-    private String audience;
-    private Duration expiration;
-    private Duration clockSkew;
+	private String issuer;
+	private String audience;
+	private Duration expiration;
+	private Duration clockSkew;
 }

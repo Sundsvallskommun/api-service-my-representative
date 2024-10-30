@@ -25,17 +25,18 @@ import lombok.Setter;
 @Schema(description = "Search permissions request model")
 public class MandatesRequest extends ParameterBase {
 
-    @Nullable
-    @Schema(description = "Issuer of the mandates", example = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private GetIssuer mandateIssuer;
+	@Nullable
+	@Schema(description = "Issuer of the mandates", example = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	private GetIssuer mandateIssuer;
 
-    @Valid
-    @NotNull
-    @Schema(description = "Receiver of the mandates", example = "fb2f0290-3820-11ed-a261-0242ac120002")
-    private GetAcquirer mandateAcquirer;
+	@Valid
+	@NotNull
+	@Schema(description = "Receiver of the mandates", example = "fb2f0290-3820-11ed-a261-0242ac120002")
+	private GetAcquirer mandateAcquirer;
 
-    @ArraySchema(minItems = 0, uniqueItems = true,
-            schema = @Schema(description = "Fetch only specified mandates", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6"))
-    private List<String> mandates;
+	@ArraySchema(minItems = 0,
+		uniqueItems = true,
+		schema = @Schema(description = "Fetch only specified mandates", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6"))
+	private List<String> mandates;
 
 }

@@ -1,35 +1,25 @@
 {
 	"_meta": {
+		"totalRecords": 1,
 		"limit": 100,
-		"page": 0,
 		"totalPages": 1,
-		"totalRecords": 1
+		"page": 0
 	},
-	"mandates": [
-		{
-			"issuedDate": "2024-03-25T11:23:20.143115555",
-			"mandateAcquirers": [
-				{
-					"legalId": "198602262381",
-					"name": "Beri Ylles",
-					"partyId": "16df33c8-73af-4be6-ac3a-154306516789",
-					"type": "pnr"
-				}
-			],
-			"mandateIssuer": {
-				"legalId": "5561929323",
-				"name": "TB Bokföringsbyrå AB",
-				"partyId": "9082c663-d38c-439b-aa43-c04aa39d5fe4",
-				"type": "orgnr"
-			},
-			"mandateRole": "ORGANIZATION",
-			"permissions": {
-				"8ba13558-f639-40ca-a009-52c0cad0414f": [
-					{
-						"code": "573fcb75-eb8f-4226-8201-33212086544a"
-					}
-				]
-			}
-		}
-	]
+	"mandates": [{
+		"issuedDate": "2024-03-25T11:23:20.143115555",
+		"mandateAcquirers": [{
+			"legalId": "198602262381",
+			"name": "Beri Ylles",
+			"partyId": "16df33c8-73af-4be6-ac3a-154306516789",
+			"type": "pnr"
+		}],
+		"permissions": {"8ba13558-f639-40ca-a009-52c0cad0414f": [{"code": "573fcb75-eb8f-4226-8201-33212086544a"}]},
+		"mandateIssuer": {
+			"legalId": "5561929323",
+			"name": "TB Bokföringsbyrå AB",
+			"partyId": "9082c663-d38c-439b-aa43-c04aa39d5fe4",
+			"type": "orgnr"
+		},
+		"mandateRole": "ORGANIZATION"
+	}]
 }

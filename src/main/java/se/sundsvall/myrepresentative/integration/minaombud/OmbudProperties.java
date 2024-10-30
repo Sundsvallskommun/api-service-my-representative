@@ -14,11 +14,11 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "integration.minaombud")
 public class OmbudProperties {
 
-    private String url;
-    private String oauth2TokenUrl;
-    private String oauth2ClientId;
-    private String oauth2ClientSecret;
-    private Duration connectTimeout;
-    private Duration readTimeout;
-    private String scope;
+	private String url;
+	private String oauth2TokenUrl;
+	private String oauth2ClientId;
+	private String oauth2ClientSecret;
+	private Duration connectTimeout;
+	private Duration readTimeout;
+	private String scope;
 }

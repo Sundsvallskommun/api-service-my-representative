@@ -21,7 +21,6 @@ public class MinaOmbudJwksIntegration {
 
 	private final MinaOmbudJwksClient jwksIntegration;
 
-
 	public MinaOmbudJwksIntegration(final MinaOmbudJwksClient jwksIntegration) {
 		this.jwksIntegration = jwksIntegration;
 	}
@@ -29,15 +28,15 @@ public class MinaOmbudJwksIntegration {
 	/**
 	 * Fetches the jwks from mina ombud and converts it to a com.nimbusds.jose.jwk.JWKSet.
 	 *
-	 * @param thirdParty The third party to fetch the jwks for
-	 * @return A com.nimbusds.jose.jwk.JWKSet
+	 * @param  thirdParty The third party to fetch the jwks for
+	 * @return            A com.nimbusds.jose.jwk.JWKSet
 	 */
 	public JWKSet getJwks(final String thirdParty) {
 		final JwkSet jwks = jwksIntegration.getJwks(thirdParty);
-		final List<JWK> jwkList = new ArrayList<>();  //Temp list used to initialize the JWKSet at the end
+		final List<JWK> jwkList = new ArrayList<>();  // Temp list used to initialize the JWKSet at the end
 
 		for (final Jwk jwk : jwks.getKeys()) {
-			//Parse the JWK to a JOSE JWK
+			// Parse the JWK to a JOSE JWK
 			try {
 				JWK parsedJwk = JWK.parse(jwkToMap(jwk));
 
@@ -60,7 +59,7 @@ public class MinaOmbudJwksIntegration {
 	 * breaks the integration with Nimbus JOSE JWT library. This method is a workaround to convert
 	 * the generated JWK to a map that can be used by the Nimbus JOSE JWT library.
 	 *
-	 * @param jwk
+	 * @param  jwk
 	 * @return
 	 */
 	private HashMap<String, Object> jwkToMap(final Jwk jwk) {

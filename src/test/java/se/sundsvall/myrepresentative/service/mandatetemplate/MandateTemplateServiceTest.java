@@ -24,7 +24,6 @@ import se.sundsvall.myrepresentative.api.model.MandateTemplate;
 import se.sundsvall.myrepresentative.integration.db.MandateTemplateRepository;
 import se.sundsvall.myrepresentative.integration.db.model.MandateTemplateEntity;
 
-
 @ExtendWith(MockitoExtension.class)
 class MandateTemplateServiceTest {
 
@@ -43,9 +42,9 @@ class MandateTemplateServiceTest {
 			.withDescription("someDescription")
 			.build());
 		when(repositoryMock.findAllByMunicipalityId(MUNICIPALITY_ID)).thenReturn(expectedTemplates);
-		//Act
+		// Act
 		final var result = service.getTemplates(MUNICIPALITY_ID);
-		//Assert
+		// Assert
 		assertThat(result).isNotNull().hasSize(1);
 		assertThat(result.getFirst()).hasNoNullFieldsOrProperties();
 		assertThat(result.getFirst().getCode()).isEqualTo("someCode");
@@ -65,9 +64,9 @@ class MandateTemplateServiceTest {
 			.withDescription("someDescription")
 			.build();
 		when(repositoryMock.findByMunicipalityIdAndCode(eq(MUNICIPALITY_ID), anyString())).thenReturn(Optional.ofNullable(expectedTemplate));
-		//Act
+		// Act
 		final var result = service.getTemplate(MUNICIPALITY_ID, "someCode");
-		//Assert
+		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(result.getCode()).isEqualTo("someCode");
 		assertThat(result.getDescription()).isEqualTo("someDescription");
@@ -88,7 +87,7 @@ class MandateTemplateServiceTest {
 	void createTemplate() {
 		// Mock
 		when(repositoryMock.save(any(MandateTemplateEntity.class))).thenReturn(MandateTemplateEntity.builder().withCode("someCode").build());
-		//Act
+		// Act
 		final var expectedTemplate = MandateTemplate.builder()
 			.withTitle("someTitle")
 			.withCode("someCode")
@@ -96,7 +95,7 @@ class MandateTemplateServiceTest {
 			.build();
 
 		final var result = service.createTemplate(MUNICIPALITY_ID, expectedTemplate);
-		//Assert
+		// Assert
 		assertThat(result).isEqualTo("someCode");
 	}
 
@@ -108,7 +107,7 @@ class MandateTemplateServiceTest {
 			.withCode("someCode")
 			.withDescription("someDescription")
 			.build()));
-		//Act
+		// Act
 		final var updatedTemplate = MandateTemplate.builder()
 			.withTitle("someUpdatedTitle")
 			.withCode("someUpdatedCode")
@@ -116,7 +115,7 @@ class MandateTemplateServiceTest {
 			.build();
 
 		service.updateTemplate(MUNICIPALITY_ID, "someCode", updatedTemplate);
-		//Assert
+		// Assert
 		verify(repositoryMock).findByMunicipalityIdAndCode(eq(MUNICIPALITY_ID), anyString());
 		verify(repositoryMock).save(any(MandateTemplateEntity.class));
 		verifyNoMoreInteractions(repositoryMock);
@@ -132,14 +131,13 @@ class MandateTemplateServiceTest {
 
 	@Test
 	void deleteTemplate() {
-		//Act
+		// Act
 		final var id = "someCode";
 		service.deleteTemplate(MUNICIPALITY_ID, id);
-		//Assert
+		// Assert
 		verify(repositoryMock).deleteByMunicipalityIdAndCode(MUNICIPALITY_ID, id);
 		verifyNoMoreInteractions(repositoryMock);
 	}
-
 
 	@Test
 	void getDescriptionForTemplate() {
