@@ -11,15 +11,14 @@ import generated.se.sundsvall.minaombud.JwkSet;
 @FeignClient(
 	name = "minaombudjwk",
 	url = "${integration.minaombud.url}",
-	configuration = MinaOmbudJwksConfiguration.class
-)
+	configuration = MinaOmbudJwksConfiguration.class)
 public interface MinaOmbudJwksClient {
 
 	/**
 	 * Fetch the jwks to be able to verify the signature from mina ombud.
 	 *
-	 * @param thirdParty Sundsvalls municipality id.
-	 * @return The jwks containing the public keys
+	 * @param  thirdParty Sundsvalls municipality id.
+	 * @return            The jwks containing the public keys
 	 */
 	@GetMapping(path = "/tredjeman/{tredjeman}/jwks", produces = APPLICATION_JSON_VALUE)
 	JwkSet getJwks(@PathVariable("tredjeman") String thirdParty);

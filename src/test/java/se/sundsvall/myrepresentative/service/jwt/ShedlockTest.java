@@ -46,7 +46,7 @@ class ShedlockTest {
 			// Skip creation of keys from constructor
 			when(mock.existsByValidUntilAfter(any())).thenReturn(true);
 			// Let mock hang forever for simulating long-running task
-			doAnswer( invocation -> {
+			doAnswer(invocation -> {
 				mockCalledTime = LocalDateTime.now();
 				await().forever()
 					.until(() -> false);

@@ -21,7 +21,9 @@ import se.sundsvall.dept44.test.extension.ResourceLoaderExtension;
 
 import generated.se.sundsvall.minaombud.JwkSet;
 
-@ExtendWith({MockitoExtension.class, ResourceLoaderExtension.class})
+@ExtendWith({
+	MockitoExtension.class, ResourceLoaderExtension.class
+})
 class MinaOmbudJwksIntegrationTest {
 
 	@Mock

@@ -22,12 +22,12 @@ import lombok.Setter;
 @Schema(description = "Search authorities request model")
 public class AuthoritiesRequest extends ParameterBase {
 
-    @Nullable
-    @Schema(description = "Issuer of the authority", example = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private GetIssuer authorityIssuer;
+	@Nullable
+	@Schema(description = "Issuer of the authority", example = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	private GetIssuer authorityIssuer;
 
-    @Valid
-    @NotNull
-    @Schema(description = "Receiver of the authority", example = "fb2f0290-3820-11ed-a261-0242ac120002")
-    private GetAcquirer authorityAcquirer;
+	@Valid
+	@NotNull
+	@Schema(description = "Receiver of the authority", example = "fb2f0290-3820-11ed-a261-0242ac120002")
+	private GetAcquirer authorityAcquirer;
 }

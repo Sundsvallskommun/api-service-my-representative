@@ -20,14 +20,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetAcquirer {
 
-    @ValidUuid(message = "partyId must be present and valid")
-    @Schema(description = "PartyId for the sole trader or organization", example = "fb2f0290-3820-11ed-a261-0242ac120002")
-    private String partyId;
+	@ValidUuid(message = "partyId must be present and valid")
+	@Schema(description = "PartyId for the sole trader or organization", example = "fb2f0290-3820-11ed-a261-0242ac120002")
+	private String partyId;
 
-    @NotEmpty(message = "type is mandatory. 'private' or 'organization'")
-    @Schema(description = "Type, private person (pnr) or sole trader / organization (orgnr)", example = "pnr", allowableValues = { "pnr", "orgnr" })
-    private String type;
+	@NotEmpty(message = "type is mandatory. 'private' or 'organization'")
+	@Schema(description = "Type, private person (pnr) or sole trader / organization (orgnr)", example = "pnr", allowableValues = {
+		"pnr", "orgnr"
+	})
+	private String type;
 
-    @JsonIgnore
-    private String legalId;
+	@JsonIgnore
+	private String legalId;
 }

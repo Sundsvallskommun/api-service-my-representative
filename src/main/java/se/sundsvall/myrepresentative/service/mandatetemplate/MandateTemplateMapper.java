@@ -6,7 +6,7 @@ import se.sundsvall.myrepresentative.integration.db.model.MandateTemplateEntity;
 public final class MandateTemplateMapper {
 
 	private MandateTemplateMapper() {
-		//Intentionally left empty
+		// Intentionally left empty
 	}
 
 	public static MandateTemplate toTemplate(final MandateTemplateEntity entity) {

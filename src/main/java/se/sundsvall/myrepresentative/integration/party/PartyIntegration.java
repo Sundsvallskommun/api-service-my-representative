@@ -20,26 +20,27 @@ public class PartyIntegration {
 
 	/**
 	 * Fetch partyId for a private person or organization.
-	 * @param legalId
-	 * @return partyId or empty string if not found.
+	 * 
+	 * @param  legalId
+	 * @return         partyId or empty string if not found.
 	 */
 	public String getPartyIdFromLegalId(String municipalityId, String legalId, String type) {
 		return partyClient.getPartyId(municipalityId, getPartyTypeFromRequest(type), legalId)
-				.orElse("");
+			.orElse("");
 	}
 
 	/**
 	 * Fetch legal id for an organization.
-	 * @param partyId
+	 * 
+	 * @param  partyId
 	 * @return
 	 */
 	public String getLegalIdFromPartyId(String municipalityId, String partyId, String type) {
 		return partyClient.getLegalId(municipalityId, getPartyTypeFromRequest(type), partyId)
-				.orElseThrow(() -> Problem.builder()
-						.withTitle("Couldn't find any organization number / person for partyId: " + partyId)
-						.withStatus(NOT_FOUND)
-						.build()
-				);
+			.orElseThrow(() -> Problem.builder()
+				.withTitle("Couldn't find any organization number / person for partyId: " + partyId)
+				.withStatus(NOT_FOUND)
+				.build());
 	}
 
 	private PartyType getPartyTypeFromRequest(String type) {

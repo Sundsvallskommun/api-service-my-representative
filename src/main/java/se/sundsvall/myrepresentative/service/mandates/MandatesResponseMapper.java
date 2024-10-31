@@ -23,7 +23,9 @@ public class MandatesResponseMapper {
 
 	private final MandateTemplateService service;
 
-	public MandatesResponseMapper(final MandateTemplateService service) {this.service = service;}
+	public MandatesResponseMapper(final MandateTemplateService service) {
+		this.service = service;
+	}
 
 	public MandatesResponse mapFullmakterResponse(final String municipalityId, final HamtaBehorigheterResponse behorigheterResponse) {
 		return MandatesResponse.builder()
@@ -50,8 +52,7 @@ public class MandatesResponseMapper {
 									.withCode(behorighet.getKod())
 									.withDescription(service.getDescriptionForTemplate(municipalityId, behorighet.getKod()))
 									.build(),
-								Collectors.toList())
-						)))
+								Collectors.toList()))))
 					.withIssuedDate(kontext.getTidpunkt().toLocalDateTime())
 					.withMandateRole(Role.fromBolagsverketValue(kontext.getFullmaktsgivarroll().toString()))
 					.build())

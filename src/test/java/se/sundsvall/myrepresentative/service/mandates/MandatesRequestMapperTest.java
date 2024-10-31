@@ -11,31 +11,31 @@ import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
 
 class MandatesRequestMapperTest {
 
-    private final MandatesRequestMapper mapper = new MandatesRequestMapper();
+	private final MandatesRequestMapper mapper = new MandatesRequestMapper();
 
-    @Test
-    void createBehorigheterRequest() {
-        MandatesRequest mandatesRequest = TestObjectFactory.createMandatesRequest();
-        HamtaBehorigheterRequest behorigheterRequest = mapper.createBehorigheterRequest(mandatesRequest);
+	@Test
+	void createBehorigheterRequest() {
+		MandatesRequest mandatesRequest = TestObjectFactory.createMandatesRequest();
+		HamtaBehorigheterRequest behorigheterRequest = mapper.createBehorigheterRequest(mandatesRequest);
 
-        assertThat(behorigheterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
-        assertThat(behorigheterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
+		assertThat(behorigheterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
+		assertThat(behorigheterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
 
-        assertThat(behorigheterRequest.getFullmaktsgivare().getId()).isEqualTo("issuerLegalId");
-        assertThat(behorigheterRequest.getFullmaktsgivare().getTyp()).isEqualTo("orgnr");
-    }
+		assertThat(behorigheterRequest.getFullmaktsgivare().getId()).isEqualTo("issuerLegalId");
+		assertThat(behorigheterRequest.getFullmaktsgivare().getTyp()).isEqualTo("orgnr");
+	}
 
-    @Test
-    void testMissingIssuer_shouldNotBeMapped() {
-        MandatesRequest mandatesRequest = TestObjectFactory.createMandatesRequest();
-        mandatesRequest.setMandateIssuer(null);
+	@Test
+	void testMissingIssuer_shouldNotBeMapped() {
+		MandatesRequest mandatesRequest = TestObjectFactory.createMandatesRequest();
+		mandatesRequest.setMandateIssuer(null);
 
-        HamtaBehorigheterRequest behorigheterRequest = mapper.createBehorigheterRequest(mandatesRequest);
+		HamtaBehorigheterRequest behorigheterRequest = mapper.createBehorigheterRequest(mandatesRequest);
 
-        assertThat(behorigheterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
-        assertThat(behorigheterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
+		assertThat(behorigheterRequest.getFullmaktshavare().getId()).isEqualTo("acquirerLegalId");
+		assertThat(behorigheterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
 
-        assertThat(behorigheterRequest.getFullmaktsgivare()).isNull();
+		assertThat(behorigheterRequest.getFullmaktsgivare()).isNull();
 
-    }
+	}
 }

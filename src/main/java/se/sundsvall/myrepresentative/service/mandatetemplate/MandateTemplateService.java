@@ -1,6 +1,5 @@
 package se.sundsvall.myrepresentative.service.mandatetemplate;
 
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,7 +15,9 @@ public class MandateTemplateService {
 
 	private final MandateTemplateRepository repository;
 
-	public MandateTemplateService(final MandateTemplateRepository repository) {this.repository = repository;}
+	public MandateTemplateService(final MandateTemplateRepository repository) {
+		this.repository = repository;
+	}
 
 	public List<MandateTemplate> getTemplates(final String municipalityId) {
 		return repository.findAllByMunicipalityId(municipalityId).stream().map(MandateTemplateMapper::toTemplate).toList();

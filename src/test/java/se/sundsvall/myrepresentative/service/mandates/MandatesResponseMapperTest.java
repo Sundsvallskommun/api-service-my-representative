@@ -25,7 +25,9 @@ import se.sundsvall.myrepresentative.service.mandatetemplate.MandateTemplateServ
 
 import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 
-@ExtendWith({ResourceLoaderExtension.class, MockitoExtension.class, SoftAssertionsExtension.class})
+@ExtendWith({
+	ResourceLoaderExtension.class, MockitoExtension.class, SoftAssertionsExtension.class
+})
 class MandatesResponseMapperTest {
 
 	@Mock

@@ -32,7 +32,7 @@ class MandateTemplateEntityTest {
 		final var description = "someDescription";
 		final var municipalityId = "2281";
 
-		//Act
+		// Act
 		final var result = MandateTemplateEntity.builder()
 			.withCode(code)
 			.withTitle(title)

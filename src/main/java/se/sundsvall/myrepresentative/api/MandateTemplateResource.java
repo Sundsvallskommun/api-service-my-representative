@@ -1,6 +1,5 @@
 package se.sundsvall.myrepresentative.api;
 
-
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.ALL_VALUE;
@@ -41,7 +40,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Validated
 @Tag(name = "Mandate Templates", description = "Resources for managing mandate templates")
 @ApiResponses(value = {
-	@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class}))),
+	@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
+		Problem.class, ConstraintViolationProblem.class
+	}))),
 	@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
 	@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 })
@@ -49,14 +50,16 @@ class MandateTemplateResource {
 
 	private final MandateTemplateService service;
 
-	MandateTemplateResource(final MandateTemplateService service) {this.service = service;}
+	MandateTemplateResource(final MandateTemplateService service) {
+		this.service = service;
+	}
 
 	@GetMapping
 	@Operation(description = "Get all mandate templates", responses = {
-		@ApiResponse(responseCode = "200", description = "OK - Successful operation", useReturnTypeSchema = true)})
+		@ApiResponse(responseCode = "200", description = "OK - Successful operation", useReturnTypeSchema = true)
+	})
 	ResponseEntity<List<MandateTemplate>> getAllMandateTemplates(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
-		@ValidMunicipalityId @PathVariable final String municipalityId) {
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId) {
 		return ResponseEntity.ok(service.getTemplates(municipalityId));
 	}
 
@@ -65,8 +68,7 @@ class MandateTemplateResource {
 		@ApiResponse(responseCode = "200", description = "OK - Successful operation", useReturnTypeSchema = true)
 	})
 	ResponseEntity<MandateTemplate> getMandateTemplate(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
-		@ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable(name = "id") final String id) {
 		return ResponseEntity.ok(service.getTemplate(municipalityId, id));
 	}
@@ -76,8 +78,7 @@ class MandateTemplateResource {
 		@ApiResponse(responseCode = "201", description = "Created - Successful operation", headers = @Header(name = LOCATION, description = "Location of the created resource."))
 	})
 	ResponseEntity<Void> createMandateTemplate(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
-		@ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@RequestBody final MandateTemplate mandateTemplate) {
 		return created(
 			UriComponentsBuilder.fromPath("/{municipalityId}/mandates/templates/{id}")
@@ -93,8 +94,7 @@ class MandateTemplateResource {
 		@ApiResponse(responseCode = "204", description = "No Content - Successful operation"),
 	})
 	ResponseEntity<Void> updateMandateTemplate(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
-		@ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable(name = "id") final String id,
 		@RequestBody final MandateTemplate mandateTemplate) {
 		service.updateTemplate(municipalityId, id, mandateTemplate);
@@ -106,8 +106,7 @@ class MandateTemplateResource {
 		@ApiResponse(responseCode = "204", description = "No Content - Successful operation"),
 	})
 	ResponseEntity<Void> deleteMandateTemplate(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
-		@ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable(name = "id") final String id) {
 		service.deleteTemplate(municipalityId, id);
 		return ResponseEntity.noContent().build();

@@ -17,29 +17,29 @@ import generated.se.sundsvall.minaombud.PageParameters;
 @Component
 public class AuthoritiesRequestMapper {
 
-    public HamtaFullmakterRequest createFullmakterRequest(AuthoritiesRequest authoritiesRequest) {
-        return new HamtaFullmakterRequest()
-            .fullmaktsgivare(createIdentitetsbeteckningForIssuer(authoritiesRequest.getAuthorityIssuer()))
-            .fullmaktshavare(createIdentitetsbeteckningForAcquirer(authoritiesRequest.getAuthorityAcquirer()))
-            .tredjeman(List.of(THIRD_PARTY))
-            .page(createPageParameters(authoritiesRequest));
-    }
+	public HamtaFullmakterRequest createFullmakterRequest(AuthoritiesRequest authoritiesRequest) {
+		return new HamtaFullmakterRequest()
+			.fullmaktsgivare(createIdentitetsbeteckningForIssuer(authoritiesRequest.getAuthorityIssuer()))
+			.fullmaktshavare(createIdentitetsbeteckningForAcquirer(authoritiesRequest.getAuthorityAcquirer()))
+			.tredjeman(List.of(THIRD_PARTY))
+			.page(createPageParameters(authoritiesRequest));
+	}
 
-    private Identitetsbeteckning createIdentitetsbeteckningForIssuer(GetIssuer issuer) {
-        if(issuer != null) {
-            return new Identitetsbeteckning(issuer.getLegalId(), issuer.getType());
-        } else {
-            return null;
-        }
-    }
+	private Identitetsbeteckning createIdentitetsbeteckningForIssuer(GetIssuer issuer) {
+		if (issuer != null) {
+			return new Identitetsbeteckning(issuer.getLegalId(), issuer.getType());
+		} else {
+			return null;
+		}
+	}
 
-    private Identitetsbeteckning createIdentitetsbeteckningForAcquirer(GetAcquirer acquirer) {
-        return new Identitetsbeteckning(acquirer.getLegalId(), acquirer.getType());
-    }
+	private Identitetsbeteckning createIdentitetsbeteckningForAcquirer(GetAcquirer acquirer) {
+		return new Identitetsbeteckning(acquirer.getLegalId(), acquirer.getType());
+	}
 
-    private PageParameters createPageParameters(AuthoritiesRequest request) {
-        return new PageParameters()
-                .page(request.getPage())
-                .size(request.getLimit());
-    }
+	private PageParameters createPageParameters(AuthoritiesRequest request) {
+		return new PageParameters()
+			.page(request.getPage())
+			.size(request.getLimit());
+	}
 }

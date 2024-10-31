@@ -46,7 +46,7 @@ class MandateTemplateResourceTest {
 			.withCode(UUID.randomUUID().toString())
 			.build()));
 
-		//Act
+		// Act
 		final var response = webTestClient.get()
 			.uri(builder -> builder.path("/{municipalityId}/mandates/templates").build(Map.of("municipalityId", MUNICIPALITY_ID)))
 			.exchange()
@@ -91,7 +91,7 @@ class MandateTemplateResourceTest {
 		// Mock
 		when(mandateTemplateServiceMock.createTemplate(eq(MUNICIPALITY_ID), any(MandateTemplate.class))).thenReturn("someValue");
 
-		//Act
+		// Act
 		final var response = webTestClient
 			.post()
 			.uri(builder -> builder.path("/{municipalityId}/mandates/templates").build(Map.of("municipalityId", MUNICIPALITY_ID)))
@@ -110,7 +110,7 @@ class MandateTemplateResourceTest {
 
 	@Test
 	void updateMandateTemplate() {
-		//Act
+		// Act
 		webTestClient
 			.put()
 			.uri(builder -> builder.path("/{municipalityId}/mandates/templates/{id}").build(Map.of("municipalityId", MUNICIPALITY_ID, "id", "someId")))

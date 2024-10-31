@@ -1,18 +1,12 @@
 {
 	"request": {
-		"headers": {
-			"Authorization": {
-				"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"
-			}
-		},
+		"headers": {"Authorization": {"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"}},
 		"method": "GET",
 		"url": "/party/2281/PRIVATE/195809132896/partyId"
 	},
 	"response": {
+		"headers": {"Content-Type": "text/plain"},
 		"body": "ffaf692e-6686-11ed-9022-0242ac120002",
-		"headers": {
-			"Content-Type": "text/plain"
-		},
 		"status": "200"
 	}
 }

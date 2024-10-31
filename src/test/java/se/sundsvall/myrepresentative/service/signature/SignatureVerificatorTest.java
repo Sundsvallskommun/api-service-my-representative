@@ -27,48 +27,50 @@ import se.sundsvall.myrepresentative.TestObjectFactory;
 
 import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 
-@ExtendWith({MockitoExtension.class, ResourceLoaderExtension.class})
+@ExtendWith({
+	MockitoExtension.class, ResourceLoaderExtension.class
+})
 class SignatureVerificatorTest {
 
-    //A header so we can test parsing ({"kid":"18d461edff91adc8a2b3cfd01d71ff703e0afb20","alg":"RS256"})
-    private static final String PROTECTED_HEADER = "eyJraWQiOiIxOGQ0NjFlZGZmOTFhZGM4YTJiM2NmZDAxZDcxZmY3MDNlMGFmYjIwIiwiYWxnIjoiUlMyNTYifQ";
+	// A header so we can test parsing ({"kid":"18d461edff91adc8a2b3cfd01d71ff703e0afb20","alg":"RS256"})
+	private static final String PROTECTED_HEADER = "eyJraWQiOiIxOGQ0NjFlZGZmOTFhZGM4YTJiM2NmZDAxZDcxZmY3MDNlMGFmYjIwIiwiYWxnIjoiUlMyNTYifQ";
 
-    @Mock
-    private JwksHelper mockJwksHelper;
+	@Mock
+	private JwksHelper mockJwksHelper;
 
-    @InjectMocks
-    private SignatureVerificator signatureVerificator;
+	@InjectMocks
+	private SignatureVerificator signatureVerificator;
 
-    private JWK jwk;
+	private JWK jwk;
 
-    ObjectMapper mapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+	ObjectMapper mapper = new ObjectMapper()
+		.registerModule(new JavaTimeModule())
+		.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+		.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+		.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-    @BeforeEach
-    void setUp(@Load(value = "junit/jwks.json", as = Load.ResourceType.STRING) String jwks) throws ParseException, JsonProcessingException {
-        JWKSet jwkSet = TestObjectFactory.populateJWKSet(jwks);
-        this.jwk = jwkSet.getKeys().get(0); //There's only one key in this set.
-    }
+	@BeforeEach
+	void setUp(@Load(value = "junit/jwks.json", as = Load.ResourceType.STRING) String jwks) throws ParseException, JsonProcessingException {
+		JWKSet jwkSet = TestObjectFactory.populateJWKSet(jwks);
+		this.jwk = jwkSet.getKeys().get(0); // There's only one key in this set.
+	}
 
-    @Test
-    void testVerifySignatures(@Load(value = "junit/behorigheter.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
-        HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
-        when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);
+	@Test
+	void testVerifySignatures(@Load(value = "junit/behorigheter.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
+		HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
+		when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);
 
-        signatureVerificator.verifySignatures(hamtaBehorigheterResponse);
-    }
+		signatureVerificator.verifySignatures(hamtaBehorigheterResponse);
+	}
 
-    @Test
-    void testVerifySignature_shouldFailIfSignatureVerificationFails(@Load(value = "junit/behorigheter-faulty.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
-        //Altered response so that the calculated signature is invalid.
-        HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
-        when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);
+	@Test
+	void testVerifySignature_shouldFailIfSignatureVerificationFails(@Load(value = "junit/behorigheter-faulty.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
+		// Altered response so that the calculated signature is invalid.
+		HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
+		when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);
 
-        assertThatExceptionOfType(ThrowableProblem.class)
-                .isThrownBy(() -> signatureVerificator.verifySignatures(hamtaBehorigheterResponse))
-                .withMessage("Couldn't verify response from bolagsverket");
-    }
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> signatureVerificator.verifySignatures(hamtaBehorigheterResponse))
+			.withMessage("Couldn't verify response from bolagsverket");
+	}
 }
