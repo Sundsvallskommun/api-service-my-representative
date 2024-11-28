@@ -14,7 +14,6 @@
 	<name>api-service-my-representative</name>
 	<description>My Representative</description>
 	<properties>
-		<exposed.app.port>8080</exposed.app.port>
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<minaombud-generated-sources-folder>${project.build.directory}/minaombud-sources</minaombud-generated-sources-folder>
 		<party-generated-sources-folder>${project.build.directory}/party-sources</party-generated-sources-folder>
