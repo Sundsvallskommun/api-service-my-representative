@@ -1,10 +1,11 @@
 package se.sundsvall.myrepresentative.service.mandates;
 
+import generated.se.sundsvall.minaombud.Fullmaktshavare;
+import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
+import generated.se.sundsvall.minaombud.UtdeladBehorighet;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
-
 import se.sundsvall.myrepresentative.api.model.MetaData;
 import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
 import se.sundsvall.myrepresentative.api.model.ResponseIssuer;
@@ -13,10 +14,6 @@ import se.sundsvall.myrepresentative.api.model.mandates.Mandate;
 import se.sundsvall.myrepresentative.api.model.mandates.Mandate.Permission;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
 import se.sundsvall.myrepresentative.service.mandatetemplate.MandateTemplateService;
-
-import generated.se.sundsvall.minaombud.Fullmaktshavare;
-import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
-import generated.se.sundsvall.minaombud.UtdeladBehorighet;
 
 @Component
 public class MandatesResponseMapper {

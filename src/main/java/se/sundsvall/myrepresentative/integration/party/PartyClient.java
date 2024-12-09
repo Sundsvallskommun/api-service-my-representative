@@ -3,14 +3,12 @@ package se.sundsvall.myrepresentative.integration.party;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
+import generated.se.sundsvall.party.PartyType;
 import java.util.Optional;
-
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import generated.se.sundsvall.party.PartyType;
 
 @FeignClient(
 	name = "party",

@@ -2,10 +2,6 @@ package se.sundsvall.myrepresentative.service.signature;
 
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,15 +15,17 @@ import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.util.Base64URL;
+import generated.se.sundsvall.minaombud.Behorighetskontext;
+import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 import generated.se.sundsvall.minaombud.JwsSig;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import org.erdtman.jcs.JsonCanonicalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
-
-import generated.se.sundsvall.minaombud.Behorighetskontext;
-import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 
 /**
  * Service for fetching JWKS from Mina Ombud and using it for verifying signatures in responses.
