@@ -1,12 +1,10 @@
 package se.sundsvall.myrepresentative.api.validation;
 
 import java.util.Optional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-
 import se.sundsvall.myrepresentative.api.model.GetIssuer;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;

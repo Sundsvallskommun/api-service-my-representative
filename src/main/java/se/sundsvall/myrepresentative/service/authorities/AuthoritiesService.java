@@ -1,19 +1,16 @@
 package se.sundsvall.myrepresentative.service.authorities;
 
+import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
+import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesResponse;
 import se.sundsvall.myrepresentative.api.model.authorities.Authority;
 import se.sundsvall.myrepresentative.integration.minaombud.ombud.OmbudClient;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 import se.sundsvall.myrepresentative.service.jwt.JwtService;
-
-import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
-import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 
 @Service
 public class AuthoritiesService {

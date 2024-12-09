@@ -1,11 +1,9 @@
 package se.sundsvall.myrepresentative.service.mandatetemplate;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-
 import se.sundsvall.myrepresentative.api.model.MandateTemplate;
 import se.sundsvall.myrepresentative.integration.db.MandateTemplateRepository;
 import se.sundsvall.myrepresentative.integration.db.model.MandateTemplateEntity;

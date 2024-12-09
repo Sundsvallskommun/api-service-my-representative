@@ -3,15 +3,6 @@ package se.sundsvall.myrepresentative.service.jwt;
 import static java.time.OffsetDateTime.now;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.TimeZone;
-import java.util.UUID;
-
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -22,6 +13,16 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
+import java.util.TimeZone;
+import java.util.UUID;
+import lombok.Getter;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -29,14 +30,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.zalando.problem.Problem;
-
 import se.sundsvall.dept44.requestid.RequestId;
 import se.sundsvall.myrepresentative.api.model.jwks.Jwks;
 import se.sundsvall.myrepresentative.integration.db.JwkRepository;
 import se.sundsvall.myrepresentative.integration.db.model.JwkEntity;
-
-import lombok.Getter;
-import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 
 @Component
 @Getter

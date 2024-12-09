@@ -3,20 +3,18 @@ package se.sundsvall.myrepresentative.service.signature;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 import static se.sundsvall.myrepresentative.service.signature.SignatureVerificator.COULD_NOT_VERIFY_RESPONSE;
 
-import java.util.Base64;
-import java.util.Objects;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
+import java.util.Base64;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
-
 import se.sundsvall.myrepresentative.integration.minaombud.jwks.MinaOmbudJwksIntegration;
 
 /**

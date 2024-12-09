@@ -1,7 +1,10 @@
 package se.sundsvall.myrepresentative.service.authorities;
 
+import generated.se.sundsvall.minaombud.FullmaktListItem;
+import generated.se.sundsvall.minaombud.Fullmaktsgivare;
+import generated.se.sundsvall.minaombud.Fullmaktshavare;
+import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 import org.springframework.stereotype.Component;
-
 import se.sundsvall.myrepresentative.api.model.AuthorityStatus;
 import se.sundsvall.myrepresentative.api.model.MetaData;
 import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
@@ -9,11 +12,6 @@ import se.sundsvall.myrepresentative.api.model.ResponseIssuer;
 import se.sundsvall.myrepresentative.api.model.Role;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesResponse;
 import se.sundsvall.myrepresentative.api.model.authorities.Authority;
-
-import generated.se.sundsvall.minaombud.FullmaktListItem;
-import generated.se.sundsvall.minaombud.Fullmaktsgivare;
-import generated.se.sundsvall.minaombud.Fullmaktshavare;
-import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 
 @Component
 public class AuthoritiesResponseMapper {

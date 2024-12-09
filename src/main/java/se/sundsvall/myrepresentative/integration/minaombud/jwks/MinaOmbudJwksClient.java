@@ -2,11 +2,10 @@ package se.sundsvall.myrepresentative.integration.minaombud.jwks;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import generated.se.sundsvall.minaombud.JwkSet;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import generated.se.sundsvall.minaombud.JwkSet;
 
 @FeignClient(
 	name = "minaombudjwk",

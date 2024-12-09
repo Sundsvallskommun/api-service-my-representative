@@ -4,7 +4,9 @@
 		"url": "/tredjeman/2120002411/jwks"
 	},
 	"response": {
-		"headers": {"Content-Type": "application/json"},
+		"headers": {
+			"Content-Type": "application/json"
+		},
 		"bodyFileName": "test001_getMandates_shouldReturnCompleteResponse/response/jwks.json",
 		"status": "200"
 	}

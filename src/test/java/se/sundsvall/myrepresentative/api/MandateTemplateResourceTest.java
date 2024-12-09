@@ -13,7 +13,6 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
 import se.sundsvall.myrepresentative.MyRepresentatives;
 import se.sundsvall.myrepresentative.api.model.MandateTemplate;
 import se.sundsvall.myrepresentative.service.mandatetemplate.MandateTemplateService;

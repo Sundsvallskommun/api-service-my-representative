@@ -2,19 +2,17 @@ package se.sundsvall.myrepresentative.integration.minaombud.jwks;
 
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import generated.se.sundsvall.minaombud.Jwk;
+import generated.se.sundsvall.minaombud.JwkSet;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
-import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.JWKSet;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
-
-import generated.se.sundsvall.minaombud.Jwk;
-import generated.se.sundsvall.minaombud.JwkSet;
 
 @Component
 public class MinaOmbudJwksIntegration {

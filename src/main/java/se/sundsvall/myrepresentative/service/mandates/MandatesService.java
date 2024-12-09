@@ -1,10 +1,10 @@
 package se.sundsvall.myrepresentative.service.mandates;
 
+import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
+import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import se.sundsvall.myrepresentative.api.model.mandates.Mandate;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
@@ -12,9 +12,6 @@ import se.sundsvall.myrepresentative.integration.minaombud.ombud.OmbudClient;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 import se.sundsvall.myrepresentative.service.jwt.JwtService;
 import se.sundsvall.myrepresentative.service.signature.SignatureVerificator;
-
-import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
-import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 
 @Service
 public class MandatesService {

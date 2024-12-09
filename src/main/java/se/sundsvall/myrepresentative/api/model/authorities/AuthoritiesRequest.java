@@ -1,9 +1,5 @@
 package se.sundsvall.myrepresentative.api.model.authorities;
 
-import se.sundsvall.myrepresentative.api.model.GetAcquirer;
-import se.sundsvall.myrepresentative.api.model.GetIssuer;
-import se.sundsvall.myrepresentative.api.model.ParameterBase;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
@@ -13,6 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import se.sundsvall.myrepresentative.api.model.GetAcquirer;
+import se.sundsvall.myrepresentative.api.model.GetIssuer;
+import se.sundsvall.myrepresentative.api.model.ParameterBase;
 
 @Getter
 @Setter

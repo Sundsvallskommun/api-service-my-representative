@@ -8,10 +8,9 @@ import static org.mockito.Mockito.when;
 import static se.sundsvall.myrepresentative.TestObjectFactory.populateJWKSet;
 import static se.sundsvall.myrepresentative.service.mandates.MandatesRequestMapper.THIRD_PARTY;
 
-import java.text.ParseException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.jwk.JWK;
+import java.text.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.ThrowableProblem;
-
 import se.sundsvall.dept44.test.annotation.resource.Load;
 import se.sundsvall.dept44.test.extension.ResourceLoaderExtension;
 import se.sundsvall.myrepresentative.integration.minaombud.jwks.MinaOmbudJwksIntegration;

@@ -12,14 +12,12 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.Problem;
-
 import se.sundsvall.myrepresentative.api.model.MandateTemplate;
 import se.sundsvall.myrepresentative.integration.db.MandateTemplateRepository;
 import se.sundsvall.myrepresentative.integration.db.model.MandateTemplateEntity;

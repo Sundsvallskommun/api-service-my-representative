@@ -1,15 +1,13 @@
 package se.sundsvall.myrepresentative.integration.minaombud.ombud;
 
+import feign.Request;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
-
-import feign.Request;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.myrepresentative.integration.minaombud.OmbudProperties;

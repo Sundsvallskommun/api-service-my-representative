@@ -1,21 +1,18 @@
 package se.sundsvall.myrepresentative.api.model.authorities;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
-import se.sundsvall.myrepresentative.api.model.AuthorityStatus;
-import se.sundsvall.myrepresentative.api.model.ResponseIssuer;
-import se.sundsvall.myrepresentative.api.model.Role;
-
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import se.sundsvall.myrepresentative.api.model.AuthorityStatus;
+import se.sundsvall.myrepresentative.api.model.ResponseAcquirer;
+import se.sundsvall.myrepresentative.api.model.ResponseIssuer;
+import se.sundsvall.myrepresentative.api.model.Role;
 
 @Getter
 @Setter
