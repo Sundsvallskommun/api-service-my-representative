@@ -1,12 +1,10 @@
 package se.sundsvall.myrepresentative.integration.minaombud.jwks;
 
+import feign.Request;
 import java.util.concurrent.TimeUnit;
-
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-
-import feign.Request;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.myrepresentative.integration.minaombud.OmbudProperties;

@@ -1,7 +1,6 @@
 package se.sundsvall.myrepresentative.service;
 
 import org.springframework.stereotype.Service;
-
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesResponse;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;

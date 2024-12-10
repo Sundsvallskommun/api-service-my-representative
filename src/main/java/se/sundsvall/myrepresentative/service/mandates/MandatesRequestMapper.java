@@ -1,14 +1,12 @@
 package se.sundsvall.myrepresentative.service.mandates;
 
-import org.springframework.stereotype.Component;
-
-import se.sundsvall.myrepresentative.api.model.GetAcquirer;
-import se.sundsvall.myrepresentative.api.model.GetIssuer;
-import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
-
 import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
 import generated.se.sundsvall.minaombud.Identitetsbeteckning;
 import generated.se.sundsvall.minaombud.PageParameters;
+import org.springframework.stereotype.Component;
+import se.sundsvall.myrepresentative.api.model.GetAcquirer;
+import se.sundsvall.myrepresentative.api.model.GetIssuer;
+import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 
 @Component
 public class MandatesRequestMapper {

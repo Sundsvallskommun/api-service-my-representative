@@ -2,12 +2,10 @@ package se.sundsvall.myrepresentative.service.authorities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
-
-import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
 
 class AuthoritiesRequestMapperTest {
 

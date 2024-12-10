@@ -1,5 +1,15 @@
 package se.sundsvall.myrepresentative;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import generated.se.sundsvall.minaombud.Jwk;
+import generated.se.sundsvall.minaombud.JwkSet;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -12,16 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.JWKSet;
-
 import se.sundsvall.myrepresentative.api.model.AuthorityStatus;
 import se.sundsvall.myrepresentative.api.model.GetAcquirer;
 import se.sundsvall.myrepresentative.api.model.GetIssuer;
@@ -34,9 +34,6 @@ import se.sundsvall.myrepresentative.api.model.authorities.Authority;
 import se.sundsvall.myrepresentative.api.model.mandates.Mandate;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
-
-import generated.se.sundsvall.minaombud.Jwk;
-import generated.se.sundsvall.minaombud.JwkSet;
 
 public class TestObjectFactory {
 

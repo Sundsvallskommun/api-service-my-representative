@@ -2,15 +2,14 @@ package se.sundsvall.myrepresentative.integration.minaombud.ombud;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-
 import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
 import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
 import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
 	name = "minaombud",

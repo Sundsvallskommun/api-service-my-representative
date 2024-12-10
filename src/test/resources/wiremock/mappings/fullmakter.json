@@ -4,7 +4,9 @@
 		"url": "/sok/fullmakter"
 	},
 	"response": {
-		"headers": {"Content-Type": "application/json"},
+		"headers": {
+			"Content-Type": "application/json"
+		},
 		"bodyFileName": "fullmakter.json",
 		"status": "200"
 	}

@@ -9,21 +9,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
+import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
+import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesResponse;
 import se.sundsvall.myrepresentative.integration.minaombud.ombud.OmbudClient;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 import se.sundsvall.myrepresentative.service.jwt.JwtService;
-
-import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
-import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
 
 @ExtendWith(MockitoExtension.class)
 class AuthoritiesServiceTest {
