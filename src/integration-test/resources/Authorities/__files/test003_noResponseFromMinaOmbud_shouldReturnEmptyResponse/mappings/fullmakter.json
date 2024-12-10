@@ -1,6 +1,10 @@
 {
 	"request": {
-		"headers": {"Authorization": {"equalTo": "Bearer 2222222222222222CCCCCCCCCCCCCCCC"}},
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer 2222222222222222CCCCCCCCCCCCCCCC"
+			}
+		},
 		"customMatcher": {
 			"name": "jwt-header-matcher",
 			"parameters": {
@@ -34,7 +38,9 @@
 		"url": "/sok/fullmakter"
 	},
 	"response": {
-		"headers": {"Content-Type": "application/json"},
+		"headers": {
+			"Content-Type": "application/json"
+		},
 		"bodyFileName": "test003_noResponseFromMinaOmbud_shouldReturnEmptyResponse/response/behorigheter.json",
 		"status": "200"
 	}

@@ -4,10 +4,9 @@ import static generated.se.sundsvall.party.PartyType.ENTERPRISE;
 import static generated.se.sundsvall.party.PartyType.PRIVATE;
 import static org.zalando.problem.Status.NOT_FOUND;
 
+import generated.se.sundsvall.party.PartyType;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
-
-import generated.se.sundsvall.party.PartyType;
 
 @Component
 public class PartyIntegration {

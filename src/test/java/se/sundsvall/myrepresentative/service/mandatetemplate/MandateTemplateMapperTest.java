@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.myrepresentative.api.model.MandateTemplate;
 import se.sundsvall.myrepresentative.integration.db.model.MandateTemplateEntity;
 

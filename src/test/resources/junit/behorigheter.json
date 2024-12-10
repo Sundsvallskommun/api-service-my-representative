@@ -5,28 +5,34 @@
 		"totalPages": 1,
 		"totalElements": 1
 	},
-	"kontext": [{
-		"behorigheter": [{
-			"kod": "573fcb75-eb8f-4226-8201-33212086544a",
-			"fullmakt": "8ba13558-f639-40ca-a009-52c0cad0414f"
-		}],
-		"fullmaktsgivare": {
-			"namn": "TB Bokföringsbyrå AB",
-			"typ": "orgnr",
-			"id": "5561929323"
-		},
-		"fullmaktshavare": [{
-			"fornamn": "Beri",
-			"namn": "Ylles",
-			"typ": "pnr",
-			"id": "198602262381"
-		}],
-		"tredjeman": "2120002411",
-		"_sig": {
-			"protected": "eyJraWQiOiIxOGQ0NjFlZGZmOTFhZGM4YTJiM2NmZDAxZDcxZmY3MDNlMGFmYjIwIiwiYWxnIjoiUlMyNTYifQ",
-			"signature": "CWHoubb9d5PJ10NpskvRWZyzquhjb3EhkYsH1p_KnbzvzJgCfMvmpg21oeY-hSnmDHAqmGTpLhbPc_uS67wiHP-i_BoV21rqnFZqN81mZLKaY7-qix5JS9Wqn8BcjCvzPGFgv0dnRs6WyRDCPw3-wOJzGvmqXR_xp_ejsZ1xrKAbfeMQbI4DbemOwLYAn96HuEA9xKgokc1SNB_u3bGxxxJ711ffSlDvQ4kKjj9BBXXQVng8pugHe-diKEcQiYrSbY0ArkYLRiETG4fpQXULQESgQkOL1oWlk0kFlvH3moo9X42J5AHO1LjRRbymWneKKIQRPHWGXEKXjORhomjWVw"
-		},
-		"fullmaktsgivarroll": "ORGANISATION",
-		"tidpunkt": "2024-03-25T11:23:20.143115555+01:00"
-	}]
+	"kontext": [
+		{
+			"behorigheter": [
+				{
+					"kod": "573fcb75-eb8f-4226-8201-33212086544a",
+					"fullmakt": "8ba13558-f639-40ca-a009-52c0cad0414f"
+				}
+			],
+			"fullmaktsgivare": {
+				"namn": "TB Bokföringsbyrå AB",
+				"typ": "orgnr",
+				"id": "5561929323"
+			},
+			"fullmaktshavare": [
+				{
+					"fornamn": "Beri",
+					"namn": "Ylles",
+					"typ": "pnr",
+					"id": "198602262381"
+				}
+			],
+			"tredjeman": "2120002411",
+			"_sig": {
+				"protected": "eyJraWQiOiIxOGQ0NjFlZGZmOTFhZGM4YTJiM2NmZDAxZDcxZmY3MDNlMGFmYjIwIiwiYWxnIjoiUlMyNTYifQ",
+				"signature": "CWHoubb9d5PJ10NpskvRWZyzquhjb3EhkYsH1p_KnbzvzJgCfMvmpg21oeY-hSnmDHAqmGTpLhbPc_uS67wiHP-i_BoV21rqnFZqN81mZLKaY7-qix5JS9Wqn8BcjCvzPGFgv0dnRs6WyRDCPw3-wOJzGvmqXR_xp_ejsZ1xrKAbfeMQbI4DbemOwLYAn96HuEA9xKgokc1SNB_u3bGxxxJ711ffSlDvQ4kKjj9BBXXQVng8pugHe-diKEcQiYrSbY0ArkYLRiETG4fpQXULQESgQkOL1oWlk0kFlvH3moo9X42J5AHO1LjRRbymWneKKIQRPHWGXEKXjORhomjWVw"
+			},
+			"fullmaktsgivarroll": "ORGANISATION",
+			"tidpunkt": "2024-03-25T11:23:20.143115555+01:00"
+		}
+	]
 }
