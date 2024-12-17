@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.junit.jupiter.api.Test;
 import org.zalando.problem.ThrowableProblem;
-
 import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.authorities.AuthoritiesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;

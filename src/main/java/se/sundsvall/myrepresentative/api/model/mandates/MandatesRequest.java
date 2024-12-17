@@ -1,21 +1,19 @@
 package se.sundsvall.myrepresentative.api.model.mandates;
 
-import java.util.List;
-
-import se.sundsvall.myrepresentative.api.model.GetAcquirer;
-import se.sundsvall.myrepresentative.api.model.GetIssuer;
-import se.sundsvall.myrepresentative.api.model.ParameterBase;
-
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import se.sundsvall.myrepresentative.api.model.GetAcquirer;
+import se.sundsvall.myrepresentative.api.model.GetIssuer;
+import se.sundsvall.myrepresentative.api.model.ParameterBase;
 
 @Getter
 @Setter
