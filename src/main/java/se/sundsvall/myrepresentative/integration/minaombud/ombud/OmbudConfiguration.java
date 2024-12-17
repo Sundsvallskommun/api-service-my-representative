@@ -1,15 +1,13 @@
 package se.sundsvall.myrepresentative.integration.minaombud.ombud;
 
+import feign.Request;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
-
-import feign.Request;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.myrepresentative.integration.minaombud.OmbudProperties;
@@ -17,14 +15,14 @@ import se.sundsvall.myrepresentative.integration.minaombud.OmbudProperties;
 @Import(FeignConfiguration.class)
 public class OmbudConfiguration {
 
-	private static final String REGISTRATION_ID = "minaombud";
+	static final String CLIENT_ID = "minaombud";
 	private static final String X_SERVICE_NAME = "X-Service-Name";
 	private static final String X_SERVICE_VALUE = "myrepresentatives";
 	private static final String SCOPE_USER_SELF = "user:self";    // Used when getting token
 
 	private final OmbudProperties ombudProperties;
 
-	public OmbudConfiguration(OmbudProperties ombudProperties) {
+	public OmbudConfiguration(final OmbudProperties ombudProperties) {
 		this.ombudProperties = ombudProperties;
 	}
 
@@ -38,7 +36,7 @@ public class OmbudConfiguration {
 	}
 
 	private ClientRegistration clientRegistration() {
-		return ClientRegistration.withRegistrationId(REGISTRATION_ID)
+		return ClientRegistration.withRegistrationId(CLIENT_ID)
 			.tokenUri(ombudProperties.getOauth2TokenUrl())
 			.clientId(ombudProperties.getOauth2ClientId())
 			.clientSecret(ombudProperties.getOauth2ClientSecret())

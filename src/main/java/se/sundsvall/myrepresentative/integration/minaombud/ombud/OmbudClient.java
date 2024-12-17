@@ -1,21 +1,23 @@
 package se.sundsvall.myrepresentative.integration.minaombud.ombud;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import static se.sundsvall.myrepresentative.integration.minaombud.ombud.OmbudConfiguration.CLIENT_ID;
 
 import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
 import generated.se.sundsvall.minaombud.HamtaBehorigheterResponse;
 import generated.se.sundsvall.minaombud.HamtaFullmakterRequest;
 import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
-	name = "minaombud",
+	name = CLIENT_ID,
 	url = "${integration.minaombud.url}",
 	configuration = OmbudConfiguration.class)
+@CircuitBreaker(name = CLIENT_ID)
 public interface OmbudClient {
 
 	/**
