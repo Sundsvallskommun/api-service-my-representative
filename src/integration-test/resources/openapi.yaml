@@ -1,1 +1,959 @@
-{ "openapi": "3.0.1","info": { "title": "api-myrepresentatives","contact": { },"license": { "name": "MIT License","url": "https://opensource.org/licenses/MIT" },"version": "3.0" },"servers": [ { "url": "http://localhost:57838","description": "Generated server url" } ],"tags": [ { "name": "Mandate Templates","description": "Resources for managing mandate templates" } ],"paths": { "/{municipalityId}/mandates/templates/{id}": { "get": { "tags": [ "Mandate Templates" ],"description": "Get a mandate template by id","operationId": "getMandateTemplate","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 },{ "name": "id","in": "path","required": true,"schema": { "type": "string" } } ],"responses": { "200": { "description": "OK - Successful operation","content": { "*/*": { "schema": { "$ref": "#/components/schemas/MandateTemplate" } } } },"500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } } } },"put": { "tags": [ "Mandate Templates" ],"description": "Update Mandate Template","operationId": "updateMandateTemplate","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 },{ "name": "id","in": "path","required": true,"schema": { "type": "string" } } ],"requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MandateTemplate" } } },"required": true },"responses": { "204": { "description": "No Content - Successful operation" },"500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } } } },"delete": { "tags": [ "Mandate Templates" ],"description": "Delete Mandate Template","operationId": "deleteMandateTemplate","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 },{ "name": "id","in": "path","required": true,"schema": { "type": "string" } } ],"responses": { "204": { "description": "No Content - Successful operation" },"500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } } } } },"/{municipalityId}/mandates/templates": { "get": { "tags": [ "Mandate Templates" ],"description": "Get all mandate templates","operationId": "getAllMandateTemplates","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 } ],"responses": { "200": { "description": "OK - Successful operation","content": { "*/*": { "schema": { "type": "array","items": { "$ref": "#/components/schemas/MandateTemplate" } } } } },"500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } } } },"post": { "tags": [ "Mandate Templates" ],"description": "Create Mandate Template","operationId": "createMandateTemplate","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 } ],"requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MandateTemplate" } } },"required": true },"responses": { "201": { "description": "Created - Successful operation","headers": { "Location": { "description": "Location of the created resource.","style": "simple","schema": { "type": "string" } } } },"500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } } } } },"/{municipalityId}/mandates": { "get": { "tags": [ "MyRepresentatives" ],"operationId": "getMandates","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 },{ "name": "mandateIssuer.partyId","in": "query","description": "PartyId for the sole trader or organization","required": false,"schema": { "type": "string","description": "PartyId for the sole trader or organization","example": "fb2f0290-3820-11ed-a261-0242ac120002" },"example": "fb2f0290-3820-11ed-a261-0242ac120002" },{ "name": "mandateIssuer.type","in": "query","description": "Type, private person (pnr) or sole trader / organization (orgnr)","required": false,"schema": { "type": "string","description": "Type, private person (pnr) or sole trader / organization (orgnr)","example": "pnr","enum": [ "pnr","orgnr" ] },"example": "pnr" },{ "name": "mandateAcquirer.partyId","in": "query","description": "PartyId for the sole trader or organization","required": false,"schema": { "type": "string","description": "PartyId for the sole trader or organization","example": "fb2f0290-3820-11ed-a261-0242ac120002" },"example": "fb2f0290-3820-11ed-a261-0242ac120002" },{ "name": "mandateAcquirer.type","in": "query","description": "Type, private person (pnr) or sole trader / organization (orgnr)","required": true,"schema": { "type": "string","description": "Type, private person (pnr) or sole trader / organization (orgnr)","example": "pnr","enum": [ "pnr","orgnr" ] },"example": "pnr" },{ "name": "mandates","in": "query","required": false,"schema": { "minItems": 0,"uniqueItems": true,"type": "array","items": { "type": "string","description": "Fetch only specified mandates","example": "3fa85f64-5717-4562-b3fc-2c963f66afa6" } } },{ "name": "page","in": "query","description": "Page number","required": false,"schema": { "minimum": 0,"type": "string","description": "Page number","example": 0,"default": "0" },"example": 0 },{ "name": "limit","in": "query","description": "Result size per page","required": false,"schema": { "maximum": 1000,"minimum": 1,"type": "string","description": "Result size per page","example": 100,"default": "100" },"example": 100 } ],"responses": { "500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"200": { "description": "Successful Operation","content": { "application/json": { "schema": { "$ref": "#/components/schemas/MandatesResponse" } } } } } } },"/{municipalityId}/jwks": { "get": { "tags": [ "MyRepresentatives" ],"operationId": "jwks","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 } ],"responses": { "500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"200": { "description": "Successful Operation","content": { "application/json": { "schema": { "$ref": "#/components/schemas/Jwks" } } } } } } },"/{municipalityId}/authorities": { "get": { "tags": [ "MyRepresentatives" ],"operationId": "getAuthorities","parameters": [ { "name": "municipalityId","in": "path","description": "Municipality id","required": true,"schema": { "type": "string" },"example": 2281 },{ "name": "authorityIssuer.partyId","in": "query","description": "PartyId for the sole trader or organization","required": false,"schema": { "type": "string","description": "PartyId for the sole trader or organization","example": "fb2f0290-3820-11ed-a261-0242ac120002" },"example": "fb2f0290-3820-11ed-a261-0242ac120002" },{ "name": "authorityIssuer.type","in": "query","description": "Type, private person (pnr) or sole trader / organization (orgnr)","required": false,"schema": { "type": "string","description": "Type, private person (pnr) or sole trader / organization (orgnr)","example": "pnr","enum": [ "pnr","orgnr" ] },"example": "pnr" },{ "name": "authorityAcquirer.partyId","in": "query","description": "PartyId for the sole trader or organization","required": false,"schema": { "type": "string","description": "PartyId for the sole trader or organization","example": "fb2f0290-3820-11ed-a261-0242ac120002" },"example": "fb2f0290-3820-11ed-a261-0242ac120002" },{ "name": "authorityAcquirer.type","in": "query","description": "Type, private person (pnr) or sole trader / organization (orgnr)","required": true,"schema": { "type": "string","description": "Type, private person (pnr) or sole trader / organization (orgnr)","example": "pnr","enum": [ "pnr","orgnr" ] },"example": "pnr" },{ "name": "page","in": "query","description": "Page number","required": false,"schema": { "minimum": 0,"type": "string","description": "Page number","example": 0,"default": "0" },"example": 0 },{ "name": "limit","in": "query","description": "Result size per page","required": false,"schema": { "maximum": 1000,"minimum": 1,"type": "string","description": "Result size per page","example": 100,"default": "100" },"example": 100 } ],"responses": { "500": { "description": "Internal Server Error","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"400": { "description": "Bad request","content": { "application/problem+json": { "schema": { "oneOf": [ { "$ref": "#/components/schemas/Problem" },{ "$ref": "#/components/schemas/ConstraintViolationProblem" } ] } } } },"404": { "description": "Not Found","content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },"200": { "description": "Successful Operation","content": { "application/json": { "schema": { "$ref": "#/components/schemas/AuthoritiesResponse" } } } } } } },"/api-docs": { "get": { "tags": [ "API" ],"summary": "OpenAPI","operationId": "getApiDocs","responses": { "200": { "description": "OK","content": { "application/yaml": { "schema": { "type": "string" } } } } },"x-auth-type": "None","x-throttling-tier": "Unlimited","x-wso2-mutual-ssl": "Optional" } } },"components": { "schemas": { "MandateTemplate": { "type": "object","properties": { "code": { "type": "string","description": "Code for the specific template","example": "bf1a690b-33d6-4a3e-b407-e7346fa1c97c" },"title": { "type": "string","description": "Title for the specific template","example": "Fullmakt för att göra och hantera anmälan" },"description": { "type": "string","description": "Description for the specific template","example": "Behörigheten ger fullmaktshavaren rätt att upprätta anmälan, ta del av eget utrymme och ändra uppgifter gällande åtgärden samt på annat sätt företräda byggherren i åtgärder enligt 6 kap. 5 § plan- och byggförordningen (2011:338). Behörigheten omfattar även rätt att upprätta, se och ändra uppgifter gällande start- och slutbesked enligt 10 kap. 3 och 4 §§ plan- och bygglagen (2010:900)." } },"description": "Mandate Template information. Contains details about mandate templates." },"Problem": { "type": "object","properties": { "instance": { "type": "string","format": "uri" },"type": { "type": "string","format": "uri" },"parameters": { "type": "object","additionalProperties": { "type": "object" } },"status": { "$ref": "#/components/schemas/StatusType" },"title": { "type": "string" },"detail": { "type": "string" } } },"StatusType": { "type": "object","properties": { "statusCode": { "type": "integer","format": "int32" },"reasonPhrase": { "type": "string" } } },"ConstraintViolationProblem": { "type": "object","properties": { "cause": { "$ref": "#/components/schemas/ThrowableProblem" },"stackTrace": { "type": "array","items": { "type": "object","properties": { "classLoaderName": { "type": "string" },"moduleName": { "type": "string" },"moduleVersion": { "type": "string" },"methodName": { "type": "string" },"fileName": { "type": "string" },"lineNumber": { "type": "integer","format": "int32" },"className": { "type": "string" },"nativeMethod": { "type": "boolean" } } } },"type": { "type": "string","format": "uri" },"status": { "$ref": "#/components/schemas/StatusType" },"violations": { "type": "array","items": { "$ref": "#/components/schemas/Violation" } },"title": { "type": "string" },"message": { "type": "string" },"instance": { "type": "string","format": "uri" },"parameters": { "type": "object","additionalProperties": { "type": "object" } },"detail": { "type": "string" },"suppressed": { "type": "array","items": { "type": "object","properties": { "stackTrace": { "type": "array","items": { "type": "object","properties": { "classLoaderName": { "type": "string" },"moduleName": { "type": "string" },"moduleVersion": { "type": "string" },"methodName": { "type": "string" },"fileName": { "type": "string" },"lineNumber": { "type": "integer","format": "int32" },"className": { "type": "string" },"nativeMethod": { "type": "boolean" } } } },"message": { "type": "string" },"localizedMessage": { "type": "string" } } } },"localizedMessage": { "type": "string" } } },"ThrowableProblem": { "type": "object","properties": { "cause": { "$ref": "#/components/schemas/ThrowableProblem" },"stackTrace": { "type": "array","items": { "type": "object","properties": { "classLoaderName": { "type": "string" },"moduleName": { "type": "string" },"moduleVersion": { "type": "string" },"methodName": { "type": "string" },"fileName": { "type": "string" },"lineNumber": { "type": "integer","format": "int32" },"className": { "type": "string" },"nativeMethod": { "type": "boolean" } } } },"message": { "type": "string" },"instance": { "type": "string","format": "uri" },"type": { "type": "string","format": "uri" },"parameters": { "type": "object","additionalProperties": { "type": "object" } },"status": { "$ref": "#/components/schemas/StatusType" },"title": { "type": "string" },"detail": { "type": "string" },"suppressed": { "type": "array","items": { "type": "object","properties": { "stackTrace": { "type": "array","items": { "type": "object","properties": { "classLoaderName": { "type": "string" },"moduleName": { "type": "string" },"moduleVersion": { "type": "string" },"methodName": { "type": "string" },"fileName": { "type": "string" },"lineNumber": { "type": "integer","format": "int32" },"className": { "type": "string" },"nativeMethod": { "type": "boolean" } } } },"message": { "type": "string" },"localizedMessage": { "type": "string" } } } },"localizedMessage": { "type": "string" } } },"Violation": { "type": "object","properties": { "field": { "type": "string" },"message": { "type": "string" } } },"Mandate": { "type": "object","properties": { "mandateIssuer": { "$ref": "#/components/schemas/ResponseIssuer" },"mandateAcquirers": { "type": "array","items": { "$ref": "#/components/schemas/ResponseAcquirer" } },"mandateRole": { "type": "string","description": "If the issuer is an organization or private person","example": "ORGANIZATION","enum": [ "PRIVATE","ORGANIZATION" ] },"issuedDate": { "type": "string","description": "Date when the mandate was issued","format": "date-time" },"permissions": { "type": "object","additionalProperties": { "type": "array","description": "Map of UUIDs to lists of permissions.","example": { "3bfb975d-c2a9-4f16-b8e5-11c22a318fad": [ { "code": "db0023d9-3d19-482f-b43c-47e0073484a2" } ] },"items": { "$ref": "#/components/schemas/Permission" } },"description": "Map of UUIDs to lists of permissions.","example": { "3bfb975d-c2a9-4f16-b8e5-11c22a318fad": [ { "code": "db0023d9-3d19-482f-b43c-47e0073484a2" } ] } } },"description": "Mandate information model." },"MandatesResponse": { "type": "object","properties": { "mandates": { "type": "array","items": { "$ref": "#/components/schemas/Mandate" } },"_meta": { "$ref": "#/components/schemas/MetaData" } },"description": "Mandate response model" },"MetaData": { "type": "object","properties": { "page": { "type": "integer","description": "Current page","format": "int32","readOnly": true,"example": 5 },"limit": { "type": "integer","description": "Displayed objects per page","format": "int32","readOnly": true,"example": 20 },"totalRecords": { "type": "integer","description": "Total amount of hits based on provided search parameters","format": "int64","readOnly": true,"example": 98 },"totalPages": { "type": "integer","description": "Total amount of pages based on provided search parameters","format": "int32","readOnly": true,"example": 23 } },"description": "Metadata model","readOnly": true },"Permission": { "type": "object","properties": { "code": { "type": "string","description": "Code for the specific permission","example": "bf1a690b-33d6-4a3e-b407-e7346fa1c97c" },"description": { "type": "string","description": "Description for the specific permission","example": "Fullmakt för att hantera ansökan om strandskyddsdispens" } },"description": "Map of UUIDs to lists of permissions.","example": { "3bfb975d-c2a9-4f16-b8e5-11c22a318fad": [ { "code": "db0023d9-3d19-482f-b43c-47e0073484a2" } ] } },"ResponseAcquirer": { "type": "object","properties": { "partyId": { "type": "string","description": "PartyId for the sole trader or organization","example": "fb2f0290-3820-11ed-a261-0242ac120002" },"type": { "type": "string","description": "Type, private person (pnr) or sole trader / organization (orgnr)","example": "pnr" },"name": { "type": "string","description": "Name of company / person" },"legalId": { "type": "string","description": "LegalId for person, sole trader or organization" } },"description": "Base response information for the acquirer of mandates / authorities" },"ResponseIssuer": { "type": "object","properties": { "partyId": { "type": "string","description": "PartyId for the sole trader or organization","example": "fb2f0290-3820-11ed-a261-0242ac120002" },"type": { "type": "string","description": "Type, private person (pnr) or sole trader / organization (orgnr)" },"name": { "type": "string","description": "Name of company / person" },"legalId": { "type": "string","description": "LegalId for person, sole trader or organization" } },"description": "Base response information for the issuer of mandates / authorities" },"Jwks": { "type": "object","properties": { "keys": { "type": "array","items": { "type": "object","additionalProperties": { "type": "object" } } } },"description": "Simple representation of the JSON Web Key Set (JWKS)." },"AuthoritiesResponse": { "type": "object","properties": { "authorities": { "type": "array","items": { "$ref": "#/components/schemas/Authority" } },"_meta": { "$ref": "#/components/schemas/MetaData" } },"description": "Mandate response model" },"Authority": { "type": "object","properties": { "authorityIssuer": { "$ref": "#/components/schemas/ResponseIssuer" },"authorityAcquirers": { "type": "array","items": { "$ref": "#/components/schemas/ResponseAcquirer" } },"authorityRole": { "type": "string","description": "If the issuer is an organization or private person","example": "ORGANIZATION","enum": [ "PRIVATE","ORGANIZATION" ] },"referenceNumber": { "type": "string","description": "Reference number intended as a reference between client and third party","example": "MOF1234567890" },"status": { "type": "string","description": "Status of the authority","example": "ACTIVE","enum": [ "ACTUAL","VALID","HISTORICAL" ] },"id": { "type": "string","description": "Unique ID for the authority","example": "bf31188a-bfbb-4f23-a60a-89c75d009b53" },"description": { "type": "string","description": "What the authority represents" },"issuedDate": { "type": "string","description": "Date when the authority was issued","format": "date-time" },"validFrom": { "type": "string","description": "Date from when the authority is valid","format": "date" },"validTo": { "type": "string","description": "Date to when the authority ceased to be valid","format": "date" } },"description": "Authority information model." } },"securitySchemes": { } } }
+openapi: 3.0.1
+info:
+  title: api-myrepresentatives
+  contact: {}
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: "3.0"
+servers:
+  - url: http://127.0.0.1:8080
+    description: Generated server url
+tags:
+  - name: Mandate Templates
+    description: Resources for managing mandate templates
+paths:
+  /{municipalityId}/mandates/templates/{id}:
+    get:
+      tags:
+        - Mandate Templates
+      description: Get a mandate template by id
+      operationId: getMandateTemplate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK - Successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MandateTemplate"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+    put:
+      tags:
+        - Mandate Templates
+      description: Update Mandate Template
+      operationId: updateMandateTemplate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MandateTemplate"
+        required: true
+      responses:
+        "204":
+          description: No Content - Successful operation
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+    delete:
+      tags:
+        - Mandate Templates
+      description: Delete Mandate Template
+      operationId: deleteMandateTemplate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content - Successful operation
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /{municipalityId}/mandates/templates:
+    get:
+      tags:
+        - Mandate Templates
+      description: Get all mandate templates
+      operationId: getAllMandateTemplates
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+      responses:
+        "200":
+          description: OK - Successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MandateTemplate"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+    post:
+      tags:
+        - Mandate Templates
+      description: Create Mandate Template
+      operationId: createMandateTemplate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MandateTemplate"
+        required: true
+      responses:
+        "201":
+          description: Created - Successful operation
+          headers:
+            Location:
+              description: Location of the created resource.
+              style: simple
+              schema:
+                type: string
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /{municipalityId}/mandates:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: getMandates
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: mandateIssuer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: mandateIssuer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: false
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: mandateAcquirer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: mandateAcquirer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: true
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: mandates
+          in: query
+          required: false
+          schema:
+            minItems: 0
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+              description: Fetch only specified mandates
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            description: Page number
+            format: int32
+            example: 0
+            default: 0
+          example: 0
+        - name: limit
+          in: query
+          description: Result size per page
+          required: false
+          schema:
+            maximum: 1000
+            minimum: 1
+            type: integer
+            description: Result size per page
+            format: int32
+            example: 100
+            default: 100
+          example: 100
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandatesResponse"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandatesResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandatesResponse"
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandatesResponse"
+  /{municipalityId}/jwks:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: jwks
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jwks"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jwks"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jwks"
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jwks"
+  /{municipalityId}/authorities:
+    get:
+      tags:
+        - MyRepresentatives
+      operationId: getAuthorities
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: authorityIssuer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: authorityIssuer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: false
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: authorityAcquirer.partyId
+          in: query
+          description: PartyId for the sole trader or organization
+          required: false
+          schema:
+            type: string
+            description: PartyId for the sole trader or organization
+            example: fb2f0290-3820-11ed-a261-0242ac120002
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        - name: authorityAcquirer.type
+          in: query
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          required: true
+          schema:
+            type: string
+            description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+            example: pnr
+            enum:
+              - pnr
+              - orgnr
+          example: pnr
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            description: Page number
+            format: int32
+            example: 0
+            default: 0
+          example: 0
+        - name: limit
+          in: query
+          description: Result size per page
+          required: false
+          schema:
+            maximum: 1000
+            minimum: 1
+            type: integer
+            description: Result size per page
+            format: int32
+            example: 100
+            default: 100
+          example: 100
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthoritiesResponse"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthoritiesResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthoritiesResponse"
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthoritiesResponse"
+  /api-docs:
+    get:
+      tags:
+        - API
+      summary: OpenAPI
+      operationId: getApiDocs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/yaml:
+              schema:
+                type: string
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+      x-wso2-mutual-ssl: Optional
+components:
+  schemas:
+    MandateTemplate:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code for the specific template
+          example: bf1a690b-33d6-4a3e-b407-e7346fa1c97c
+        title:
+          type: string
+          description: Title for the specific template
+          example: Fullmakt för att göra och hantera anmälan
+        description:
+          type: string
+          description: Description for the specific template
+          example: "Behörigheten ger fullmaktshavaren rätt att upprätta anmälan, ta\
+            \ del av eget utrymme och ändra uppgifter gällande åtgärden samt på annat\
+            \ sätt företräda byggherren i åtgärder enligt 6 kap. 5 § plan- och byggfö\
+            rordningen (2011:338). Behörigheten omfattar även rätt att upprätta, se\
+            \ och ändra uppgifter gällande start- och slutbesked enligt 10 kap. 3\
+            \ och 4 §§ plan- och bygglagen (2010:900)."
+      description: Mandate Template information. Contains details about mandate templates.
+    Problem:
+      type: object
+      properties:
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
+    StatusType:
+      type: object
+      properties:
+        reasonPhrase:
+          type: string
+        statusCode:
+          type: integer
+          format: int32
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        cause:
+          $ref: "#/components/schemas/ThrowableProblem"
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        type:
+          type: string
+          format: uri
+        status:
+          $ref: "#/components/schemas/StatusType"
+        violations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Violation"
+        title:
+          type: string
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ThrowableProblem:
+      type: object
+      properties:
+        cause:
+          $ref: "#/components/schemas/ThrowableProblem"
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+    Mandate:
+      type: object
+      properties:
+        mandateIssuer:
+          $ref: "#/components/schemas/ResponseIssuer"
+        mandateAcquirers:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResponseAcquirer"
+        mandateRole:
+          type: string
+          description: If the issuer is an organization or private person
+          example: ORGANIZATION
+          enum:
+            - PRIVATE
+            - ORGANIZATION
+        issuedDate:
+          type: string
+          description: Date when the mandate was issued
+          format: date-time
+        permissions:
+          type: object
+          additionalProperties:
+            type: array
+            description: Map of UUIDs to lists of permissions.
+            example:
+              "3bfb975d-c2a9-4f16-b8e5-11c22a318fad":
+                - code: db0023d9-3d19-482f-b43c-47e0073484a2
+            items:
+              $ref: "#/components/schemas/Permission"
+          description: Map of UUIDs to lists of permissions.
+          example:
+            "3bfb975d-c2a9-4f16-b8e5-11c22a318fad":
+              - code: db0023d9-3d19-482f-b43c-47e0073484a2
+      description: Mandate information model.
+    MandatesResponse:
+      type: object
+      properties:
+        mandates:
+          type: array
+          items:
+            $ref: "#/components/schemas/Mandate"
+        _meta:
+          $ref: "#/components/schemas/MetaData"
+      description: Mandate response model
+    MetaData:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page
+          format: int32
+          readOnly: true
+          example: 5
+        limit:
+          type: integer
+          description: Displayed objects per page
+          format: int32
+          readOnly: true
+          example: 20
+        totalRecords:
+          type: integer
+          description: Total amount of hits based on provided search parameters
+          format: int64
+          readOnly: true
+          example: 98
+        totalPages:
+          type: integer
+          description: Total amount of pages based on provided search parameters
+          format: int32
+          readOnly: true
+          example: 23
+      description: Metadata model
+      readOnly: true
+    Permission:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code for the specific permission
+          example: bf1a690b-33d6-4a3e-b407-e7346fa1c97c
+        description:
+          type: string
+          description: Description for the specific permission
+          example: Fullmakt för att hantera ansökan om strandskyddsdispens
+      description: Map of UUIDs to lists of permissions.
+      example:
+        "3bfb975d-c2a9-4f16-b8e5-11c22a318fad":
+          - code: db0023d9-3d19-482f-b43c-47e0073484a2
+    ResponseAcquirer:
+      type: object
+      properties:
+        partyId:
+          type: string
+          description: PartyId for the sole trader or organization
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        type:
+          type: string
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+          example: pnr
+        name:
+          type: string
+          description: Name of company / person
+        legalId:
+          type: string
+          description: "LegalId for person, sole trader or organization"
+      description: Base response information for the acquirer of mandates / authorities
+    ResponseIssuer:
+      type: object
+      properties:
+        partyId:
+          type: string
+          description: PartyId for the sole trader or organization
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        type:
+          type: string
+          description: "Type, private person (pnr) or sole trader / organization (orgnr)"
+        name:
+          type: string
+          description: Name of company / person
+        legalId:
+          type: string
+          description: "LegalId for person, sole trader or organization"
+      description: Base response information for the issuer of mandates / authorities
+    Jwks:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+      description: Simple representation of the JSON Web Key Set (JWKS).
+    AuthoritiesResponse:
+      type: object
+      properties:
+        authorities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Authority"
+        _meta:
+          $ref: "#/components/schemas/MetaData"
+      description: Mandate response model
+    Authority:
+      type: object
+      properties:
+        authorityIssuer:
+          $ref: "#/components/schemas/ResponseIssuer"
+        authorityAcquirers:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResponseAcquirer"
+        authorityRole:
+          type: string
+          description: If the issuer is an organization or private person
+          example: ORGANIZATION
+          enum:
+            - PRIVATE
+            - ORGANIZATION
+        referenceNumber:
+          type: string
+          description: Reference number intended as a reference between client and
+            third party
+          example: MOF1234567890
+        status:
+          type: string
+          description: Status of the authority
+          example: ACTIVE
+          enum:
+            - ACTUAL
+            - VALID
+            - HISTORICAL
+        id:
+          type: string
+          description: Unique ID for the authority
+          example: bf31188a-bfbb-4f23-a60a-89c75d009b53
+        description:
+          type: string
+          description: What the authority represents
+        issuedDate:
+          type: string
+          description: Date when the authority was issued
+          format: date-time
+        validFrom:
+          type: string
+          description: Date from when the authority is valid
+          format: date
+        validTo:
+          type: string
+          description: Date to when the authority ceased to be valid
+          format: date
+      description: Authority information model.
+  securitySchemes: {}

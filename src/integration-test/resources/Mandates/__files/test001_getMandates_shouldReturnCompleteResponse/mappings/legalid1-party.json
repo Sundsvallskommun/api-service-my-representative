@@ -1,11 +1,17 @@
 {
 	"request": {
-		"headers": {"Authorization": {"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"}},
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer 0000000000000000AAAAAAAAAAAAAAAA"
+			}
+		},
 		"method": "GET",
 		"url": "/party/2281/PRIVATE/198602262381/partyId"
 	},
 	"response": {
-		"headers": {"Content-Type": "text/plain"},
+		"headers": {
+			"Content-Type": "text/plain"
+		},
 		"body": "16df33c8-73af-4be6-ac3a-154306516789",
 		"status": "200"
 	}

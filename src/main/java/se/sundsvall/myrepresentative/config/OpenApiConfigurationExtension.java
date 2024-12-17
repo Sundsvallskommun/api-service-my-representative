@@ -1,12 +1,10 @@
 package se.sundsvall.myrepresentative.config;
 
+import io.swagger.v3.oas.models.Operation;
 import java.util.Optional;
-
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import io.swagger.v3.oas.models.Operation;
 
 /**
  * Disable the authentication for the "/jwks"-endpoint since it needs to be public for Bolagsverket.

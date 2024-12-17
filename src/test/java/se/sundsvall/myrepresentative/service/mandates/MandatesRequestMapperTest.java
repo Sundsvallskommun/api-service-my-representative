@@ -2,12 +2,10 @@ package se.sundsvall.myrepresentative.service.mandates;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
-
-import generated.se.sundsvall.minaombud.HamtaBehorigheterRequest;
 
 class MandatesRequestMapperTest {
 
