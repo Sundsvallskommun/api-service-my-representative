@@ -2,14 +2,12 @@ package se.sundsvall.myrepresentative.service.authorities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import generated.se.sundsvall.minaombud.Fullmaktsgivare;
 import generated.se.sundsvall.minaombud.Fullmaktshavare;
 import generated.se.sundsvall.minaombud.HamtaFullmakterResponse;
+import java.time.LocalDate;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import se.sundsvall.dept44.test.annotation.resource.Load;
 import se.sundsvall.dept44.test.extension.ResourceLoaderExtension;
 import se.sundsvall.myrepresentative.api.model.AuthorityStatus;
