@@ -45,6 +45,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -53,12 +59,6 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
     put:
       tags:
         - Mandate Templates
@@ -92,6 +92,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -100,12 +106,6 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
     delete:
       tags:
         - Mandate Templates
@@ -133,6 +133,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -141,12 +147,6 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
   /{municipalityId}/mandates/templates:
     get:
       tags:
@@ -176,6 +176,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -184,12 +190,6 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
     post:
       tags:
         - Mandate Templates
@@ -224,6 +224,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -232,16 +238,11 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
   /{municipalityId}/mandates:
     get:
       tags:
         - MyRepresentatives
+      summary: Get mandates
       operationId: getMandates
       parameters:
         - name: municipalityId
@@ -330,15 +331,24 @@ paths:
             default: 100
           example: 100
       responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandatesResponse"
         "404":
           description: Not Found
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-            application/json:
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/MandatesResponse"
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -347,28 +357,11 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MandatesResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MandatesResponse"
-        "200":
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MandatesResponse"
   /{municipalityId}/jwks:
     get:
       tags:
         - MyRepresentatives
+      summary: Get JWKS
       operationId: jwks
       parameters:
         - name: municipalityId
@@ -379,15 +372,24 @@ paths:
             type: string
           example: 2281
       responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jwks"
         "404":
           description: Not Found
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-            application/json:
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/Jwks"
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -396,28 +398,11 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Jwks"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Jwks"
-        "200":
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Jwks"
   /{municipalityId}/authorities:
     get:
       tags:
         - MyRepresentatives
+      summary: Get authorities
       operationId: getAuthorities
       parameters:
         - name: municipalityId
@@ -495,15 +480,24 @@ paths:
             default: 100
           example: 100
       responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthoritiesResponse"
         "404":
           description: Not Found
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
-            application/json:
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/AuthoritiesResponse"
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad request
           content:
@@ -512,24 +506,6 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuthoritiesResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuthoritiesResponse"
-        "200":
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuthoritiesResponse"
   /api-docs:
     get:
       tags:
@@ -582,12 +558,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
     StatusType:
       type: object
       properties:
@@ -717,12 +693,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         suppressed:
           type: array
           items:
