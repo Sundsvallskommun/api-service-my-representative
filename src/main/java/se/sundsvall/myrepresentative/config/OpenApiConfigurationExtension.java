@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfigurationExtension {
 
-	public static final String JWKS_ENDPOINT = "/jwks";
+	private static final String JWKS_ENDPOINT = "/{municipalityId}/jwks";
 
 	@Bean
 	public OpenApiCustomizer addNoAuthEndpoint() {
