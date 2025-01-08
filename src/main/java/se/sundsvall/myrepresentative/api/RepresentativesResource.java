@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static se.sundsvall.myrepresentative.config.OpenApiConfigurationExtension.JWKS_ENDPOINT;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,7 +53,12 @@ class RepresentativesResource {
 		this.jwtService = jwtService;
 	}
 
-	@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true)
+	@Operation(summary = "Get mandates",
+		responses = {
+			@ApiResponse(responseCode = "200",
+				description = "Successful Operation",
+				useReturnTypeSchema = true)
+		})
 	@GetMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<MandatesResponse> getMandates(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
@@ -61,7 +67,12 @@ class RepresentativesResource {
 		return ResponseEntity.ok(representativesService.getMandates(municipalityId, request));
 	}
 
-	@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true)
+	@Operation(summary = "Get authorities",
+		responses = {
+			@ApiResponse(responseCode = "200",
+				description = "Successful Operation",
+				useReturnTypeSchema = true)
+		})
 	@GetMapping(value = "/authorities", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<AuthoritiesResponse> getAuthorities(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
@@ -70,7 +81,12 @@ class RepresentativesResource {
 		return ResponseEntity.ok(representativesService.getAuthorities(municipalityId, request));
 	}
 
-	@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true)
+	@Operation(summary = "Get JWKS",
+		responses = {
+			@ApiResponse(responseCode = "200",
+				description = "Successful Operation",
+				useReturnTypeSchema = true)
+		})
 	@GetMapping(value = JWKS_ENDPOINT, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Jwks> jwks(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId) {
