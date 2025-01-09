@@ -2,7 +2,6 @@ package se.sundsvall.myrepresentative.api;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
-import static se.sundsvall.myrepresentative.config.OpenApiConfigurationExtension.JWKS_ENDPOINT;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -87,10 +86,9 @@ class RepresentativesResource {
 				description = "Successful Operation",
 				useReturnTypeSchema = true)
 		})
-	@GetMapping(value = JWKS_ENDPOINT, produces = APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/jwks", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Jwks> jwks(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId) {
 		return ResponseEntity.ok(jwtService.getJwks(municipalityId));
 	}
-
 }
