@@ -10,9 +10,11 @@ minaombud:
     expiration: PT1H
     clock-skew: PT20S
   scheduling:
+    name: generateAndSaveKey
     # cron should match jwt expiration
     cron: '0 0 * * * *'
     lock-at-most-for: PT10M
+    maximum-execution-time: PT1M
 openapi:
   name: ${spring.application.name}
   title: ${spring.application.name}
