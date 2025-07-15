@@ -1,6 +1,6 @@
 # MyRepresentative
 
-_The service creates and maintains powers of attorney between parties in the municipality of Sundsvall. The powers of attorney are stored at the Swedish Companies Registration Office and enable them to keep track of who or which parties (i.e. the power of attorney holder) are allowed to act as an agent for a specific counterparty (i.e. the grantor of the power of attorney)._
+_The service creates and maintains powers of attorney between parties in a municipality. The powers of attorney are stored at the Swedish Companies Registration Office and enable them to keep track of who or which parties (i.e. the power of attorney holder) are allowed to act as an agent for a specific counterparty (i.e. the grantor of the power of attorney)._
 
 ## Getting Started
 

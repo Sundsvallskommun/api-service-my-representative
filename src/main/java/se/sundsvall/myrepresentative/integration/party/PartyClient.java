@@ -7,7 +7,6 @@ import static se.sundsvall.myrepresentative.integration.party.PartyConfiguration
 import generated.se.sundsvall.party.PartyType;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import java.util.Optional;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +26,6 @@ public interface PartyClient {
 	 * @param  partyId   uuid of the person or organization
 	 * @return           legalId of the person or organization, Optional.empty() if not found.
 	 */
-	@Cacheable("legalIds")
 	@GetMapping(path = "/{municipalityId}/{type}/{partyId}/legalId", produces = {
 		TEXT_PLAIN_VALUE, APPLICATION_PROBLEM_JSON_VALUE
 	})
@@ -40,7 +38,6 @@ public interface PartyClient {
 	 * @param  legalId   legalid of the person or organization
 	 * @return           partyId of the person or organization, Optional.empty() if not found.
 	 */
-	@Cacheable("partyIds")
 	@GetMapping(path = "/{municipalityId}/{type}/{legalId}/partyId", produces = {
 		TEXT_PLAIN_VALUE, APPLICATION_PROBLEM_JSON_VALUE
 	})

@@ -5,6 +5,7 @@ import static generated.se.sundsvall.party.PartyType.PRIVATE;
 import static org.zalando.problem.Status.NOT_FOUND;
 
 import generated.se.sundsvall.party.PartyType;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
 
@@ -19,10 +20,11 @@ public class PartyIntegration {
 
 	/**
 	 * Fetch partyId for a private person or organization.
-	 * 
+	 *
 	 * @param  legalId
 	 * @return         partyId or empty string if not found.
 	 */
+	@Cacheable("partyIds")
 	public String getPartyIdFromLegalId(String municipalityId, String legalId, String type) {
 		return partyClient.getPartyId(municipalityId, getPartyTypeFromRequest(type), legalId)
 			.orElse("");
@@ -30,10 +32,11 @@ public class PartyIntegration {
 
 	/**
 	 * Fetch legal id for an organization.
-	 * 
+	 *
 	 * @param  partyId
 	 * @return
 	 */
+	@Cacheable("legalIds")
 	public String getLegalIdFromPartyId(String municipalityId, String partyId, String type) {
 		return partyClient.getLegalId(municipalityId, getPartyTypeFromRequest(type), partyId)
 			.orElseThrow(() -> Problem.builder()
