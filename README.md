@@ -75,11 +75,11 @@ See the [API Documentation](#api-documentation) for detailed information on avai
 ### Example Request
 
 ```bash
-curl -X 'GET' https://localhost:8080/2281/mandates?
-  mandateIssuer.partyId=fb2f0290-3820-11ed-a261-0242ac120002&
-  mandateIssuer.type=pnr&
-  mandateAcquirer.partyId=06b0ecca-8f77-4698-850d-5f20b56702e2&
-  mandateAcquirer.type=pnr
+curl -X 'GET' 'https://localhost:8080/2281/mandates' \
+'?mandateIssuer.partyId=fb2f0290-3820-11ed-a261-0242ac120002' \
+'&mandateIssuer.type=pnr' \
+'&mandateAcquirer.partyId=06b0ecca-8f77-4698-850d-5f20b56702e2' \
+'&mandateAcquirer.type=pnr'
 ```
 
 ## Configuration
