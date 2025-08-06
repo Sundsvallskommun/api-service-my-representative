@@ -24,7 +24,7 @@ class MandatesRequestMapperTest {
 	}
 
 	@Test
-	void testMissingIssuer_shouldNotBeMapped() {
+	void testMissingIssuerShouldNotBeMapped() {
 		MandatesRequest mandatesRequest = TestObjectFactory.createMandatesRequest();
 		mandatesRequest.setMandateIssuer(null);
 

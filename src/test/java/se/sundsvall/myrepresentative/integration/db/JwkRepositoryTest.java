@@ -30,13 +30,15 @@ import se.sundsvall.myrepresentative.integration.db.model.JwkEntity;
 @DirtiesContext
 class JwkRepositoryTest {
 
+	private static final Random RANDOM = new Random();
+
 	@Autowired
 	private JwkRepository repository;
 
 	@Test
 	void create() {
 		var jwk = "body";
-		var validUntil = now().plusDays(new Random().nextInt(100));
+		var validUntil = now().plusDays(RANDOM.nextInt(100));
 		var jwkEntity = JwkEntity.builder()
 			.withJwkJson(jwk)
 			.withValidUntil(validUntil)

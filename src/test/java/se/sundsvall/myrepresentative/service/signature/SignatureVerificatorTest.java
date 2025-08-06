@@ -61,7 +61,7 @@ class SignatureVerificatorTest {
 	}
 
 	@Test
-	void testVerifySignature_shouldFailIfSignatureVerificationFails(@Load(value = "junit/behorigheter-faulty.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
+	void testVerifySignatureShouldFailIfSignatureVerificationFails(@Load(value = "junit/behorigheter-faulty.json", as = Load.ResourceType.STRING) String behorigheter) throws JsonProcessingException {
 		// Altered response so that the calculated signature is invalid.
 		HamtaBehorigheterResponse hamtaBehorigheterResponse = mapper.readValue(behorigheter, HamtaBehorigheterResponse.class);
 		when(mockJwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER)).thenReturn(jwk);

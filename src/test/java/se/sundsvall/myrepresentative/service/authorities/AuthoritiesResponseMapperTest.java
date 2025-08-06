@@ -49,7 +49,7 @@ class AuthoritiesResponseMapperTest {
 	}
 
 	@Test
-	void testMapAuthorityIssuerName_shouldReturnOnlyNamnWhenOrgnr() {
+	void testMapAuthorityIssuerNameShouldReturnOnlyNamnWhenOrgnr() {
 		final Fullmaktsgivare fullmaktsgivare = new Fullmaktsgivare();
 		fullmaktsgivare.setTyp("orgnr");
 		fullmaktsgivare.setNamn("Name");
@@ -59,7 +59,7 @@ class AuthoritiesResponseMapperTest {
 	}
 
 	@Test
-	void testMapAuthorityIssuerName_shouldReturnNamnAndFormamnWhenPnr() {
+	void testMapAuthorityIssuerNameShouldReturnNamnAndFormamnWhenPnr() {
 		final Fullmaktsgivare fullmaktsgivare = new Fullmaktsgivare();
 		fullmaktsgivare.setTyp("pnr");
 		fullmaktsgivare.setNamn("Name");
@@ -69,7 +69,7 @@ class AuthoritiesResponseMapperTest {
 	}
 
 	@Test
-	void testMapAuthorityAcquirerName_shouldReturnOnlyNamnWhenOrgnr() {
+	void testMapAuthorityAcquirerNameShouldReturnOnlyNamnWhenOrgnr() {
 		final Fullmaktshavare fullmaktshavare = new Fullmaktshavare();
 		fullmaktshavare.setTyp("orgnr");
 		fullmaktshavare.setNamn("Name");
@@ -79,7 +79,7 @@ class AuthoritiesResponseMapperTest {
 	}
 
 	@Test
-	void testMapAuthorityAcquirerName_shouldReturnNamnAndFormamnWhenPnr() {
+	void testMapAuthorityAcquirerNameShouldReturnNamnAndFormamnWhenPnr() {
 		final Fullmaktshavare fullmaktshavare = new Fullmaktshavare();
 		fullmaktshavare.setTyp("pnr");
 		fullmaktshavare.setNamn("Name");

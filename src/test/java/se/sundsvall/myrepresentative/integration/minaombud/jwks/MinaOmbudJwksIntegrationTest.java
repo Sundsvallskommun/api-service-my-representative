@@ -44,7 +44,7 @@ class MinaOmbudJwksIntegrationTest {
 	}
 
 	@Test
-	void testParsingFails_shouldThrowException(@Load(value = "junit/faulty-algorithm-jwks.json", as = Load.ResourceType.STRING) String faultyJwks) throws JsonProcessingException {
+	void testParsingFailsShouldThrowException(@Load(value = "junit/faulty-algorithm-jwks.json", as = Load.ResourceType.STRING) String faultyJwks) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		JwkSet jwkSet = mapper.readValue(faultyJwks, JwkSet.class);
 

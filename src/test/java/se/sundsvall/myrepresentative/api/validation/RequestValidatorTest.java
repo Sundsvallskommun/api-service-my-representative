@@ -13,17 +13,17 @@ class RequestValidatorTest {
 	private RequestValidator validator = new RequestValidator();
 
 	@Test
-	void testValidateMandates_shouldNotThrowException_whenOk() {
+	void testValidateMandatesShouldNotThrowExceptionWhenOk() {
 		validator.validate(TestObjectFactory.createMandatesRequest());
 	}
 
 	@Test
-	void testValidateAuthorities_shouldNotThrowException_whenOk() {
+	void testValidateAuthoritiesShouldNotThrowExceptionWhenOk() {
 		validator.validate(TestObjectFactory.createAuthorityRequest());
 	}
 
 	@Test
-	void testValidateMandatesRequest_shouldThrowException_whenMissingField() {
+	void testValidateMandatesRequestShouldThrowExceptionWhenMissingField() {
 		MandatesRequest mandatesRequest = TestObjectFactory.createMandatesRequest();
 		mandatesRequest.getMandateIssuer().setPartyId(null);
 
@@ -32,7 +32,7 @@ class RequestValidatorTest {
 	}
 
 	@Test
-	void testValidateAuthoritiesRequest_shouldThrowException_whenMissingField() {
+	void testValidateAuthoritiesRequestShouldThrowExceptionWhenMissingField() {
 		AuthoritiesRequest authorityRequest = TestObjectFactory.createAuthorityRequest();
 		authorityRequest.getAuthorityIssuer().setType(null);
 

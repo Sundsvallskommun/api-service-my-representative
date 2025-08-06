@@ -18,9 +18,11 @@ import org.junit.jupiter.api.Test;
 
 class JwkEntityTest {
 
+	private static final Random RANDOM = new Random();
+
 	@BeforeAll
 	static void setup() {
-		BeanMatchers.registerValueGenerator(() -> now().plusDays(new Random().nextInt()), OffsetDateTime.class);
+		BeanMatchers.registerValueGenerator(() -> now().plusDays(RANDOM.nextInt()), OffsetDateTime.class);
 	}
 
 	@Test
@@ -36,8 +38,8 @@ class JwkEntityTest {
 	@Test
 	void testBuilder() {
 
-		var created = now().plusDays(new Random().nextInt());
-		var validUntil = now().plusDays(new Random().nextInt());
+		var created = now().plusDays(RANDOM.nextInt());
+		var validUntil = now().plusDays(RANDOM.nextInt());
 		var jwkBody = "jwk";
 		var id = 123L;
 

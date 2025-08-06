@@ -105,8 +105,6 @@ spring:
     url: jdbc:mariadb://<db_host>:<db_port>/<database>
   jpa:
     properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MariaDBDialect
       jakarta:
         persistence:
           schema-generation:
