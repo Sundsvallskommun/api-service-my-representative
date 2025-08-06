@@ -44,7 +44,7 @@ class JwksHelperTest {
 	}
 
 	@Test
-	void getJWKFromProtectedHeader_shouldReturnJWK_whenFound() throws ParseException, JsonProcessingException {
+	void getJWKFromProtectedHeaderShouldReturnJWKWhenFound() throws ParseException, JsonProcessingException {
 		when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
 
 		JWK jwkFromProtectedHeader = jwksHelper.getJWKFromProtectedHeader(PROTECTED_HEADER);
@@ -53,7 +53,7 @@ class JwksHelperTest {
 	}
 
 	@Test
-	void getJWKFromProtectedHeader_shouldThrowException_whenNotFound() throws ParseException, JsonProcessingException {
+	void getJWKFromProtectedHeaderShouldThrowExceptionWhenNotFound() throws ParseException, JsonProcessingException {
 		when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
 
 		assertThatExceptionOfType(ThrowableProblem.class)
@@ -64,7 +64,7 @@ class JwksHelperTest {
 	}
 
 	@Test
-	void checkForCachedJwk_shouldDoNothingWhenFound() throws ParseException, JsonProcessingException {
+	void checkForCachedJwkShouldDoNothingWhenFound() throws ParseException, JsonProcessingException {
 		// Populate the jwks
 		when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
 		jwksHelper.populateJwksIfMissing();
@@ -76,7 +76,7 @@ class JwksHelperTest {
 	}
 
 	@Test
-	void isKidMissingInKeySet_shouldReturnFalse_whenFound() throws ParseException, JsonProcessingException {
+	void isKidMissingInKeySetShouldReturnFalseWhenFound() throws ParseException, JsonProcessingException {
 		// Populate the jwks
 		when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
 		jwksHelper.populateJwksIfMissing();
@@ -86,7 +86,7 @@ class JwksHelperTest {
 	}
 
 	@Test
-	void isKidMissingInKeySet_shouldReturnTrue_whenNotFound() throws ParseException, JsonProcessingException {
+	void isKidMissingInKeySetShouldReturnTrueWhenNotFound() throws ParseException, JsonProcessingException {
 		// Populate the jwks
 		when(mockJwksClient.getJwks(THIRD_PARTY)).thenReturn(populateJWKSet(jwks));
 		jwksHelper.populateJwksIfMissing();

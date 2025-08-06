@@ -53,7 +53,7 @@ class PartyIntegrationTest {
 	}
 
 	@Test
-	void getLegalIdFromPrivatePartyId_shouldThrowException_whenNotFound() {
+	void getLegalIdFromPrivatePartyIdShouldThrowExceptionWhenNotFound() {
 		when(mockPartyClient.getLegalId(MUNICIPALITY_ID, PartyType.ENTERPRISE, "1234")).thenReturn(Optional.empty());
 
 		assertThatExceptionOfType(ThrowableProblem.class)

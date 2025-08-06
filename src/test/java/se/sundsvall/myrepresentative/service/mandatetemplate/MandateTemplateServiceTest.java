@@ -75,7 +75,7 @@ class MandateTemplateServiceTest {
 	}
 
 	@Test
-	void getTemplate_NotFound() {
+	void getTemplateNotFound() {
 		assertThatThrownBy(() -> service.getTemplate(MUNICIPALITY_ID, "someCode"))
 			.isInstanceOf(Problem.class)
 			.hasMessage("Not Found: Could not find template with municipalityId 2281 and id someCode");
@@ -120,7 +120,7 @@ class MandateTemplateServiceTest {
 	}
 
 	@Test
-	void updateTemplate_notfound() {
+	void updateTemplateNotfound() {
 
 		assertThatThrownBy(() -> service.updateTemplate(MUNICIPALITY_ID, "someString", MandateTemplate.builder().build()))
 			.isInstanceOf(Problem.class)
@@ -155,7 +155,7 @@ class MandateTemplateServiceTest {
 	}
 
 	@Test
-	void getDescriptionForTemplate_notfound() {
+	void getDescriptionForTemplateNotfound() {
 		// Act
 		final var result = service.getDescriptionForTemplate(MUNICIPALITY_ID, "someCode");
 		// Assert

@@ -24,7 +24,7 @@ class AuthoritiesRequestMapperTest {
 	}
 
 	@Test
-	void testMissingIssuer_shouldNotBeMapped() {
+	void testMissingIssuerShouldNotBeMapped() {
 		AuthoritiesRequest authoritiesRequest = TestObjectFactory.createAuthorityRequest();
 		authoritiesRequest.setAuthorityIssuer(null);
 
@@ -34,6 +34,5 @@ class AuthoritiesRequestMapperTest {
 		assertThat(fullmakterRequest.getFullmaktshavare().getTyp()).isEqualTo("orgnr");
 
 		assertThat(fullmakterRequest.getFullmaktsgivare()).isNull();
-
 	}
 }

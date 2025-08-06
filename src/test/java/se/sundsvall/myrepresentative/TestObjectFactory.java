@@ -35,9 +35,11 @@ import se.sundsvall.myrepresentative.api.model.mandates.Mandate;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesRequest;
 import se.sundsvall.myrepresentative.api.model.mandates.MandatesResponse;
 
-public class TestObjectFactory {
+public final class TestObjectFactory {
 
 	public static final String MUNICIPALITY_ID = "2281";
+
+	private TestObjectFactory() {}
 
 	public static ObjectMapper createObjectMapperWithOffsetDateTimeSupport() {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -45,7 +47,7 @@ public class TestObjectFactory {
 		SimpleModule simpleModule = new SimpleModule();
 		simpleModule.addSerializer(OffsetDateTime.class, new JsonSerializer<OffsetDateTime>() {
 			@Override
-			public void serialize(OffsetDateTime offsetDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+			public void serialize(OffsetDateTime offsetDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
 				jsonGenerator.writeString(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(offsetDateTime));
 			}
 		});
