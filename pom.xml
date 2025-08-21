@@ -21,7 +21,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<jackson.databind-version>0.2.6</jackson.databind-version>
 		<java.json.canonicalization-version>1.1</java.json.canonicalization-version>
-		<jjwt-version>0.12.7</jjwt-version>
+		<jjwt-version>0.12.6</jjwt-version>
 		<openapi.generator.maven.plugin-version>7.14.0</openapi.generator.maven.plugin-version>
 	</properties>
 	<dependencies>
