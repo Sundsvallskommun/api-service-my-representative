@@ -1,22 +1,9 @@
 integration:
-  minaombud:
-    oauth2-client-id: override
-    oauth2-client-secret: override
-    oauth2-token-url: http://localhost:9090/ombudtoken
-    url: http://localhost:9090/
   party:
     oauth2-client-id: override
     oauth2-client-secret: override
-    oauth2-token-url: http://localhost:9090/partytoken
+    oauth2-token-url: http://localhost:9090/token
     url: http://localhost:9090/party
-minaombud:
-  jwt:
-    audience: test-audience
-    expiration: PT20M
-    issuer: test-issuer
-    clock-skew: PT1S
-  keypair:
-    ttl: PT30M
 spring:
   cache:
     type: none

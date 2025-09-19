@@ -1,7 +1,6 @@
 package se.sundsvall.myrepresentative.api;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.http.MediaType.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springdoc.core.annotations.ParameterObject;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +23,7 @@ import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.UpdateMandate;
 
 @RestController
-@RequestMapping(value = "/{municipalityId}/")
+@RequestMapping(value = "/{municipalityId}")
 @Tag(name = "MyRepresentatives")
 @Validated
 @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
@@ -32,7 +31,7 @@ import se.sundsvall.myrepresentative.api.model.UpdateMandate;
 })))
 @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
-class RepresentativesResource {
+class MandatesResource {
 
 	@Operation(summary = "Create mandates",
 		responses = {
@@ -40,10 +39,10 @@ class RepresentativesResource {
 				description = "Created",
 				useReturnTypeSchema = true)
 		})
-	@PostMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/mandates", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	ResponseEntity<Void> createMandate(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Valid @ParameterObject final CreateMandate request) {
+		@Valid @RequestBody final CreateMandate request) {
 		// TODO implement
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
 	}
@@ -55,11 +54,11 @@ class RepresentativesResource {
 				useReturnTypeSchema = true)
 		})
 	@GetMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<MandateDetails> getMandates(
+	ResponseEntity<List<MandateDetails>> getMandates(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "signatoryPartyId") @RequestParam(required = false) final String issuerPartyId,
-		@Parameter(name = "acquirerPartyId", description = "PartyId of the acquirer of the mandate") @RequestParam(required = false) @ValidUuid(nullable = true) final String acquirerPartyId,
-		@Parameter(name = "signatoryPartyId", description = "PartyId of the issuing person") @RequestParam(required = false) @ValidUuid(nullable = true) final String signatoryPartyId) {
+		@Parameter(name = "grantorPartyId", description = "PartyId of the grantor (person or organization)", example = "2facc7a8-69e1-4988-9b3d-4da6cefab701") @RequestParam(required = false) @ValidUuid(nullable = true) final String grantorPartyId,
+		@Parameter(name = "granteePartyId", description = "PartyId of the grantee of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab702") @RequestParam(required = false) @ValidUuid(nullable = true) final String granteePartyId,
+		@Parameter(name = "signatoryPartyId", description = "PartyId of the signatory", example = "2facc7a8-69e1-4988-9b3d-4da6cefab703") @RequestParam(required = false) @ValidUuid(nullable = true) final String signatoryPartyId) {
 		// TODO implement
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
 	}
@@ -70,24 +69,24 @@ class RepresentativesResource {
 				description = "Accepted",
 				useReturnTypeSchema = true)
 		})
-	@PatchMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<MandateDetails> updateMandate(
+	@PatchMapping(value = "/mandates", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
+	ResponseEntity<Void> updateMandate(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Valid @ParameterObject final UpdateMandate updateRequest) {
+		@Valid @RequestBody final UpdateMandate updateRequest) {
 		// TODO implement
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
 	}
 
-	@Operation(summary = "Delete mandate",
+	@Operation(summary = "Delete mandate, performs a soft delete",
 		responses = {
 			@ApiResponse(responseCode = "202",
 				description = "Accepted",
 				useReturnTypeSchema = true)
 		})
-	@DeleteMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<MandateDetails> deleteMandate(
+	@DeleteMapping(value = "/mandates/{id}", produces = ALL_VALUE)
+	ResponseEntity<Void> deleteMandate(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Valid @ParameterObject final CreateMandate createRequest) {
+		@Parameter(name = "id", description = "Id of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab704") @ValidUuid @PathVariable final String id) {
 		// TODO implement
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
 	}
