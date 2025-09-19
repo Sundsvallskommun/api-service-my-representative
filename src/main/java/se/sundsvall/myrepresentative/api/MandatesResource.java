@@ -65,12 +65,12 @@ class MandatesResource {
 
 	@Operation(summary = "Update mandate",
 		responses = {
-			@ApiResponse(responseCode = "202",
-				description = "Accepted",
+			@ApiResponse(responseCode = "200",
+				description = "Ok",
 				useReturnTypeSchema = true)
 		})
 	@PatchMapping(value = "/mandates", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
-	ResponseEntity<Void> updateMandate(
+	ResponseEntity<MandateDetails> updateMandate(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Valid @RequestBody final UpdateMandate updateRequest) {
 		// TODO implement
@@ -79,8 +79,8 @@ class MandatesResource {
 
 	@Operation(summary = "Delete mandate, performs a soft delete",
 		responses = {
-			@ApiResponse(responseCode = "202",
-				description = "Accepted",
+			@ApiResponse(responseCode = "204",
+				description = "No Content",
 				useReturnTypeSchema = true)
 		})
 	@DeleteMapping(value = "/mandates/{id}", produces = ALL_VALUE)

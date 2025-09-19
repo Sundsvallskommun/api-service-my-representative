@@ -5,7 +5,7 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import se.sundsvall.myrepresentative.config.Builder;
 
 @Builder
-@Schema(description = "Mandate grantor model")
+@Schema(description = "GrantorDetails model")
 public record GrantorDetails(
 
 	@Schema(description = "The name of the granting organization or person", example = "Ankeborgs Margarinfabrik") String name,

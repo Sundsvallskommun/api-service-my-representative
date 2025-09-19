@@ -16,7 +16,7 @@ public record UpdateMandate(
 
 	@ValidUuid @Schema(description = "id of the mandate", example = "123e4567-e89b-12d3-a456-426614174000", requiredMode = REQUIRED) String id,
 
-	@Schema(description = "List of mandate grantees", requiredMode = NOT_REQUIRED) List<@Valid GranteeDetails> granteeDetails,
+	@Schema(description = "List of mandate grantees and their details", requiredMode = NOT_REQUIRED) List<@Valid GranteeDetails> granteeDetails,
 
 	@Schema(description = "From when the mandate should be valid, if left empty it will be valid at time of request", example = "2025-01-01T12:00:00", requiredMode = NOT_REQUIRED) OffsetDateTime validFrom,
 

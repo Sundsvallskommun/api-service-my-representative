@@ -21,7 +21,7 @@ public record CreateMandate(
 
 	@NotEmpty @UniqueElements @Schema(description = "List of grantees", requiredMode = REQUIRED) List<@Valid GranteeDetails> granteeDetails,
 
-	@Schema(description = "From when the mandate should be valid, if left empty will be valid at time of request", example = "2025-01-01T12:00:00", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime validFrom,
+	@Schema(description = "From when the mandate should be valid, if left empty will be valid at time of request", example = "2025-01-01T12:00:00+01:00", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime validFrom,
 
 	@Schema(description = "To when the mandate should be valid, if left empty will be valid for 24 months", example = "2025-12-31T12:00:00", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime validTo) {
 }

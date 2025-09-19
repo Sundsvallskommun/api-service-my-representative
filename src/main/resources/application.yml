@@ -1,7 +1,3 @@
-integration:
-  party:
-    connect-timeout: PT5S
-    read-timeout: PT10S
 openapi:
   name: ${spring.application.name}
   title: ${spring.application.name}

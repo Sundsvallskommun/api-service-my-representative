@@ -1,9 +1,3 @@
-integration:
-  party:
-    oauth2-client-id: override
-    oauth2-client-secret: override
-    oauth2-token-url: http://localhost:${wiremock.server.port}/token
-    url: http://localhost:${wiremock.server.port}/party
 spring:
   cache:
     type: none

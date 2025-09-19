@@ -136,8 +136,12 @@ paths:
               $ref: "#/components/schemas/UpdateMandate"
         required: true
       responses:
-        "202":
-          description: Accepted
+        "200":
+          description: Ok
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MandateDetails"
         "400":
           description: Bad request
           content:
@@ -196,8 +200,8 @@ paths:
             type: string
           example: 2facc7a8-69e1-4988-9b3d-4da6cefab704
       responses:
-        "202":
-          description: Accepted
+        "204":
+          description: No Content
         "400":
           description: Bad request
           content:
@@ -239,6 +243,7 @@ components:
           description: "From when the mandate should be valid, if left empty will\
             \ be valid at time of request"
           format: date-time
+          example: 2025-01-01T12:00:00+01:00
         validTo:
           type: string
           description: "To when the mandate should be valid, if left empty will be\
@@ -252,7 +257,7 @@ components:
           type: string
           description: PartyId of the grantee
           example: fb2f0290-3820-11ed-a261-0242ac120004
-      description: Mandate grantee model
+      description: GranteeDetails model
     GrantorDetails:
       type: object
       properties:
@@ -268,7 +273,7 @@ components:
           type: string
           description: PartyId of the issuing person / signatory
           example: fb2f0290-3820-11ed-a261-0242ac120003
-      description: Mandate grantor model
+      description: GrantorDetails model
     Problem:
       type: object
       properties:
@@ -474,7 +479,7 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
         granteeDetails:
           type: array
-          description: List of mandate grantees
+          description: List of mandate grantees and their details
           items:
             $ref: "#/components/schemas/GranteeDetails"
         validFrom:
@@ -521,10 +526,11 @@ components:
             \ if left empty it will be valid for 24 months"
           format: date-time
           readOnly: true
-        active:
-          type: boolean
+        status:
+          type: string
           description: Indicates whether the mandate is active or not
           readOnly: true
-          example: true
-      description: MandateDetails response model
+          example: ACTIVE | INACTIVE | DELETED
+      description: MandateDetails model
   securitySchemes: {}
+  

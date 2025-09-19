@@ -1,9 +1,3 @@
-integration:
-  party:
-    oauth2-client-id: override
-    oauth2-client-secret: override
-    oauth2-token-url: http://localhost:9090/token
-    url: http://localhost:9090/party
 spring:
   cache:
     type: none

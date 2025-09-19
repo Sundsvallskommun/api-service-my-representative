@@ -13,20 +13,20 @@ import se.sundsvall.myrepresentative.config.Builder;
 /**
  * Mandate details.
  * 
- * @param grantorDetails information about the grantor
- * @param granteeDetails list of grantees
+ * @param grantorDetails Grantor details
+ * @param granteeDetails list of grantees and their details
  * @param created        date and time when the mandate was created
  * @param validFrom      date and time from when the mandate is valid
  * @param validTo        date and time when the mandate is no longer valid
- * @param active         indicates whether the mandate is active or not
+ * @param status         status of the mandate (ACTIVE | INACTIVE | DELETED) backed by {@link MandateStatus}
  */
 @Builder
-@Schema(description = "MandateDetails response model")
+@Schema(description = "MandateDetails model")
 public record MandateDetails(
 
 	@Schema(description = "Id of the mandate", example = "123e4567-e89b-12d3-a456-426614174000", accessMode = READ_ONLY) String id,
 
-	@Schema(description = "Mandate grantor information", accessMode = READ_ONLY) GrantorDetails grantorDetails,
+	@Schema(description = "Mandate grantor details", accessMode = READ_ONLY) GrantorDetails grantorDetails,
 
 	@ArraySchema(schema = @Schema(implementation = GranteeDetails.class, accessMode = READ_ONLY)) List<GranteeDetails> granteeDetails,
 
@@ -36,5 +36,5 @@ public record MandateDetails(
 
 	@Schema(description = "Date and time when the mandate should no longer be valid, if left empty it will be valid for 24 months", example = "2025-12-31T12:00:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime validTo,
 
-	@Schema(description = "Indicates whether the mandate is active or not", example = "true", accessMode = READ_ONLY) Boolean active) {
+	@Schema(description = "Indicates whether the mandate is active or not", example = "ACTIVE | INACTIVE | DELETED", accessMode = READ_ONLY) String status) {
 }
