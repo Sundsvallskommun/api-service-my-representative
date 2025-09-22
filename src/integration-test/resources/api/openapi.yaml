@@ -1,0 +1,528 @@
+openapi: 3.0.1
+info:
+  title: api-myrepresentatives
+  contact: {}
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: "4.0"
+servers:
+  - url: http://127.0.0.1:8080
+    description: Generated server url
+paths:
+  /{municipalityId}/mandates:
+    get:
+      tags:
+        - MyRepresentatives
+      summary: Get mandates
+      operationId: getMandates
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: grantorPartyId
+          in: query
+          description: PartyId of the grantor (person or organization)
+          required: false
+          schema:
+            type: string
+          example: 2facc7a8-69e1-4988-9b3d-4da6cefab701
+        - name: granteePartyId
+          in: query
+          description: PartyId of the grantee of the mandate
+          required: false
+          schema:
+            type: string
+          example: 2facc7a8-69e1-4988-9b3d-4da6cefab702
+        - name: signatoryPartyId
+          in: query
+          description: PartyId of the signatory
+          required: false
+          schema:
+            type: string
+          example: 2facc7a8-69e1-4988-9b3d-4da6cefab703
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MandateDetails"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+    post:
+      tags:
+        - MyRepresentatives
+      summary: Create mandates
+      operationId: createMandate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMandate"
+        required: true
+      responses:
+        "201":
+          description: Successful Operation
+          headers:
+            Location:
+              style: simple
+              schema:
+                type: string
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+    patch:
+      tags:
+        - MyRepresentatives
+      summary: Update mandate
+      operationId: updateMandate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMandate"
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandateDetails"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api-docs:
+    get:
+      tags:
+        - API
+      summary: OpenAPI
+      operationId: getApiDocs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/yaml:
+              schema:
+                type: string
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+      x-wso2-mutual-ssl: Optional
+  /{municipalityId}/mandates/{id}:
+    delete:
+      tags:
+        - MyRepresentatives
+      summary: "Delete mandate, performs a soft delete"
+      operationId: deleteMandate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
+        - name: id
+          in: path
+          description: Id of the mandate
+          required: true
+          schema:
+            type: string
+          example: 2facc7a8-69e1-4988-9b3d-4da6cefab704
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+components:
+  schemas:
+    CreateMandate:
+      required:
+        - granteeDetails
+        - grantorDetails
+      type: object
+      properties:
+        grantorDetails:
+          $ref: "#/components/schemas/GrantorDetails"
+        granteeDetails:
+          minItems: 1
+          type: array
+          description: List of grantees
+          items:
+            $ref: "#/components/schemas/GranteeDetails"
+        validFrom:
+          type: string
+          description: "From when the mandate should be valid, if left empty will\
+            \ be valid at time of request"
+          format: date-time
+          example: 2025-01-01T12:00:00+01:00
+        validTo:
+          type: string
+          description: "To when the mandate should be valid, if left empty will be\
+            \ valid for 24 months"
+          format: date-time
+      description: CreateMandate model
+    GranteeDetails:
+      type: object
+      properties:
+        partyId:
+          type: string
+          description: PartyId of the grantee
+          example: fb2f0290-3820-11ed-a261-0242ac120004
+      description: GranteeDetails model
+    GrantorDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the granting organization or person
+          example: Ankeborgs Margarinfabrik
+        grantorPartyId:
+          type: string
+          description: The partyId of the issuing organization or person
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        signatoryPartyId:
+          type: string
+          description: PartyId of the issuing person / signatory
+          example: fb2f0290-3820-11ed-a261-0242ac120003
+      description: GrantorDetails model
+    Problem:
+      type: object
+      properties:
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
+    StatusType:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        reasonPhrase:
+          type: string
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        cause:
+          $ref: "#/components/schemas/ThrowableProblem"
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        type:
+          type: string
+          format: uri
+        status:
+          $ref: "#/components/schemas/StatusType"
+        violations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Violation"
+        title:
+          type: string
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ThrowableProblem:
+      type: object
+      properties:
+        cause:
+          $ref: "#/components/schemas/ThrowableProblem"
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+    UpdateMandate:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the mandate
+          example: 123e4567-e89b-12d3-a456-426614174000
+        granteeDetails:
+          type: array
+          description: List of mandate grantees and their details
+          items:
+            $ref: "#/components/schemas/GranteeDetails"
+        validFrom:
+          type: string
+          description: "From when the mandate should be valid, if left empty it will\
+            \ be valid at time of request"
+          format: date-time
+        validTo:
+          type: string
+          description: "To when the mandate should be valid, if left empty will be\
+            \ valid for 24 months"
+          format: date-time
+      description: Mandates request model
+    MandateDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the mandate
+          readOnly: true
+          example: 123e4567-e89b-12d3-a456-426614174000
+        grantorDetails:
+          $ref: "#/components/schemas/GrantorDetails"
+        granteeDetails:
+          type: array
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/GranteeDetails"
+        created:
+          type: string
+          description: Date and time when the mandate was created
+          format: date-time
+          readOnly: true
+          example: 2023-11-22T15:30:00+03:00
+        validFrom:
+          type: string
+          description: "Date and time from when the mandate should be valid, if left\
+            \ empty it will be set to time of creation"
+          format: date-time
+          readOnly: true
+        validTo:
+          type: string
+          description: "Date and time when the mandate should no longer be valid,\
+            \ if left empty it will be valid for 24 months"
+          format: date-time
+          readOnly: true
+        status:
+          type: string
+          description: Indicates whether the mandate is active or not
+          readOnly: true
+          example: ACTIVE | INACTIVE | DELETED
+      description: MandateDetails model
+  securitySchemes: {}

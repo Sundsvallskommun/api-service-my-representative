@@ -1,20 +1,3 @@
-integration:
-  minaombud:
-    connect-timeout: PT5S
-    read-timeout: PT15S
-  party:
-    connect-timeout: PT5S
-    read-timeout: PT10S
-minaombud:
-  jwt:
-    expiration: PT1H
-    clock-skew: PT20S
-  scheduling:
-    name: generateAndSaveKey
-    # cron should match jwt expiration
-    cron: '0 0 * * * *'
-    lock-at-most-for: PT10M
-    maximum-execution-time: PT1M
 openapi:
   name: ${spring.application.name}
   title: ${spring.application.name}

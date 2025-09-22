@@ -1,6 +1,6 @@
 # MyRepresentative
 
-_The service creates and maintains powers of attorney between parties in a municipality. The powers of attorney are stored at the Swedish Companies Registration Office and enable them to keep track of who or which parties (i.e. the power of attorney holder) are allowed to act as an agent for a specific counterparty (i.e. the grantor of the power of attorney)._
+_The service creates and maintains powers of attorney between parties in a municipality. The powers of attorney are stored to keep track of who or which parties (i.e. the power of attorney holder) are allowed to act as an agent for a specific counterparty (i.e. the grantor of the power of attorney)._
 
 ## Getting Started
 
@@ -50,9 +50,6 @@ gradle bootRun
 
 This microservice depends on the following services:
 
-- **MinaOmbud**
-  - **Purpose:** Used for finding mandates and authorities for a person or organization.
-  - **Repository:** Service is provided by third party (Bolagsverket)
 - **Party**
   - **Purpose:** Used for translating between party id and legal id.
   - **Repository:** [https://github.com/Sundsvallskommun/api-service-party](https://github.com/Sundsvallskommun/api-service-party)
@@ -116,24 +113,11 @@ spring:
 
 ```yaml
 integration:
-  minaombud:
-    oauth2-client-id: <client_id>
-    oauth2-client-secret: <client_secret>
-    oauth2-token-url: <token_url>
-    url: <service_endpoint>
   party:
     oauth2-client-id: <client_id>
     oauth2-client-secret: <client_secret>
     oauth2-token-url: <token_url>
     url: <service_endpoint>
-minaombud:
-  jwt:
-    audience: <audience>
-    expiration: <expire_after>
-    issuer: <issuer>
-  scheduling:
-    # Must match jwt.expiration
-    cron: <cron>
 ```
 
 ### Database Initialization
