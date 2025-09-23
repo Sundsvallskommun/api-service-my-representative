@@ -9,7 +9,6 @@ import static com.google.code.beanmatchers.BeanMatchers.registerValueGenerator;
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 class BankIdSignatureEntityTest {
 
-	private static final Long ID = 123L;
+	private static final String ID = UUID.randomUUID().toString();
 	private static final String ORDER_REF = UUID.randomUUID().toString();
 	private static final String STATUS = "complete";
 	private static final String PERSONAL_NUMBER = "200001012384";
@@ -98,21 +97,21 @@ class BankIdSignatureEntityTest {
 	}
 
 	private void assertBean(final BankIdSignatureEntity entity) {
-		assertEquals(ID, entity.getId());
-		assertEquals(ORDER_REF, entity.getOrderRef());
-		assertEquals(STATUS, entity.getStatus());
-		assertEquals(PERSONAL_NUMBER, entity.getPersonalNumber());
-		assertEquals(NAME, entity.getName());
-		assertEquals(GIVEN_NAME, entity.getGivenName());
-		assertEquals(SURNAME, entity.getSurname());
-		assertEquals(IP_ADDRESS, entity.getIpAddress());
-		assertEquals(UHI, entity.getUhi());
-		assertEquals(BANK_ID_ISSUE_DATE, entity.getBankIdIssueDate());
-		assertEquals(MRTD, entity.getMrtdStepUp());
-		assertEquals(SIGNATURE_DATE, entity.getSignatureData());
-		assertEquals(OCSP_RESPONSE, entity.getOcspResponse());
-		assertEquals(RISK, entity.getRisk());
-		assertEquals(MANDATE_ENTITY, entity.getMandate());
+		assertThat(entity.getId()).isEqualTo(ID);
+		assertThat(entity.getOrderRef()).isEqualTo(ORDER_REF);
+		assertThat(entity.getStatus()).isEqualTo(STATUS);
+		assertThat(entity.getPersonalNumber()).isEqualTo(PERSONAL_NUMBER);
+		assertThat(entity.getName()).isEqualTo(NAME);
+		assertThat(entity.getGivenName()).isEqualTo(GIVEN_NAME);
+		assertThat(entity.getSurname()).isEqualTo(SURNAME);
+		assertThat(entity.getIpAddress()).isEqualTo(IP_ADDRESS);
+		assertThat(entity.getUhi()).isEqualTo(UHI);
+		assertThat(entity.getBankIdIssueDate()).isEqualTo(BANK_ID_ISSUE_DATE);
+		assertThat(entity.getMrtdStepUp()).isEqualTo(MRTD);
+		assertThat(entity.getSignatureData()).isEqualTo(SIGNATURE_DATE);
+		assertThat(entity.getOcspResponse()).isEqualTo(OCSP_RESPONSE);
+		assertThat(entity.getRisk()).isEqualTo(RISK);
+		assertThat(entity.getMandate()).isEqualTo(MANDATE_ENTITY);
 
 		assertThat(entity).hasNoNullFieldsOrProperties();
 	}

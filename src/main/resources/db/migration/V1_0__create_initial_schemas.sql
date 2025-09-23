@@ -16,7 +16,7 @@ create table bankid_signature
 (
     bank_id_issue_date date         not null,
     mrtd_step_up       bit          null,
-    id                 bigint auto_increment primary key,
+    id                 varchar(36)  not null primary key,
     personal_number    varchar(12)  not null,
     risk               varchar(20)  not null,
     status             varchar(20)  not null,

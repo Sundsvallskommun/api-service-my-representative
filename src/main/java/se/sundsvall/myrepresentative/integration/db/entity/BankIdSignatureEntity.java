@@ -21,9 +21,9 @@ import java.util.Objects;
 public class BankIdSignatureEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "id", length = 36)
+	private String id;
 
 	@Column(name = "order_ref", nullable = false, length = 36)
 	private String orderRef;
@@ -68,11 +68,11 @@ public class BankIdSignatureEntity {
 	@JoinColumn(name = "mandate_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_bankid_signature_mandate"))
 	private MandateEntity mandate;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -188,7 +188,7 @@ public class BankIdSignatureEntity {
 		this.mandate = mandate;
 	}
 
-	public BankIdSignatureEntity withId(Long id) {
+	public BankIdSignatureEntity withId(String id) {
 		this.id = id;
 		return this;
 	}
