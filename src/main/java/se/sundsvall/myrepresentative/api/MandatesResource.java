@@ -5,6 +5,7 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,9 +35,10 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.UpdateMandate;
+import se.sundsvall.myrepresentative.service.RepresentativesService;
 
 @RestController
-@RequestMapping(value = "/{municipalityId}")
+@RequestMapping(value = "/{municipalityId}/{namespace}")
 @Tag(name = "MyRepresentatives")
 @Validated
 @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
@@ -45,25 +47,39 @@ import se.sundsvall.myrepresentative.api.model.UpdateMandate;
 @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 class MandatesResource {
 
+	private final RepresentativesService representativesService;
+
+	MandatesResource(RepresentativesService representativesService) {
+		this.representativesService = representativesService;
+	}
+
 	@Operation(summary = "Create mandates",
 		responses = {
 			@ApiResponse(
 				responseCode = "201",
 				headers = @Header(name = LOCATION, schema = @Schema(type = "string")),
 				description = "Successful Operation",
-				useReturnTypeSchema = true)
+				useReturnTypeSchema = true),
+			@ApiResponse(responseCode = "409",
+				description = "Conflict",
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE,
+					schema = @Schema(implementation = Problem.class)))
 		})
 	@PostMapping(value = "/mandates", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	ResponseEntity<Void> createMandate(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @PathVariable final String namespace,
 		@Valid @RequestBody final CreateMandate request) {
-		// TODO implement
-		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+
+		final var mandateId = representativesService.createMandate(municipalityId, namespace, request);
+
+		return ResponseEntity.created(fromPath("/{municipalityId}/{namespace}/mandates/{id}")
+			.buildAndExpand(municipalityId, namespace, mandateId).toUri())
 			.header(CONTENT_TYPE, ALL_VALUE)
 			.build();
 	}
 
-	@Operation(summary = "Get mandates",
+	@Operation(summary = "Search mandates",
 		responses = {
 			@ApiResponse(responseCode = "200",
 				description = "Successful Operation",
@@ -74,13 +90,33 @@ class MandatesResource {
 					schema = @Schema(implementation = Problem.class)))
 		})
 	@GetMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<List<MandateDetails>> getMandates(
+	ResponseEntity<List<MandateDetails>> searchMandates(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @PathVariable final String namespace,
 		@Parameter(name = "grantorPartyId", description = "PartyId of the grantor (person or organization)", example = "2facc7a8-69e1-4988-9b3d-4da6cefab701") @RequestParam(required = false) @ValidUuid(nullable = true) final String grantorPartyId,
 		@Parameter(name = "granteePartyId", description = "PartyId of the grantee of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab702") @RequestParam(required = false) @ValidUuid(nullable = true) final String granteePartyId,
 		@Parameter(name = "signatoryPartyId", description = "PartyId of the signatory", example = "2facc7a8-69e1-4988-9b3d-4da6cefab703") @RequestParam(required = false) @ValidUuid(nullable = true) final String signatoryPartyId) {
 		// TODO implement
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+	}
+
+	@Operation(summary = "Get mandate by id",
+		responses = {
+			@ApiResponse(responseCode = "200",
+				description = "Successful Operation",
+				useReturnTypeSchema = true),
+			@ApiResponse(responseCode = "404",
+				description = "Not Found",
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE,
+					schema = @Schema(implementation = Problem.class)))
+		})
+	@GetMapping(value = "/mandates/{id}", produces = APPLICATION_JSON_VALUE)
+	ResponseEntity<MandateDetails> getMandateById(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @PathVariable final String namespace,
+		@Parameter(name = "id", description = "Id of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab704") @ValidUuid @PathVariable final String id) {
+
+		return ResponseEntity.ok(representativesService.getMandateDetails(municipalityId, namespace, id));
 	}
 
 	@Operation(summary = "Update mandate",
@@ -94,9 +130,11 @@ class MandatesResource {
 					schema = @Schema(implementation = Problem.class)))
 
 		})
-	@PatchMapping(value = "/mandates", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/mandates/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<MandateDetails> updateMandate(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @PathVariable final String namespace,
+		@Parameter(name = "id", description = "Id of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab704") @ValidUuid @PathVariable final String id,
 		@Valid @RequestBody final UpdateMandate updateRequest) {
 		// TODO implement
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
@@ -111,6 +149,7 @@ class MandatesResource {
 	@DeleteMapping(value = "/mandates/{id}", produces = ALL_VALUE)
 	ResponseEntity<Void> deleteMandate(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @PathVariable final String namespace,
 		@Parameter(name = "id", description = "Id of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab704") @ValidUuid @PathVariable final String id) {
 		// TODO implement
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)

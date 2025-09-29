@@ -69,7 +69,6 @@
 						<exclude>**/org/openapitools/**</exclude>
 						<exclude>**/generated/se/sundsvall/**</exclude>
 						<exclude>**/se/sundsvall/myrepresentative/MyRepresentatives**</exclude>
-						<exclude>**/se/sundsvall/myrepresentative/api/MandatesResource**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

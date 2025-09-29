@@ -20,14 +20,7 @@ import java.util.List;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 @ActiveProfiles("it")
-@SpringBootTest(
-	webEnvironment = WebEnvironment.RANDOM_PORT,
-	classes = MyRepresentatives.class,
-	properties = {
-		"spring.main.banner-mode=off",
-		"logging.level.se.sundsvall.dept44.payload=OFF",
-		"wiremock.server.port=10101"
-	})
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = MyRepresentatives.class)
 class OpenApiSpecificationIT {
 
 	private static final YAMLMapper YAML_MAPPER = new YAMLMapper();

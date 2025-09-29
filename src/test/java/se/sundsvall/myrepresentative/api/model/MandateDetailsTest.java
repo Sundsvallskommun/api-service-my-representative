@@ -1,25 +1,25 @@
 package se.sundsvall.myrepresentative.api.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static se.sundsvall.myrepresentative.TestObjectFactory.ACTIVE_FROM;
+import static se.sundsvall.myrepresentative.TestObjectFactory.CREATED;
+import static se.sundsvall.myrepresentative.TestObjectFactory.ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.INACTIVE_AFTER;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
+import static se.sundsvall.myrepresentative.TestObjectFactory.STATUS;
+import static se.sundsvall.myrepresentative.TestObjectFactory.UPDATED;
 
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class MandateDetailsTest {
 
-	private static final String ID = UUID.randomUUID().toString();
 	private static final GrantorDetails GRANTOR_DETAILS = GrantorDetailsBuilder.create().build();
-	private static final List<GranteeDetails> GRANTEE_DETAILS = List.of(GranteeDetailsBuilder.create().build());
-	private static final OffsetDateTime CREATED = OffsetDateTime.now();
-	private static final OffsetDateTime VALID_FROM = CREATED.plusDays(2);
-	private static final OffsetDateTime VALID_TO = VALID_FROM.plusDays(30);
-	private static final String STATUS = MandateStatus.ACTIVE.name();
+	private static final GranteeDetails GRANTEE_DETAILS = GranteeDetailsBuilder.create().build();
 
 	@Test
 	void testConstructor() {
-		final var mandateDetails = new MandateDetails(ID, GRANTOR_DETAILS, GRANTEE_DETAILS, CREATED, VALID_FROM, VALID_TO, STATUS);
+		final var mandateDetails = new MandateDetails(ID, GRANTOR_DETAILS, GRANTEE_DETAILS, MUNICIPALITY_ID, NAMESPACE, CREATED, UPDATED, ACTIVE_FROM, INACTIVE_AFTER, STATUS);
 		assertBean(mandateDetails);
 	}
 
@@ -29,9 +29,12 @@ class MandateDetailsTest {
 			.withId(ID)
 			.withGrantorDetails(GRANTOR_DETAILS)
 			.withGranteeDetails(GRANTEE_DETAILS)
+			.withMunicipalityId(MUNICIPALITY_ID)
+			.withNamespace(NAMESPACE)
 			.withCreated(CREATED)
-			.withValidFrom(VALID_FROM)
-			.withValidTo(VALID_TO)
+			.withUpdated(UPDATED)
+			.withActiveFrom(ACTIVE_FROM)
+			.withInactiveAfter(INACTIVE_AFTER)
 			.withStatus(STATUS)
 			.build();
 
@@ -40,7 +43,7 @@ class MandateDetailsTest {
 
 	@Test
 	void noDirtOnEmptyBean() {
-		assertThat(new MandateDetails(null, null, null, null, null, null, null)).hasAllNullFieldsOrProperties();
+		assertThat(new MandateDetails(null, null, null, null, null, null, null, null, null, null)).hasAllNullFieldsOrProperties();
 		assertThat(MandateDetailsBuilder.create().build()).hasAllNullFieldsOrProperties();
 	}
 
@@ -48,9 +51,12 @@ class MandateDetailsTest {
 		assertThat(mandateDetails.id()).isEqualTo(ID);
 		assertThat(mandateDetails.grantorDetails()).isEqualTo(GRANTOR_DETAILS);
 		assertThat(mandateDetails.granteeDetails()).isEqualTo(GRANTEE_DETAILS);
+		assertThat(mandateDetails.municipalityId()).isEqualTo(MUNICIPALITY_ID);
+		assertThat(mandateDetails.namespace()).isEqualTo(NAMESPACE);
 		assertThat(mandateDetails.created()).isEqualTo(CREATED);
-		assertThat(mandateDetails.validFrom()).isEqualTo(VALID_FROM);
-		assertThat(mandateDetails.validTo()).isEqualTo(VALID_TO);
+		assertThat(mandateDetails.updated()).isEqualTo(UPDATED);
+		assertThat(mandateDetails.activeFrom()).isEqualTo(ACTIVE_FROM);
+		assertThat(mandateDetails.inactiveAfter()).isEqualTo(INACTIVE_AFTER);
 		assertThat(mandateDetails.status()).isEqualTo(STATUS);
 
 		assertThat(mandateDetails).hasNoNullFieldsOrProperties();
