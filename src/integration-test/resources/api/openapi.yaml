@@ -325,12 +325,12 @@ components:
           type: object
           additionalProperties:
             type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
     StatusType:
       type: object
       properties:
@@ -512,12 +512,12 @@ components:
           type: object
           additionalProperties:
             type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
         suppressed:
           type: array
           items:
@@ -585,10 +585,7 @@ components:
         grantorDetails:
           $ref: "#/components/schemas/GrantorDetails"
         granteeDetails:
-          type: array
-          readOnly: true
-          items:
-            $ref: "#/components/schemas/GranteeDetails"
+          $ref: "#/components/schemas/GranteeDetails"
         municipalityId:
           type: string
           description: MunicipalityId where the mandate was created

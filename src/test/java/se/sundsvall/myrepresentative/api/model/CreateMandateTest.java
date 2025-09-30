@@ -29,6 +29,12 @@ class CreateMandateTest {
 		assertBean(mandate);
 	}
 
+	@Test
+	void noDirtOnEmptyBean() {
+		assertThat(new CreateMandate(null, null, null, null)).hasAllNullFieldsOrProperties();
+		assertThat(CreateMandateBuilder.create().build()).hasAllNullFieldsOrProperties();
+	}
+
 	private static void assertBean(CreateMandate mandate) {
 		assertThat(mandate.granteeDetails()).isEqualTo(GRANTEE_DETAILS);
 		assertThat(mandate.grantorDetails()).isEqualTo(GRANTOR_DETAILS);

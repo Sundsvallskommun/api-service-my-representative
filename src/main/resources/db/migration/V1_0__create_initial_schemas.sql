@@ -10,7 +10,7 @@ create table mandate
     grantor_party_id   varchar(36)  not null,
     id                 varchar(36)  not null primary key,
     signatory_party_id varchar(36)  not null,
-    namespace          varchar(64)  not null,
+    namespace          varchar(128) not null,
     name               varchar(160) null,
 
     period for valid_date_range(active_from, inactive_after),

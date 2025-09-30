@@ -52,7 +52,7 @@ public class MandateEntity {
 	@Column(name = "grantee_party_id", nullable = false, length = 36)
 	private String granteePartyId;
 
-	@Column(name = "namespace", nullable = false)
+	@Column(name = "namespace", nullable = false, length = 128)
 	private String namespace;
 
 	@Column(name = "municipality_id", nullable = false, length = 4)

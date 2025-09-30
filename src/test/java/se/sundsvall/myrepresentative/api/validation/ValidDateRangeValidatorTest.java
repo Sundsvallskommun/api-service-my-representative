@@ -80,9 +80,9 @@ class ValidDateRangeValidatorTest {
 	public static Stream<Arguments> createValidDatesProvider() {
 		final var now = LocalDate.now();
 		return Stream.of(
-			Arguments.of("activeFrom is before incativeAfter", createMandate(now, now.plusWeeks(1)), true, null),
-			Arguments.of("future dates are valid", createMandate(now.plusWeeks(1), now.plusWeeks(2)), true, null),
-			Arguments.of("activeFrom has passed but not invalidAfter", createMandate(now.minusWeeks(1), now.plusWeeks(1)), true, null));
+			Arguments.of("activeFrom is before incativeAfter", createMandate(now, now.plusWeeks(1)), true),
+			Arguments.of("future dates are valid", createMandate(now.plusWeeks(1), now.plusWeeks(2)), true),
+			Arguments.of("activeFrom has passed but not invalidAfter", createMandate(now.minusWeeks(1), now.plusWeeks(1)), true));
 	}
 
 	private static CreateMandate createMandate(LocalDate activeFrom, LocalDate invalidAfter) {

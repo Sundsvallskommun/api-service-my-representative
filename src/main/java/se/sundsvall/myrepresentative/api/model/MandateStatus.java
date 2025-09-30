@@ -4,5 +4,6 @@ public enum MandateStatus {
 	ACTIVE,
 	DELETED,
 	EXPIRED,
-	INACTIVE
+	INACTIVE,
+	UNKNOWN
 }

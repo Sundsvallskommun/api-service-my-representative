@@ -87,4 +87,16 @@ class MapperTest {
 		assertThat(details.updated()).isEqualTo(entity.getUpdated());
 		assertThat(details.status()).isEqualTo(STATUS);
 	}
+
+	@Test
+	void testMapToMandateEntityWithNullBean() {
+		assertThat(mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, null)).isNull();
+		// Cannot test empty bean since everything is @NotNull
+	}
+
+	@Test
+	void testMapToMandateDetailsWithNullAndEmptyBean() {
+		assertThat(mapper.toMandateDetails(null)).isNull();
+		assertThat(mapper.toMandateDetails(new MandateEntity())).isNotNull();
+	}
 }
