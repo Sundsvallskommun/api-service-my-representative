@@ -26,7 +26,7 @@ import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
 class ValidDateRangeValidatorTest {
 
 	private static final String ACTIVE_FROM_AFTER_INVALID_AFTER_MESSAGE = "activeFrom cannot be after invalidAfter";
-	private static final String BOTH_DATES_MUST_BE_PROVIDED_MESSAGE = "Both activeFrom and inactiveAfter must be provided";
+	private static final String ACTIVE_FROM_MUST_BE_PROVIDED_MESSAGE = "activeFrom must be provided";
 	private static final String INACTIVE_AFTER_MUST_BE_TODAY_OR_LATER = "inactiveAfter must be today or later";
 
 	private ValidDateRangeValidator validator;
@@ -72,9 +72,8 @@ class ValidDateRangeValidatorTest {
 		return Stream.of(
 			Arguments.of("activeFrom is after incativeAfter", createMandate(now.plusWeeks(1), now), false, ACTIVE_FROM_AFTER_INVALID_AFTER_MESSAGE),
 			Arguments.of("incativeAfter has passed", createMandate(now.minusWeeks(2), now.minusWeeks(1)), false, INACTIVE_AFTER_MUST_BE_TODAY_OR_LATER),
-			Arguments.of("activeFrom is null", createMandate(null, now), false, BOTH_DATES_MUST_BE_PROVIDED_MESSAGE),
-			Arguments.of("incativeAfter is null", createMandate(now, null), false, BOTH_DATES_MUST_BE_PROVIDED_MESSAGE),
-			Arguments.of("both activeFrom and incativeAfter are null", createMandate(null, null), false, BOTH_DATES_MUST_BE_PROVIDED_MESSAGE));
+			Arguments.of("activeFrom is null", createMandate(null, now), false, ACTIVE_FROM_MUST_BE_PROVIDED_MESSAGE),
+			Arguments.of("both activeFrom and incativeAfter are null", createMandate(null, null), false, ACTIVE_FROM_MUST_BE_PROVIDED_MESSAGE));
 	}
 
 	public static Stream<Arguments> createValidDatesProvider() {
@@ -120,5 +119,4 @@ class ValidDateRangeValidatorTest {
 			return ValidDateRange.class;
 		}
 	}
-
 }

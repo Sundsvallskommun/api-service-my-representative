@@ -27,19 +27,19 @@ public class ValidDateRangeValidator implements ConstraintValidator<ValidDateRan
 			final var activeFrom = (LocalDate) activeFromField.get(value);
 			final var inactiveAfter = (LocalDate) inactiveAfterField.get(value);
 
-			if (activeFrom == null || inactiveAfter == null) {
+			if (activeFrom == null) {
 				context.disableDefaultConstraintViolation();
-				context.buildConstraintViolationWithTemplate("Both activeFrom and inactiveAfter must be provided").addConstraintViolation();
+				context.buildConstraintViolationWithTemplate("activeFrom must be provided").addConstraintViolation();
 				return false;
 			}
 
-			if (activeFrom.isAfter(inactiveAfter)) {
+			if (inactiveAfter != null && activeFrom.isAfter(inactiveAfter)) {
 				context.disableDefaultConstraintViolation();
 				context.buildConstraintViolationWithTemplate("activeFrom cannot be after invalidAfter").addConstraintViolation();
 				return false;
 			}
 
-			if (inactiveAfter.isBefore(LocalDate.now())) {
+			if (inactiveAfter != null && inactiveAfter.isBefore(LocalDate.now())) {
 				context.disableDefaultConstraintViolation();
 				context.buildConstraintViolationWithTemplate("inactiveAfter must be today or later").addConstraintViolation();
 				return false;

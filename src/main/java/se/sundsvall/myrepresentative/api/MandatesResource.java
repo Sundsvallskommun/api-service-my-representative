@@ -152,10 +152,8 @@ class MandatesResource {
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @ValidNamespace @PathVariable final String namespace,
 		@Parameter(name = "id", description = "Id of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab704") @ValidUuid @PathVariable final String id) {
-		// TODO implement
-		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-			.header(CONTENT_TYPE, ALL_VALUE)
-			.build();
+		representativesService.deleteMandate(municipalityId, namespace, id);
+		return ResponseEntity.noContent().build();
 	}
 
 }

@@ -9,8 +9,10 @@ import static com.google.code.beanmatchers.BeanMatchers.registerValueGenerator;
 import static java.time.LocalDateTime.now;
 import static java.time.ZoneId.systemDefault;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.within;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 import static se.sundsvall.myrepresentative.TestObjectFactory.ACTIVE_FROM;
 import static se.sundsvall.myrepresentative.TestObjectFactory.CREATED;
 import static se.sundsvall.myrepresentative.TestObjectFactory.DELETED;
@@ -32,6 +34,7 @@ import java.util.Random;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.zalando.problem.ThrowableProblem;
 
 class MandateEntityTest {
 
@@ -113,10 +116,25 @@ class MandateEntityTest {
 		assertThat(entity.getCreated()).isNull();
 		assertThat(entity.getUpdated()).isNull();
 
+		entity.withActiveFrom(ACTIVE_FROM); // We need activeFrom to be able to calculate inactiveAfter
 		entity.onCreate();
 
 		assertThat(entity.getCreated()).isNotNull().isCloseTo(now(systemDefault()), within(2, ChronoUnit.SECONDS));
 		assertThat(entity.getUpdated()).isNotNull().isCloseTo(now(systemDefault()), within(2, ChronoUnit.SECONDS));
+		assertThat(entity.getActiveFrom()).isEqualTo(ACTIVE_FROM);
+		assertThat(entity.getInactiveAfter()).isEqualTo(ACTIVE_FROM.plusMonths(36));
+	}
+
+	@Test
+	void testPrePersistWithInvalidDates_shouldThrowProblem() {
+		final var entity = new MandateEntity();
+
+		assertThatExceptionOfType(ThrowableProblem.class).isThrownBy(entity::onCreate)
+			.satisfies(problem -> {
+				assertThat(problem.getStatus()).isEqualTo(INTERNAL_SERVER_ERROR);
+				assertThat(problem.getTitle()).isEqualTo("Cannot set validity period for mandate");
+				assertThat(problem.getDetail()).isEqualTo("activeFrom and/or incactiveAfter is null, cannot set validity period");
+			});
 	}
 
 	@Test

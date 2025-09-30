@@ -344,7 +344,6 @@ components:
         - activeFrom
         - granteeDetails
         - grantorDetails
-        - inactiveAfter
       type: object
       properties:
         grantorDetails:
@@ -358,7 +357,8 @@ components:
           example: 2025-08-01
         inactiveAfter:
           type: string
-          description: The date after which the mandate is no longer valid
+          description: "The date after which the mandate is no longer valid, if not\
+            \ provided it will be set to activeFrom + 36 months"
           format: date
           example: 2025-12-31
       description: CreateMandate model

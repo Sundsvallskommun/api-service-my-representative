@@ -1,0 +1,15 @@
+insert into mandate (active_from, inactive_after, deleted, municipality_id, created, updated,
+                     grantee_party_id, grantor_party_id, id, signatory_party_id, namespace, name)
+values ('2025-08-01', '9999-10-01', 'false', '2281', '2025-09-30 16:19:38.735000',
+        '2025-09-30 16:19:38.735000', 'fb2f0290-3820-11ed-a261-0242ac120006',
+        'fb2f0290-3820-11ed-a261-0242ac120004', '358e6915-fba4-4070-9584-35423db53b66',
+        'fb2f0290-3820-11ed-a261-0242ac120005', 'MY_NAMESPACE', 'Ankeborgs Margarinfabrik'),
+       ('2025-08-01', '9999-12-31', '2025-09-30T16:21:03.033748', '2281',
+        '2025-09-30 16:18:53.829000', '2025-09-30 16:21:03.035000',
+        'fb2f0290-3820-11ed-a261-0242ac120004', 'fb2f0290-3820-11ed-a261-0242ac120002',
+        '3e2ae9d2-e18d-468e-b48d-5840f770edf9', 'fb2f0290-3820-11ed-a261-0242ac120003',
+        'MY_NAMESPACE', 'Ankeborgs Margarinfabrik'),
+       ('2025-10-01', '9999-10-01', 'false', '2281', '2025-09-30 16:40:08.966000',
+        '2025-09-30 16:40:08.966000', 'fb2f0290-3820-11ed-a261-0242ac120006',
+        'fb2f0290-3820-11ed-a261-0242ac120004', '8e5a5cfc-92d5-4797-a8c7-2fa8201cf813',
+        'fb2f0290-3820-11ed-a261-0242ac120005', 'ANOTHER_NAMESPACE', 'Ankeborgs Margarinfabrik');

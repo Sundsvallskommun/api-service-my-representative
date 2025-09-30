@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
@@ -58,6 +59,23 @@ class MandatesResourceTest {
 	}
 
 	@Test
+	void testCreateMandateWithNoEndDateShouldBeValid() {
+		final var id = UUID.randomUUID().toString();
+		final var createMandate = CreateMandateBuilder.from(createMandate()).withInactiveAfter(null).build();
+		when(mockService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(id);
+
+		webTestClient.post()
+			.uri(uriBuilder -> uriBuilder.path(BASE_URL)
+				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
+			.bodyValue(createMandate)
+			.exchange()
+			.expectStatus().isCreated()
+			.expectHeader().valueEquals("Location", String.format("/%s/%s/mandates/%s", MUNICIPALITY_ID, NAMESPACE, id));
+
+		verify(mockService).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+	}
+
+	@Test
 	void testGetMandateById() {
 		final var url = BASE_URL + "/{id}";
 		final var id = UUID.randomUUID().toString();
@@ -72,6 +90,20 @@ class MandatesResourceTest {
 			.expectBody(MandateDetails.class);
 
 		verify(mockService).getMandateDetails(MUNICIPALITY_ID, NAMESPACE, id);
+	}
+
+	@Test
+	void testDeleteMandates() {
+		final var url = BASE_URL + "/{id}";
+		final var id = UUID.randomUUID().toString();
+
+		webTestClient.delete()
+			.uri(uriBuilder -> uriBuilder.path(url)
+				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "id", id)))
+			.exchange()
+			.expectStatus().isNoContent();
+
+		verify(mockService).deleteMandate(MUNICIPALITY_ID, NAMESPACE, id);
 	}
 
 	// Unimplemented methods
@@ -96,20 +128,6 @@ class MandatesResourceTest {
 			.uri(uriBuilder -> uriBuilder.path(url)
 				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "id", id)))
 			.bodyValue(updateMandate)
-			.exchange()
-			.expectStatus().isEqualTo(HttpStatus.NOT_IMPLEMENTED);
-
-		verifyNoInteractions(mockService);
-	}
-
-	@Test
-	void testDeleteMandates() {
-		final var url = BASE_URL + "/{id}";
-		final var id = UUID.randomUUID().toString();
-
-		webTestClient.delete()
-			.uri(uriBuilder -> uriBuilder.path(url)
-				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "id", id)))
 			.exchange()
 			.expectStatus().isEqualTo(HttpStatus.NOT_IMPLEMENTED);
 
