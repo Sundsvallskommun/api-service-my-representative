@@ -2,37 +2,38 @@ package se.sundsvall.myrepresentative.integration.db.entity;
 
 import static java.time.ZoneId.systemDefault;
 import static java.time.temporal.ChronoUnit.MILLIS;
-import static org.hibernate.annotations.TimeZoneStorageType.NORMALIZE;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.OffsetDateTime;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
-import org.hibernate.annotations.TimeZoneStorage;
-import se.sundsvall.myrepresentative.api.model.MandateStatus;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "mandate",
 	indexes = {
 		@Index(name = "idx_municipality_id_signatory_party_id", columnList = "municipality_id, signatory_party_id"),
-		@Index(name = "idx_municipality_id_grantor_party_id", columnList = "municipality_id, grantor_party_id")
+		@Index(name = "idx_municipality_id_grantor_party_id", columnList = "municipality_id, grantor_party_id"),
+		@Index(name = "idx_municipality_id_grantee", columnList = "municipality_id, grantee_party_id"),
+		@Index(name = "idx_municipality_id_namespace", columnList = "municipality_id, namespace")
 	})
 public class MandateEntity {
 
-	private static final long DEFAULT_VALIDITY_YEARS = 2;
+	// Concatenating the sql to get rid of "non-escaped" characters warning.
+	private static final String STATUS_FORMULA = "case " +
+		"when deleted != 'false' then 'DELETED' " +
+		"when active_from > curdate() then 'INACTIVE' " +
+		"when inactive_after < curdate() then 'EXPIRED' " +
+		"else 'ACTIVE' " +
+		"end";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -48,47 +49,44 @@ public class MandateEntity {
 	@Column(name = "signatory_party_id", nullable = false, length = 36)
 	private String signatoryPartyId;
 
-	@OneToMany(mappedBy = "mandate", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<GranteeEntity> grantees;
+	@Column(name = "grantee_party_id", nullable = false, length = 36)
+	private String granteePartyId;
+
+	@Column(name = "namespace", nullable = false, length = 128)
+	private String namespace;
 
 	@Column(name = "municipality_id", nullable = false, length = 4)
 	private String municipalityId;
 
 	@Column(name = "created", nullable = false)
-	@TimeZoneStorage(NORMALIZE)
-	private OffsetDateTime created;
+	private LocalDateTime created;
 
 	@Column(name = "updated", nullable = false)
-	@TimeZoneStorage(NORMALIZE)
-	private OffsetDateTime updated;
+	private LocalDateTime updated;
 
-	@Column(name = "valid_from", nullable = false)
-	@TimeZoneStorage(NORMALIZE)
-	private OffsetDateTime validFrom;
+	@Column(name = "active_from", nullable = false)
+	private LocalDate activeFrom;
 
-	@Column(name = "valid_to", nullable = false)
-	@TimeZoneStorage(NORMALIZE)
-	private OffsetDateTime validTo;
+	@Column(name = "inactive_after", nullable = false)
+	private LocalDate inactiveAfter;
 
-	@Column(name = "status", nullable = false, length = 64)
-	@Enumerated(EnumType.STRING)
-	private MandateStatus status;
+	// "false" or timestamp of deletion
+	// When we soft delete the mandate we set this to a timestamp to be able to keep them unique.
+	@Column(name = "deleted", nullable = false, length = 36)
+	private String deleted = "false";
+
+	@Formula(STATUS_FORMULA)
+	private String status;
 
 	@PrePersist
 	protected void onCreate() {
-		if (validFrom == null) {
-			validFrom = OffsetDateTime.now(systemDefault()).truncatedTo(MILLIS);
-		}
-		if (validTo == null) {
-			validTo = OffsetDateTime.now(systemDefault()).plusYears(DEFAULT_VALIDITY_YEARS).truncatedTo(MILLIS);
-		}
-		created = OffsetDateTime.now(systemDefault()).truncatedTo(MILLIS);
-		updated = OffsetDateTime.now(systemDefault()).truncatedTo(MILLIS);
+		created = LocalDateTime.now(systemDefault()).truncatedTo(MILLIS);
+		updated = LocalDateTime.now(systemDefault()).truncatedTo(MILLIS);
 	}
 
 	@PreUpdate
 	protected void onUpdate() {
-		updated = OffsetDateTime.now(systemDefault()).truncatedTo(MILLIS);
+		updated = LocalDateTime.now(systemDefault()).truncatedTo(MILLIS);
 	}
 
 	public String getId() {
@@ -107,14 +105,6 @@ public class MandateEntity {
 		this.name = name;
 	}
 
-	public String getSignatoryPartyId() {
-		return signatoryPartyId;
-	}
-
-	public void setSignatoryPartyId(String signatoryPartyId) {
-		this.signatoryPartyId = signatoryPartyId;
-	}
-
 	public String getGrantorPartyId() {
 		return grantorPartyId;
 	}
@@ -123,12 +113,28 @@ public class MandateEntity {
 		this.grantorPartyId = grantorPartyId;
 	}
 
-	public List<GranteeEntity> getGrantees() {
-		return grantees;
+	public String getSignatoryPartyId() {
+		return signatoryPartyId;
 	}
 
-	public void setGrantees(List<GranteeEntity> grantees) {
-		this.grantees = grantees;
+	public void setSignatoryPartyId(String signatoryPartyId) {
+		this.signatoryPartyId = signatoryPartyId;
+	}
+
+	public String getGranteePartyId() {
+		return granteePartyId;
+	}
+
+	public void setGranteePartyId(String granteePartyId) {
+		this.granteePartyId = granteePartyId;
+	}
+
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
 	}
 
 	public String getMunicipalityId() {
@@ -139,43 +145,51 @@ public class MandateEntity {
 		this.municipalityId = municipalityId;
 	}
 
-	public OffsetDateTime getCreated() {
+	public LocalDateTime getCreated() {
 		return created;
 	}
 
-	public void setCreated(OffsetDateTime created) {
+	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
 
-	public OffsetDateTime getUpdated() {
+	public LocalDateTime getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(OffsetDateTime updated) {
+	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
 
-	public OffsetDateTime getValidFrom() {
-		return validFrom;
+	public LocalDate getActiveFrom() {
+		return activeFrom;
 	}
 
-	public void setValidFrom(OffsetDateTime validFrom) {
-		this.validFrom = validFrom;
+	public void setActiveFrom(LocalDate activeFrom) {
+		this.activeFrom = activeFrom;
 	}
 
-	public OffsetDateTime getValidTo() {
-		return validTo;
+	public LocalDate getInactiveAfter() {
+		return inactiveAfter;
 	}
 
-	public void setValidTo(OffsetDateTime validTo) {
-		this.validTo = validTo;
+	public void setInactiveAfter(LocalDate inactiveAfter) {
+		this.inactiveAfter = inactiveAfter;
 	}
 
-	public MandateStatus getStatus() {
+	public String getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(String deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(MandateStatus status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -199,8 +213,8 @@ public class MandateEntity {
 		return this;
 	}
 
-	public MandateEntity withGrantees(List<GranteeEntity> grantees) {
-		this.grantees = grantees;
+	public MandateEntity withGrantee(String grantee) {
+		this.granteePartyId = grantee;
 		return this;
 	}
 
@@ -209,27 +223,37 @@ public class MandateEntity {
 		return this;
 	}
 
-	public MandateEntity withCreated(OffsetDateTime created) {
+	public MandateEntity withCreated(LocalDateTime created) {
 		this.created = created;
 		return this;
 	}
 
-	public MandateEntity withUpdated(OffsetDateTime updated) {
+	public MandateEntity withUpdated(LocalDateTime updated) {
 		this.updated = updated;
 		return this;
 	}
 
-	public MandateEntity withValidFrom(OffsetDateTime validFrom) {
-		this.validFrom = validFrom;
+	public MandateEntity withActiveFrom(LocalDate activeFrom) {
+		this.activeFrom = activeFrom;
 		return this;
 	}
 
-	public MandateEntity withValidTo(OffsetDateTime validTo) {
-		this.validTo = validTo;
+	public MandateEntity withInactiveAfter(LocalDate inactiveAfter) {
+		this.inactiveAfter = inactiveAfter;
 		return this;
 	}
 
-	public MandateEntity withStatus(MandateStatus status) {
+	public MandateEntity withDeleted(String deleted) {
+		this.deleted = deleted;
+		return this;
+	}
+
+	public MandateEntity withNamespace(String namespace) {
+		this.namespace = namespace;
+		return this;
+	}
+
+	public MandateEntity withStatus(String status) {
 		this.status = status;
 		return this;
 	}
@@ -238,17 +262,14 @@ public class MandateEntity {
 	public boolean equals(Object o) {
 		if (!(o instanceof final MandateEntity that))
 			return false;
-
-		return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(signatoryPartyId, that.signatoryPartyId)
-			&& Objects.equals(grantorPartyId, that.grantorPartyId) && Objects.equals(grantees, that.grantees)
-			&& Objects.equals(municipalityId, that.municipalityId) && Objects.equals(created, that.created)
-			&& Objects.equals(updated, that.updated) && Objects.equals(validFrom, that.validFrom)
-			&& Objects.equals(validTo, that.validTo) && status == that.status;
+		return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(grantorPartyId, that.grantorPartyId) && Objects.equals(signatoryPartyId, that.signatoryPartyId) && Objects.equals(granteePartyId, that.granteePartyId)
+			&& Objects.equals(namespace, that.namespace) && Objects.equals(municipalityId, that.municipalityId) && Objects.equals(created, that.created) && Objects.equals(updated, that.updated) && Objects.equals(activeFrom, that.activeFrom) && Objects
+				.equals(inactiveAfter, that.inactiveAfter) && Objects.equals(deleted, that.deleted) && Objects.equals(status, that.status);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, signatoryPartyId, grantorPartyId, grantees, municipalityId, created, updated, validFrom, validTo, status);
+		return Objects.hash(id, name, grantorPartyId, signatoryPartyId, granteePartyId, namespace, municipalityId, created, updated, activeFrom, inactiveAfter, deleted, status);
 	}
 
 	@Override
@@ -256,15 +277,17 @@ public class MandateEntity {
 		return "MandateEntity{" +
 			"id='" + id + '\'' +
 			", name='" + name + '\'' +
-			", signatoryPartyId='" + signatoryPartyId + '\'' +
 			", grantorPartyId='" + grantorPartyId + '\'' +
-			", grantees=" + grantees +
+			", signatoryPartyId='" + signatoryPartyId + '\'' +
+			", granteePartyId='" + granteePartyId + '\'' +
+			", namespace='" + namespace + '\'' +
 			", municipalityId='" + municipalityId + '\'' +
 			", created=" + created +
 			", updated=" + updated +
-			", validFrom=" + validFrom +
-			", validTo=" + validTo +
-			", status=" + status +
+			", activeFrom=" + activeFrom +
+			", inactiveAfter=" + inactiveAfter +
+			", deleted='" + deleted + '\'' +
+			", status='" + status + '\'' +
 			'}';
 	}
 }

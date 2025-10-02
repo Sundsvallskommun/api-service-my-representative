@@ -1,32 +1,29 @@
 package se.sundsvall.myrepresentative.api.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static se.sundsvall.myrepresentative.TestObjectFactory.ACTIVE_FROM;
+import static se.sundsvall.myrepresentative.TestObjectFactory.INACTIVE_AFTER;
 
-import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class UpdateMandateTest {
 
 	private static final String ID = UUID.randomUUID().toString();
-	private static final List<GranteeDetails> GRANTEE_DETAILS = List.of(GranteeDetailsBuilder.create().build());
-	private static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
-	private static final OffsetDateTime VALID_TO = VALID_FROM.plusDays(30);
+	private static final GranteeDetails GRANTEE_DETAILS = GranteeDetailsBuilder.create().build();
 
 	@Test
 	void testConstructor() {
-		final var updateMandate = new UpdateMandate(ID, GRANTEE_DETAILS, VALID_FROM, VALID_TO);
+		final var updateMandate = new UpdateMandate(GRANTEE_DETAILS, ACTIVE_FROM, INACTIVE_AFTER);
 		assertBean(updateMandate);
 	}
 
 	@Test
 	void testBuilder() {
 		final var updateMandate = UpdateMandateBuilder.create()
-			.withId(ID)
 			.withGranteeDetails(GRANTEE_DETAILS)
-			.withValidFrom(VALID_FROM)
-			.withValidTo(VALID_TO)
+			.withActiveFrom(ACTIVE_FROM)
+			.withInactiveAfter(INACTIVE_AFTER)
 			.build();
 
 		assertBean(updateMandate);
@@ -34,15 +31,14 @@ class UpdateMandateTest {
 
 	@Test
 	void noDirtOnEmptyBean() {
-		assertThat(new UpdateMandate(null, null, null, null)).hasAllNullFieldsOrProperties();
+		assertThat(new UpdateMandate(null, null, null)).hasAllNullFieldsOrProperties();
 		assertThat(UpdateMandateBuilder.create().build()).hasAllNullFieldsOrProperties();
 	}
 
 	private void assertBean(UpdateMandate updateMandate) {
-		assertThat(updateMandate.id()).isEqualTo(ID);
 		assertThat(updateMandate.granteeDetails()).isEqualTo(GRANTEE_DETAILS);
-		assertThat(updateMandate.validFrom()).isEqualTo(VALID_FROM);
-		assertThat(updateMandate.validTo()).isEqualTo(VALID_TO);
+		assertThat(updateMandate.activeFrom()).isEqualTo(ACTIVE_FROM);
+		assertThat(updateMandate.inactiveAfter()).isEqualTo(INACTIVE_AFTER);
 
 		assertThat(updateMandate).hasNoNullFieldsOrProperties();
 	}

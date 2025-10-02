@@ -1,24 +1,28 @@
 package se.sundsvall.myrepresentative.api.model;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.OffsetDateTime;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.myrepresentative.config.Builder;
 
 /**
  * Mandate details.
  * 
+ * @param id             the id of the mandate
  * @param grantorDetails Grantor details
- * @param granteeDetails list of grantees and their details
+ * @param granteeDetails Grantee details
+ * @param municipalityId the municipalityId where the mandate was created
+ * @param namespace      the namespace in which the mandate is valid
  * @param created        date and time when the mandate was created
- * @param validFrom      date and time from when the mandate is valid
- * @param validTo        date and time when the mandate is no longer valid
- * @param status         status of the mandate (ACTIVE | INACTIVE | DELETED) backed by {@link MandateStatus}
+ * @param updated        date and time when the mandate was last updated
+ * @param activeFrom     date and time from when the mandate is valid
+ * @param inactiveAfter  date and time when the mandate is no longer valid
+ * @param status         status of the mandate (ACTIVE | INACTIVE | EXPIRED | DELETED ) backed by {@link MandateStatus}
  */
 @Builder
 @Schema(description = "MandateDetails model")
@@ -28,13 +32,19 @@ public record MandateDetails(
 
 	@Schema(description = "Mandate grantor details", accessMode = READ_ONLY) GrantorDetails grantorDetails,
 
-	@ArraySchema(schema = @Schema(implementation = GranteeDetails.class, accessMode = READ_ONLY)) List<GranteeDetails> granteeDetails,
+	@Schema(description = "Mandate grantee details", accessMode = READ_ONLY) GranteeDetails granteeDetails,
 
-	@Schema(description = "Date and time when the mandate was created", example = "2023-11-22T15:30:00+03:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime created,
+	@Schema(description = "MunicipalityId where the mandate was created", example = "2281", accessMode = READ_ONLY) String municipalityId,
 
-	@Schema(description = "Date and time from when the mandate should be valid, if left empty it will be set to time of creation", example = "2025-01-01T12:00:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime validFrom,
+	@Schema(description = "The namespace in which the mandate is valid", accessMode = READ_ONLY) String namespace,
 
-	@Schema(description = "Date and time when the mandate should no longer be valid, if left empty it will be valid for 24 months", example = "2025-12-31T12:00:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime validTo,
+	@Schema(description = "The date and time when the mandate was created", example = "2023-11-22T15:30:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) LocalDateTime created,
 
-	@Schema(description = "Indicates whether the mandate is active or not", example = "ACTIVE | INACTIVE | DELETED", accessMode = READ_ONLY) String status) {
+	@Schema(description = "The date and time when the mandate was changed", example = "2025-11-22T15:30:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) LocalDateTime updated,
+
+	@Schema(description = "The date when the mandate becomes effective", example = "2025-01-01", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate activeFrom,
+
+	@Schema(description = "The date after which the mandate is no longer valid", example = "2025-12-31", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter,
+
+	@Schema(description = "Indicates whether the mandate is active or not", example = "ACTIVE | INACTIVE | EXPIRED | DELETED", accessMode = READ_ONLY) String status) {
 }

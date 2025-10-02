@@ -1,19 +1,17 @@
 package se.sundsvall.myrepresentative.api.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTOR_PARTY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.NAME;
+import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
 
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class GrantorDetailsTest {
 
-	private static final String GRANTOR_PARTY_ID = UUID.randomUUID().toString();
-	private static final String SIGNATORY_PARTY_ID = UUID.randomUUID().toString();
-	private static final String NAME = "Ankeborgs Margarinfabrik";
-
 	@Test
 	void testConstructor() {
-		var grantorDetails = new GrantorDetails(NAME, GRANTOR_PARTY_ID, SIGNATORY_PARTY_ID);
+		final var grantorDetails = new GrantorDetails(NAME, GRANTOR_PARTY_ID, SIGNATORY_PARTY_ID);
 		assertBean(grantorDetails);
 	}
 

@@ -11,7 +11,7 @@ class GranteeDetailsTest {
 
 	@Test
 	void testConstructor() {
-		var granteeDetails = new GranteeDetails(PARTY_ID);
+		final var granteeDetails = new GranteeDetails(PARTY_ID);
 		assertBean(granteeDetails);
 	}
 
