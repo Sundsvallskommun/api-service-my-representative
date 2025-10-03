@@ -2,19 +2,24 @@ package se.sundsvall.myrepresentative.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.within;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -46,7 +51,7 @@ class RepresentativesServiceTest {
 	@Test
 	void testCreateMandate() {
 		final var id = UUID.randomUUID().toString();
-		final var createMandate = new CreateMandateBuilder().create().build();
+		final var createMandate = CreateMandateBuilder.create().build();
 		final var mandateEntity = new MandateEntity().withId(id);
 		when(mockMapper.toMandateEntity(anyString(), anyString(), any(CreateMandate.class))).thenReturn(mandateEntity);
 		when(mockMandateRepository.save(any(MandateEntity.class))).thenReturn(mandateEntity);
@@ -87,6 +92,40 @@ class RepresentativesServiceTest {
 			});
 
 		verify(mockMandateRepository).findByIdAndMunicipalityIdAndNamespace(mandateId, MUNICIPALITY_ID, NAMESPACE);
+		verifyNoInteractions(mockMapper);
+	}
+
+	@Test
+	void testDeleteMandate() {
+		final var mandateId = UUID.randomUUID().toString();
+		var mockEntity = Mockito.mock(MandateEntity.class);
+		when(mockMandateRepository.findActiveByIdAndMunicipalityIdAndNamespace(mandateId, MUNICIPALITY_ID, NAMESPACE)).thenReturn(Optional.of(mockEntity));
+
+		representativesService.deleteMandate(MUNICIPALITY_ID, NAMESPACE, mandateId);
+
+		var captor = ArgumentCaptor.forClass(String.class);
+		verify(mockEntity).withDeleted(captor.capture());
+
+		var deletedValue = captor.getValue();
+
+		// Verify that it's a LocalDateTime (by parsing it) and that it's close to now.
+		assertThat(LocalDateTime.parse(deletedValue)).isCloseTo(LocalDateTime.now(), within(2, ChronoUnit.SECONDS));
+
+		verify(mockMandateRepository).findActiveByIdAndMunicipalityIdAndNamespace(mandateId, MUNICIPALITY_ID, NAMESPACE);
+		verify(mockMandateRepository).save(any(MandateEntity.class));
+
+		verifyNoMoreInteractions(mockEntity);
+		verifyNoInteractions(mockMapper);
+	}
+
+	@Test
+	void testDeleteMandate_shouldNotDeleteAlreadyDeleted() {
+		final var mandateId = UUID.randomUUID().toString();
+		when(mockMandateRepository.findActiveByIdAndMunicipalityIdAndNamespace(mandateId, MUNICIPALITY_ID, NAMESPACE)).thenReturn(Optional.empty());
+
+		representativesService.deleteMandate(MUNICIPALITY_ID, NAMESPACE, mandateId);
+
+		verify(mockMandateRepository).findActiveByIdAndMunicipalityIdAndNamespace(mandateId, MUNICIPALITY_ID, NAMESPACE);
 		verifyNoInteractions(mockMapper);
 	}
 }

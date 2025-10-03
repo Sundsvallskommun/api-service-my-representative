@@ -1,5 +1,6 @@
 package se.sundsvall.myrepresentative.api.model;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
@@ -22,5 +23,5 @@ public record CreateMandate(
 
 	@Schema(description = "The date when the mandate becomes effective", example = "2025-08-01", requiredMode = REQUIRED) @NotNull @DateTimeFormat(iso = DATE) LocalDate activeFrom,
 
-	@Schema(description = "The date after which the mandate is no longer valid", example = "2025-12-31", requiredMode = REQUIRED) @NotNull @DateTimeFormat(iso = DATE) LocalDate inactiveAfter) {
+	@Schema(description = "The date after which the mandate is no longer valid, if not provided it will be set to activeFrom + 36 months", example = "2025-12-31", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter) {
 }

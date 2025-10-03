@@ -2,7 +2,7 @@ create table mandate
 (
     active_from        date         not null,
     inactive_after     date         not null,
-    deleted            varchar(36)  default 'false' not null,
+    deleted            varchar(28)  default 'false' not null,
     municipality_id    varchar(4)   not null,
     created            datetime(6)  not null,
     updated            datetime(6)  not null,

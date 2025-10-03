@@ -9,6 +9,7 @@ import se.sundsvall.myrepresentative.api.model.GranteeDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.GrantorDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.UpdateMandate;
 import se.sundsvall.myrepresentative.api.model.UpdateMandateBuilder;
+import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 
 public final class TestObjectFactory {
 
@@ -51,5 +52,23 @@ public final class TestObjectFactory {
 			.withActiveFrom(LocalDate.now())
 			.withInactiveAfter(LocalDate.now().plusDays(10))
 			.build();
+	}
+
+	public static MandateEntity createMandateEntity(boolean isDeleted) {
+		return new MandateEntity()
+			.withId(ID)
+			.withMunicipalityId(MUNICIPALITY_ID)
+			.withNamespace(NAMESPACE)
+			.withName(NAME)
+			.withGrantorPartyId(GRANTOR_PARTY_ID)
+			.withSignatoryPartyId(SIGNATORY_PARTY_ID)
+			.withGrantee(GRANTEE_PARTY_ID)
+			.withActiveFrom(ACTIVE_FROM)
+			.withInactiveAfter(INACTIVE_AFTER)
+			.withCreated(CREATED)
+			.withUpdated(UPDATED)
+			// If true, set deleted to current time, else set to "false"
+			.withDeleted(isDeleted ? LocalDateTime.now().toString() : DELETED)
+			.withStatus(STATUS);
 	}
 }

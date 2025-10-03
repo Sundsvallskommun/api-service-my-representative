@@ -2,6 +2,7 @@ package se.sundsvall.myrepresentative.integration.db.entity;
 
 import static java.time.ZoneId.systemDefault;
 import static java.time.temporal.ChronoUnit.MILLIS;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.Formula;
+import org.zalando.problem.Problem;
 
 @Entity
 @Table(name = "mandate",
@@ -27,7 +29,11 @@ import org.hibernate.annotations.Formula;
 	})
 public class MandateEntity {
 
-	// Concatenating the sql to get rid of "non-escaped" characters warning.
+	// If no value is provided for inactiveAfter, we set it to activeFrom + DEFAULT_VALID_YEARS (3 years)
+	private static final int DEFAULT_VALID_YEARS = 3;
+	public static final String NOT_DELETED = "false";
+
+	// Concatenating the sql to get rid of "non-escaped" characters warning when using text-block.
 	private static final String STATUS_FORMULA = "case " +
 		"when deleted != 'false' then 'DELETED' " +
 		"when active_from > curdate() then 'INACTIVE' " +
@@ -71,9 +77,10 @@ public class MandateEntity {
 	private LocalDate inactiveAfter;
 
 	// "false" or timestamp of deletion
-	// When we soft delete the mandate we set this to a timestamp to be able to keep them unique.
-	@Column(name = "deleted", nullable = false, length = 36)
-	private String deleted = "false";
+	// When we soft delete the mandate we set this to a timestamp with the format "yyyy-MM-dd'T'HH:mm:ss.SSSSSS" to be able
+	// to keep them unique.
+	@Column(name = "deleted", nullable = false, length = 28)
+	private String deleted = NOT_DELETED;
 
 	@Formula(STATUS_FORMULA)
 	private String status;
@@ -82,6 +89,17 @@ public class MandateEntity {
 	protected void onCreate() {
 		created = LocalDateTime.now(systemDefault()).truncatedTo(MILLIS);
 		updated = LocalDateTime.now(systemDefault()).truncatedTo(MILLIS);
+
+		if (inactiveAfter == null && activeFrom != null) {
+			inactiveAfter = activeFrom.plusYears(3);
+		} else {
+			// This should never occur as we have validation for this in the API layer, but just to be sure.
+			throw Problem.builder()
+				.withTitle("Cannot set validity period for mandate")
+				.withStatus(INTERNAL_SERVER_ERROR)
+				.withDetail("activeFrom and/or incactiveAfter is null, cannot set validity period")
+				.build();
+		}
 	}
 
 	@PreUpdate

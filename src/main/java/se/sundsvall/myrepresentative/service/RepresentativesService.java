@@ -1,7 +1,11 @@
 package se.sundsvall.myrepresentative.service;
 
 import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
+import java.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
@@ -11,6 +15,8 @@ import se.sundsvall.myrepresentative.integration.db.MandateRepository;
 
 @Service
 public class RepresentativesService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(RepresentativesService.class);
 
 	private final MandateRepository mandateRepository;
 	private final Mapper mapper;
@@ -57,5 +63,22 @@ public class RepresentativesService {
 				.withDetail("Couldn't find any mandate with id '" + mandateId + "' for municipality '" + municipalityId +
 					"' and namespace '" + namespace + "'")
 				.build());
+	}
+
+	/**
+	 * Soft deletes the mandate for the given id, municipalityId and namespace.
+	 * 
+	 * @param municipalityId municipalityId
+	 * @param namespace      namespace
+	 * @param id             id of the mandate to soft delete
+	 */
+	public void deleteMandate(final String municipalityId, final String namespace, final String id) {
+		// We don't delete the entity, we just mark it as deleted using a timestamp to be able to keep them unique.
+		mandateRepository.findActiveByIdAndMunicipalityIdAndNamespace(sanitizeForLogging(id), municipalityId, namespace)
+			.ifPresent(mandateEntity -> {
+				LOG.info("Soft deleting mandate with id {}", sanitizeForLogging(id));
+				mandateEntity.withDeleted(LocalDateTime.now().toString());
+				mandateRepository.save(mandateEntity);
+			});
 	}
 }
