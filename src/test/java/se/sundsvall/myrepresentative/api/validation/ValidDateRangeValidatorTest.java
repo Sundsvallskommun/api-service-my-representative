@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
 
@@ -84,10 +85,11 @@ class ValidDateRangeValidatorTest {
 			Arguments.of("activeFrom has passed but not invalidAfter", createMandate(now.minusWeeks(1), now.plusWeeks(1)), true));
 	}
 
-	private static CreateMandate createMandate(LocalDate activeFrom, LocalDate invalidAfter) {
-		return CreateMandateBuilder.create()
+	private static CreateMandate createMandate(LocalDate activeFrom, LocalDate inactiveAfter) {
+		final var mandate = TestObjectFactory.createMandate();
+		return CreateMandateBuilder.from(mandate)
 			.withActiveFrom(activeFrom)
-			.withInactiveAfter(invalidAfter)
+			.withInactiveAfter(inactiveAfter)
 			.build();
 	}
 

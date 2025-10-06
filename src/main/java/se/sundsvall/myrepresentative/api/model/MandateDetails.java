@@ -6,7 +6,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.myrepresentative.config.Builder;
 
@@ -38,13 +38,15 @@ public record MandateDetails(
 
 	@Schema(description = "The namespace in which the mandate is valid", accessMode = READ_ONLY) String namespace,
 
-	@Schema(description = "The date and time when the mandate was created", example = "2023-11-22T15:30:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) LocalDateTime created,
+	@Schema(description = "The date and time when the mandate was created", example = "2023-11-22T15:30:0+02:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime created,
 
-	@Schema(description = "The date and time when the mandate was changed", example = "2025-11-22T15:30:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) LocalDateTime updated,
+	@Schema(description = "The date and time when the mandate was changed", example = "2025-11-22T15:30:00+02:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime updated,
 
 	@Schema(description = "The date when the mandate becomes effective", example = "2025-01-01", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate activeFrom,
 
 	@Schema(description = "The date after which the mandate is no longer valid", example = "2025-12-31", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter,
 
-	@Schema(description = "Indicates whether the mandate is active or not", example = "ACTIVE | INACTIVE | EXPIRED | DELETED", accessMode = READ_ONLY) String status) {
+	@Schema(description = "Indicates whether the mandate is active or not", example = "ACTIVE | INACTIVE | EXPIRED | DELETED", accessMode = READ_ONLY) String status,
+
+	@Schema(description = "Signing information related to the mandate", accessMode = READ_ONLY) SigningInfo signingInfo) {
 }
