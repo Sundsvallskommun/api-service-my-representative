@@ -12,9 +12,7 @@ import static org.mockito.Mockito.when;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
@@ -129,11 +127,5 @@ class RepresentativesServiceTest {
 
 		verify(mockMandateRepository).findActiveByIdAndMunicipalityIdAndNamespace(mandateId, MUNICIPALITY_ID, NAMESPACE);
 		verifyNoInteractions(mockMapper);
-	}
-
-	@Test
-	void test() {
-		var min = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
-		System.out.println(min);
 	}
 }

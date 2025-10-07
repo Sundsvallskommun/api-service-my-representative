@@ -49,7 +49,7 @@ public record SigningInfo(
 
 	@Builder
 	public record StepUp(
-		@Schema(description = "Whether an MRTD check was performed before the order was completed", example = "true", requiredMode = REQUIRED) @NotNull Boolean mrtd) {
+		@Schema(description = "Whether an MRTD check was performed before the order was completed", example = "true", requiredMode = REQUIRED) boolean mrtd) {
 	}
 
 	@Builder
