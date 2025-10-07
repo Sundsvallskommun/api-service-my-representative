@@ -1,9 +1,11 @@
 package se.sundsvall.myrepresentative.service;
 
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static org.zalando.problem.Status.NOT_FOUND;
 import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class RepresentativesService {
 	 * Throws a Problem with status 409 if a mandate already exists with the same municipalityId, namespace, grantorPartyId,
 	 * granteePartyId,
 	 * deleted value and overlapping activeFrom/inactiveAfter period. Handled in the {@link DataIntegrityExceptionHandler}.
-	 * 
+	 *
 	 * @param  municipalityId municipalityId
 	 * @param  namespace      namespace in which the mandate should be created
 	 * @param  request        the mandate to create
@@ -48,7 +50,7 @@ public class RepresentativesService {
 	/**
 	 * Retrieves the mandate for the given id, municipalityId and namespace.
 	 * Throws a Problem with status 404 if no mandate is found with the given id
-	 * 
+	 *
 	 * @param  municipalityId municipalityId
 	 * @param  namespace      namespace
 	 * @param  mandateId      the id of the mandate to retrieve
@@ -67,7 +69,8 @@ public class RepresentativesService {
 
 	/**
 	 * Soft deletes the mandate for the given id, municipalityId and namespace.
-	 * 
+	 * The soft delete is done by setting the 'deleted' attribute to the current timestamp.
+	 *
 	 * @param municipalityId municipalityId
 	 * @param namespace      namespace
 	 * @param id             id of the mandate to soft delete
@@ -77,7 +80,7 @@ public class RepresentativesService {
 		mandateRepository.findActiveByIdAndMunicipalityIdAndNamespace(sanitizeForLogging(id), municipalityId, namespace)
 			.ifPresent(mandateEntity -> {
 				LOG.info("Soft deleting mandate with id {}", sanitizeForLogging(id));
-				mandateEntity.withDeleted(LocalDateTime.now().toString());
+				mandateEntity.withDeleted(OffsetDateTime.now(ZoneId.systemDefault()).truncatedTo(MILLIS));
 				mandateRepository.save(mandateEntity);
 			});
 	}

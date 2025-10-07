@@ -1,6 +1,9 @@
 package se.sundsvall.myrepresentative.integration.db;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
@@ -10,10 +13,10 @@ public interface MandateRepository extends JpaRepository<MandateEntity, String> 
 
 	Optional<MandateEntity> findByIdAndMunicipalityIdAndNamespace(String id, String municipalityId, String namespace);
 
-	Optional<MandateEntity> findByIdAndMunicipalityIdAndNamespaceAndDeletedIs(String id, String municipalityId, String namespace, String deleted);
+	Optional<MandateEntity> findByIdAndMunicipalityIdAndNamespaceAndDeletedIs(String id, String municipalityId, String namespace, OffsetDateTime deleted);
 
 	// Convenience method for finding non-deleted mandates
 	default Optional<MandateEntity> findActiveByIdAndMunicipalityIdAndNamespace(String id, String municipalityId, String namespace) {
-		return findByIdAndMunicipalityIdAndNamespaceAndDeletedIs(id, municipalityId, namespace, MandateEntity.NOT_DELETED);
+		return findByIdAndMunicipalityIdAndNamespaceAndDeletedIs(id, municipalityId, namespace, OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
 	}
 }

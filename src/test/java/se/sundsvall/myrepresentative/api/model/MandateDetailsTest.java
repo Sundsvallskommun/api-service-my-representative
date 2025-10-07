@@ -9,6 +9,7 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 import static se.sundsvall.myrepresentative.TestObjectFactory.STATUS;
 import static se.sundsvall.myrepresentative.TestObjectFactory.UPDATED;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createSigningInfo;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +17,11 @@ class MandateDetailsTest {
 
 	private static final GrantorDetails GRANTOR_DETAILS = GrantorDetailsBuilder.create().build();
 	private static final GranteeDetails GRANTEE_DETAILS = GranteeDetailsBuilder.create().build();
+	private static final SigningInfo SIGNING_INFO = createSigningInfo();
 
 	@Test
 	void testConstructor() {
-		final var mandateDetails = new MandateDetails(ID, GRANTOR_DETAILS, GRANTEE_DETAILS, MUNICIPALITY_ID, NAMESPACE, CREATED, UPDATED, ACTIVE_FROM, INACTIVE_AFTER, STATUS);
+		final var mandateDetails = new MandateDetails(ID, GRANTOR_DETAILS, GRANTEE_DETAILS, MUNICIPALITY_ID, NAMESPACE, CREATED, UPDATED, ACTIVE_FROM, INACTIVE_AFTER, STATUS, SIGNING_INFO);
 		assertBean(mandateDetails);
 	}
 
@@ -36,6 +38,7 @@ class MandateDetailsTest {
 			.withActiveFrom(ACTIVE_FROM)
 			.withInactiveAfter(INACTIVE_AFTER)
 			.withStatus(STATUS)
+			.withSigningInfo(SIGNING_INFO)
 			.build();
 
 		assertBean(mandateDetails);
@@ -43,7 +46,7 @@ class MandateDetailsTest {
 
 	@Test
 	void noDirtOnEmptyBean() {
-		assertThat(new MandateDetails(null, null, null, null, null, null, null, null, null, null)).hasAllNullFieldsOrProperties();
+		assertThat(new MandateDetails(null, null, null, null, null, null, null, null, null, null, null)).hasAllNullFieldsOrProperties();
 		assertThat(MandateDetailsBuilder.create().build()).hasAllNullFieldsOrProperties();
 	}
 
@@ -58,6 +61,7 @@ class MandateDetailsTest {
 		assertThat(mandateDetails.activeFrom()).isEqualTo(ACTIVE_FROM);
 		assertThat(mandateDetails.inactiveAfter()).isEqualTo(INACTIVE_AFTER);
 		assertThat(mandateDetails.status()).isEqualTo(STATUS);
+		assertThat(mandateDetails.signingInfo()).isEqualTo(SIGNING_INFO);
 
 		assertThat(mandateDetails).hasNoNullFieldsOrProperties();
 	}

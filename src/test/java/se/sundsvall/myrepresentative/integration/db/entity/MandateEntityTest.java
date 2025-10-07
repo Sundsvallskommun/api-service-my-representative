@@ -1,12 +1,11 @@
 package se.sundsvall.myrepresentative.integration.db.entity;
 
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
-import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
-import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
-import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanToString;
-import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsFor;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCodeFor;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanToStringExcluding;
 import static com.google.code.beanmatchers.BeanMatchers.registerValueGenerator;
-import static java.time.LocalDateTime.now;
+import static java.time.OffsetDateTime.now;
 import static java.time.ZoneId.systemDefault;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -15,7 +14,6 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 import static se.sundsvall.myrepresentative.TestObjectFactory.ACTIVE_FROM;
 import static se.sundsvall.myrepresentative.TestObjectFactory.CREATED;
-import static se.sundsvall.myrepresentative.TestObjectFactory.DELETED;
 import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTEE_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTOR_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.ID;
@@ -23,12 +21,14 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.INACTIVE_AFTER;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAME;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
+import static se.sundsvall.myrepresentative.TestObjectFactory.NOT_DELETED;
 import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.STATUS;
 import static se.sundsvall.myrepresentative.TestObjectFactory.UPDATED;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createSigningInfoEntity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import org.hamcrest.MatcherAssert;
@@ -38,20 +38,21 @@ import org.zalando.problem.ThrowableProblem;
 
 class MandateEntityTest {
 
+	private static final SigningInformationEntity SIGNING_INFORMATION = createSigningInfoEntity();
+
 	@BeforeAll
 	static void beforeAll() {
-		registerValueGenerator(() -> now().plusDays(new Random().nextInt()), LocalDateTime.class);
+		registerValueGenerator(() -> now().plusDays(new Random().nextInt()), OffsetDateTime.class);
 		registerValueGenerator(() -> LocalDate.now().plusDays(new Random().nextInt()), LocalDate.class);
 	}
 
 	@Test
 	void testBean() {
-		MatcherAssert.assertThat(MandateEntity.class, allOf(
+		MatcherAssert.assertThat(SigningInformationEntity.class, allOf(
 			hasValidBeanConstructor(),
-			hasValidGettersAndSetters(),
-			hasValidBeanHashCode(),
-			hasValidBeanEquals(),
-			hasValidBeanToString()));
+			hasValidBeanHashCodeFor("id"),
+			hasValidBeanEqualsFor("id"),
+			hasValidBeanToStringExcluding("ocspResponse", "signatureData")));
 	}
 
 	@Test
@@ -66,10 +67,11 @@ class MandateEntityTest {
 			.withUpdated(UPDATED)
 			.withActiveFrom(ACTIVE_FROM)
 			.withInactiveAfter(INACTIVE_AFTER)
-			.withDeleted(DELETED)
+			.withDeleted(NOT_DELETED)
 			.withGrantee(GRANTEE_PARTY_ID)
 			.withNamespace(NAMESPACE)
-			.withStatus(STATUS);
+			.withStatus(STATUS)
+			.addSigningInformation(SIGNING_INFORMATION);
 
 		assertBean(entity);
 	}
@@ -86,10 +88,11 @@ class MandateEntityTest {
 		entity.setUpdated(UPDATED);
 		entity.setActiveFrom(ACTIVE_FROM);
 		entity.setInactiveAfter(INACTIVE_AFTER);
-		entity.setDeleted(DELETED);
+		entity.setDeleted(NOT_DELETED);
 		entity.setGranteePartyId(GRANTEE_PARTY_ID);
 		entity.setNamespace(NAMESPACE);
 		entity.setStatus(STATUS);
+		entity.addSigningInformation(SIGNING_INFORMATION); // Not really a setter but it's needed for the assertBean
 
 		assertBean(entity);
 	}
@@ -104,10 +107,42 @@ class MandateEntityTest {
 		assertThat(entity.getUpdated()).isEqualTo(UPDATED);
 		assertThat(entity.getActiveFrom()).isEqualTo(ACTIVE_FROM);
 		assertThat(entity.getInactiveAfter()).isEqualTo(INACTIVE_AFTER);
-		assertThat(entity.getDeleted()).isEqualTo(DELETED);
+		assertThat(entity.getDeleted()).isEqualTo(NOT_DELETED);
 		assertThat(entity.getGranteePartyId()).isEqualTo(GRANTEE_PARTY_ID);
 		assertThat(entity.getStatus()).isEqualTo(STATUS);
+		assertThat(entity.getSigningInformation()).containsExactly(SIGNING_INFORMATION);
+
 		assertThat(entity).hasNoNullFieldsOrProperties();
+	}
+
+	@Test
+	void testAddAndGetLatestSigningInformation() {
+		var latestSigningInformation = createSigningInfoEntity();
+		latestSigningInformation.setSigned(OffsetDateTime.now(systemDefault()).truncatedTo(ChronoUnit.MILLIS));
+		var entity = new MandateEntity()
+			.addSigningInformation(SIGNING_INFORMATION)
+			.addSigningInformation(latestSigningInformation);
+
+		assertThat(entity.getLatestSigningInformation()).isEqualTo(latestSigningInformation);
+	}
+
+	@Test
+	void testAddAndGetAllSigningInformation() {
+		var latestSigningInformation = createSigningInfoEntity();
+		var entity = new MandateEntity()
+			.addSigningInformation(SIGNING_INFORMATION)
+			.addSigningInformation(latestSigningInformation);
+
+		assertThat(entity.getSigningInformation()).containsExactly(SIGNING_INFORMATION, latestSigningInformation);
+	}
+
+	@Test
+	void testGetSigningInformationReturnsUnmodifiableList() {
+		var entity = new MandateEntity()
+			.addSigningInformation(SIGNING_INFORMATION);
+
+		assertThatExceptionOfType(UnsupportedOperationException.class)
+			.isThrownBy(() -> entity.getSigningInformation().add(createSigningInfoEntity()));
 	}
 
 	@Test
@@ -139,7 +174,7 @@ class MandateEntityTest {
 
 	@Test
 	void testPreUpdate() {
-		final var preUpdate = LocalDateTime.now().minusSeconds(1);
+		final var preUpdate = OffsetDateTime.now().minusSeconds(1);
 		final var entity = new MandateEntity();
 		entity.setUpdated(preUpdate);
 
@@ -150,6 +185,6 @@ class MandateEntityTest {
 
 	@Test
 	void testNoDirtOnCreatedBean() {
-		assertThat(new MandateEntity()).hasAllNullFieldsOrPropertiesExcept("deleted");
+		assertThat(new MandateEntity()).hasAllNullFieldsOrPropertiesExcept("signingInformation");
 	}
 }

@@ -1,5 +1,7 @@
 package se.sundsvall.myrepresentative.integration.db.entity;
 
+import static org.hibernate.annotations.TimeZoneStorageType.NORMALIZE;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,14 +13,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Objects;
+import org.hibernate.annotations.TimeZoneStorage;
 
 /**
  * Entity for storing BankID signature details when operating on a mandate.
  */
 @Entity
-@Table(name = "bankid_signature")
-public class BankIdSignatureEntity {
+@Table(name = "signing_information")
+public class SigningInformationEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -46,26 +50,30 @@ public class BankIdSignatureEntity {
 	@Column(name = "ip_address", nullable = false, length = 45)
 	private String ipAddress;
 
-	@Column(name = "uhi", nullable = false, columnDefinition = "TEXT")
+	@Column(name = "uhi", nullable = false, columnDefinition = "text")
 	private String uhi;
 
 	@Column(name = "bank_id_issue_date", nullable = false)
 	private LocalDate bankIdIssueDate;
 
-	@Column(name = "mrtd_step_up")
-	private Boolean mrtdStepUp = false;
+	@Column(name = "mrtd")
+	private Boolean mrtd = false;
 
-	@Column(name = "signature_data", nullable = false, columnDefinition = "LONGTEXT")
+	@Column(name = "signature_data", nullable = false, columnDefinition = "longtext")
 	private String signatureData;
 
-	@Column(name = "ocsp_response", nullable = false, columnDefinition = "LONGTEXT")
+	@Column(name = "ocsp_response", nullable = false, columnDefinition = "longtext")
 	private String ocspResponse;
 
 	@Column(name = "risk", nullable = false, length = 20)
 	private String risk;
 
+	@TimeZoneStorage(NORMALIZE)
+	@Column(name = "signed", nullable = false)
+	private OffsetDateTime signed;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "mandate_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_bankid_signature_mandate"))
+	@JoinColumn(name = "mandate_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_signing_information_mandate"))
 	private MandateEntity mandate;
 
 	public String getId() {
@@ -148,12 +156,12 @@ public class BankIdSignatureEntity {
 		this.bankIdIssueDate = bankIdIssueDate;
 	}
 
-	public Boolean getMrtdStepUp() {
-		return mrtdStepUp;
+	public Boolean getMrtd() {
+		return mrtd;
 	}
 
-	public void setMrtdStepUp(Boolean mrtdStepUp) {
-		this.mrtdStepUp = mrtdStepUp;
+	public void setMrtd(Boolean mrtdStepUp) {
+		this.mrtd = mrtdStepUp;
 	}
 
 	public String getSignatureData() {
@@ -188,99 +196,110 @@ public class BankIdSignatureEntity {
 		this.mandate = mandate;
 	}
 
-	public BankIdSignatureEntity withId(String id) {
+	public OffsetDateTime getSigned() {
+		return signed;
+	}
+
+	public void setSigned(OffsetDateTime signed) {
+		this.signed = signed;
+	}
+
+	public SigningInformationEntity withId(String id) {
 		this.id = id;
 		return this;
 	}
 
-	public BankIdSignatureEntity withOrderRef(String orderRef) {
+	public SigningInformationEntity withOrderRef(String orderRef) {
 		this.orderRef = orderRef;
 		return this;
 	}
 
-	public BankIdSignatureEntity withStatus(String status) {
+	public SigningInformationEntity withStatus(String status) {
 		this.status = status;
 		return this;
 	}
 
-	public BankIdSignatureEntity withPersonalNumber(String personalNumber) {
+	public SigningInformationEntity withPersonalNumber(String personalNumber) {
 		this.personalNumber = personalNumber;
 		return this;
 	}
 
-	public BankIdSignatureEntity withName(String name) {
+	public SigningInformationEntity withName(String name) {
 		this.name = name;
 		return this;
 	}
 
-	public BankIdSignatureEntity withGivenName(String givenName) {
+	public SigningInformationEntity withGivenName(String givenName) {
 		this.givenName = givenName;
 		return this;
 	}
 
-	public BankIdSignatureEntity withSurname(String surname) {
+	public SigningInformationEntity withSurname(String surname) {
 		this.surname = surname;
 		return this;
 	}
 
-	public BankIdSignatureEntity withIpAddress(String ipAddress) {
+	public SigningInformationEntity withIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 		return this;
 	}
 
-	public BankIdSignatureEntity withUhi(String uhi) {
+	public SigningInformationEntity withUhi(String uhi) {
 		this.uhi = uhi;
 		return this;
 	}
 
-	public BankIdSignatureEntity withBankIdIssueDate(LocalDate bankIdIssueDate) {
+	public SigningInformationEntity withBankIdIssueDate(LocalDate bankIdIssueDate) {
 		this.bankIdIssueDate = bankIdIssueDate;
 		return this;
 	}
 
-	public BankIdSignatureEntity withMrtdStepUp(Boolean mrtdStepUp) {
-		this.mrtdStepUp = mrtdStepUp;
+	public SigningInformationEntity withMrtdStepUp(Boolean mrtdStepUp) {
+		this.mrtd = mrtdStepUp;
 		return this;
 	}
 
-	public BankIdSignatureEntity withSignatureData(String signatureData) {
+	public SigningInformationEntity withSignatureData(String signatureData) {
 		this.signatureData = signatureData;
 		return this;
 	}
 
-	public BankIdSignatureEntity withOcspResponse(String ocspResponse) {
+	public SigningInformationEntity withOcspResponse(String ocspResponse) {
 		this.ocspResponse = ocspResponse;
 		return this;
 	}
 
-	public BankIdSignatureEntity withRisk(String risk) {
+	public SigningInformationEntity withRisk(String risk) {
 		this.risk = risk;
 		return this;
 	}
 
-	public BankIdSignatureEntity withMandate(MandateEntity mandate) {
+	public SigningInformationEntity withMandate(MandateEntity mandate) {
 		this.mandate = mandate;
+		return this;
+	}
+
+	public SigningInformationEntity withSigned(OffsetDateTime signed) {
+		this.signed = signed;
 		return this;
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof final BankIdSignatureEntity that))
+		if (!(o instanceof final SigningInformationEntity that))
 			return false;
-		return Objects.equals(id, that.id) && Objects.equals(orderRef, that.orderRef) && Objects.equals(status, that.status) && Objects.equals(personalNumber, that.personalNumber) && Objects.equals(name, that.name) && Objects.equals(givenName,
-			that.givenName) && Objects.equals(surname, that.surname) && Objects.equals(ipAddress, that.ipAddress) && Objects.equals(uhi, that.uhi) && Objects.equals(bankIdIssueDate, that.bankIdIssueDate) && Objects.equals(mrtdStepUp, that.mrtdStepUp)
-			&& Objects.equals(signatureData, that.signatureData) && Objects.equals(ocspResponse, that.ocspResponse) && Objects.equals(risk, that.risk) && Objects.equals(mandate, that.mandate);
+		return Objects.equals(id, that.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, orderRef, status, personalNumber, name, givenName, surname, ipAddress, uhi, bankIdIssueDate, mrtdStepUp, signatureData, ocspResponse, risk, mandate);
+		return Objects.hashCode(id);
 	}
 
 	@Override
 	public String toString() {
-		return "BankIdSignatureEntity{" +
-			"id=" + id +
+		return "SigningInformationEntity{" +
+			"id='" + id + '\'' +
 			", orderRef='" + orderRef + '\'' +
 			", status='" + status + '\'' +
 			", personalNumber='" + personalNumber + '\'' +
@@ -290,8 +309,9 @@ public class BankIdSignatureEntity {
 			", ipAddress='" + ipAddress + '\'' +
 			", uhi='" + uhi + '\'' +
 			", bankIdIssueDate=" + bankIdIssueDate +
-			", mrtdStepUp=" + mrtdStepUp +
+			", mrtd=" + mrtd +
 			", risk='" + risk + '\'' +
+			", signed=" + signed +
 			", mandate=" + mandate +
 			'}';
 	}

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,8 +25,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.ThrowableProblem;
+import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
-import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.integration.db.MandateRepository;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
@@ -51,7 +51,7 @@ class RepresentativesServiceTest {
 	@Test
 	void testCreateMandate() {
 		final var id = UUID.randomUUID().toString();
-		final var createMandate = CreateMandateBuilder.create().build();
+		final var createMandate = TestObjectFactory.createMandate();
 		final var mandateEntity = new MandateEntity().withId(id);
 		when(mockMapper.toMandateEntity(anyString(), anyString(), any(CreateMandate.class))).thenReturn(mandateEntity);
 		when(mockMandateRepository.save(any(MandateEntity.class))).thenReturn(mandateEntity);
@@ -103,13 +103,13 @@ class RepresentativesServiceTest {
 
 		representativesService.deleteMandate(MUNICIPALITY_ID, NAMESPACE, mandateId);
 
-		var captor = ArgumentCaptor.forClass(String.class);
+		var captor = ArgumentCaptor.forClass(OffsetDateTime.class);
 		verify(mockEntity).withDeleted(captor.capture());
 
 		var deletedValue = captor.getValue();
 
-		// Verify that it's a LocalDateTime (by parsing it) and that it's close to now.
-		assertThat(LocalDateTime.parse(deletedValue)).isCloseTo(LocalDateTime.now(), within(2, ChronoUnit.SECONDS));
+		// Verify that it's an OffsetDateTime (by parsing it) and that it's close to now.
+		assertThat(deletedValue).isCloseTo(OffsetDateTime.now(), within(2, ChronoUnit.SECONDS));
 
 		verify(mockMandateRepository).findActiveByIdAndMunicipalityIdAndNamespace(mandateId, MUNICIPALITY_ID, NAMESPACE);
 		verify(mockMandateRepository).save(any(MandateEntity.class));
