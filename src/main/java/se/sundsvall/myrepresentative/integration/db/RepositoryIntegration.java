@@ -9,9 +9,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 
 @Component
@@ -46,7 +47,8 @@ public class RepositoryIntegration {
 			}, () -> LOG.info("No mandate found with id {}, nothing to delete", sanitizeForLogging(id)));
 	}
 
-	public Page<MandateEntity> searchMandates(final String municipalityId, final String namespace, final String grantorPartyId, final String granteePartyId, final String signatoryPartyId, Pageable pageable) {
-		return mandateRepository.findAllWithParameters(municipalityId, namespace, grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+	public Page<MandateEntity> searchMandates(final String municipalityId, final String namespace, SearchMandateParameters parameters) {
+		var pageable = PageRequest.of(parameters.getPage(), parameters.getLimit());
+		return mandateRepository.findAllWithParameters(municipalityId, namespace, parameters, pageable);
 	}
 }

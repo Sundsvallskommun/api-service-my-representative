@@ -2,12 +2,12 @@ package se.sundsvall.myrepresentative.service;
 
 import static org.zalando.problem.Status.NOT_FOUND;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.Mandates;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.config.DataIntegrityExceptionHandler;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 
@@ -73,8 +73,8 @@ public class RepresentativesService {
 		repositoryIntegration.deleteMandate(municipalityId, namespace, id);
 	}
 
-	public Mandates searchMandates(final String municipalityId, final String namespace, final String grantorPartyId, final String granteePartyId, final String signatoryPartyId, Pageable pageable) {
-		var foundMandates = repositoryIntegration.searchMandates(municipalityId, namespace, grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+	public Mandates searchMandates(final String municipalityId, final String namespace, SearchMandateParameters parameters) {
+		var foundMandates = repositoryIntegration.searchMandates(municipalityId, namespace, parameters);
 		return serviceMapper.toMandates(foundMandates);
 	}
 }

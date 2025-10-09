@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 
 @CircuitBreaker(name = "mandateRepository")
@@ -32,23 +33,19 @@ public interface MandateRepository extends JpaRepository<MandateEntity, String>,
 		return findByMunicipalityIdAndNamespaceAndIdAndDeletedIs(municipalityId, namespace, id, OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
 	}
 
-	default Page<MandateEntity> findAllWithParameters(final String municipalityId, final String namespace, final String grantorPartyId,
-		final String granteePartyId, final String signatoryPartyId, Pageable pageable) {
-
-		// Default sort by status (active, will conveniently be first) and created (newest first)
-		Sort sort = Sort.by(
+	default Page<MandateEntity> findAllWithParameters(final String municipalityId, final String namespace, final SearchMandateParameters parameters, final Pageable pageable) {
+		final var sort = Sort.by(
 			Sort.Order.asc("status"),
 			Sort.Order.desc("created"));
-
-		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+		final var effectivePageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), sort);
 
 		return this.findAll(
 			Specification.allOf(
 				withMunicipalityId(municipalityId)
 					.and(withNamespace(namespace))
-					.and(withGrantorPartyId(grantorPartyId))
-					.and(withGranteePartyId(granteePartyId))
-					.and(withSignatoryPartyId(signatoryPartyId))),
-			pageable);
+					.and(withGrantorPartyId(parameters.getGrantorPartyId()))
+					.and(withGranteePartyId(parameters.getGranteePartyId()))
+					.and(withSignatoryPartyId(parameters.getSignatoryPartyId()))),
+			effectivePageable);
 	}
 }

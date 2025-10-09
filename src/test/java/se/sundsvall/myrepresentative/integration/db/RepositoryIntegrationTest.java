@@ -25,7 +25,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 
 @ExtendWith(MockitoExtension.class)
@@ -109,20 +110,24 @@ class RepositoryIntegrationTest {
 
 	@Test
 	void testSearchMandates() {
-		final var grantorPartyId = UUID.randomUUID().toString();
-		final var granteePartyId = UUID.randomUUID().toString();
-		final var signatoryPartyId = UUID.randomUUID().toString();
-		final var pageable = mock(Pageable.class);
+		var parameters = new SearchMandateParameters()
+			.withGranteePartyId(UUID.randomUUID().toString())
+			.withGrantorPartyId(UUID.randomUUID().toString())
+			.withSignatoryPartyId(UUID.randomUUID().toString())
+			.withPage(1)
+			.withLimit(15);
+
+		final var pageable = PageRequest.of(parameters.getPage(), parameters.getLimit());
 		final var mandateEntity = createMandateEntity(false);
 		final var page = new PageImpl<>(List.of(mandateEntity));
 
-		when(mockRepository.findAllWithParameters(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable)).thenReturn(page);
+		when(mockRepository.findAllWithParameters(MUNICIPALITY_ID, NAMESPACE, parameters, pageable)).thenReturn(page);
 
-		var pageEntity = repositoryIntegration.searchMandates(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+		var pageEntity = repositoryIntegration.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
 
 		assertThat(pageEntity).isEqualTo(page);
 
-		verify(mockRepository).findAllWithParameters(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+		verify(mockRepository).findAllWithParameters(MUNICIPALITY_ID, NAMESPACE, parameters, pageable);
 		verifyNoInteractions(mockMapper);
 	}
 }

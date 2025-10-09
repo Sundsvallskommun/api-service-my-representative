@@ -4,10 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
@@ -24,11 +22,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 
@@ -108,22 +106,24 @@ class RepresentativesServiceTest {
 
 	@Test
 	void testSearchMandates() {
-		// Given
-		final var grantorPartyId = UUID.randomUUID().toString();
-		final var granteePartyId = UUID.randomUUID().toString();
-		final var signatoryPartyId = UUID.randomUUID().toString();
-		final var pageable = mock(Pageable.class);
+		var parameters = new SearchMandateParameters()
+			.withGranteePartyId(UUID.randomUUID().toString())
+			.withGrantorPartyId(UUID.randomUUID().toString())
+			.withSignatoryPartyId(UUID.randomUUID().toString())
+			.withPage(1)
+			.withLimit(15);
+
 		final var mandateEntity = createMandateEntity(false);
 		final var page = new PageImpl<>(List.of(mandateEntity));
 		final var mandates = MandatesBuilder.create().build();
 
-		when(mockRepositoryIntegration.searchMandates(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable)).thenReturn(page);
+		when(mockRepositoryIntegration.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters)).thenReturn(page);
 		when(mockServiceMapper.toMandates(page)).thenReturn(mandates);
 
-		var response = representativesService.searchMandates(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+		var response = representativesService.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
 		assertThat(response).isNotNull();
 		assertThat(response).isEqualTo(mandates);
-		verify(mockRepositoryIntegration).searchMandates(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+		verify(mockRepositoryIntegration).searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
 		verify(mockServiceMapper).toMandates(page);
 	}
 }

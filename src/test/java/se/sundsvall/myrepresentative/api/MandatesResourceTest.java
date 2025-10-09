@@ -17,7 +17,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -27,6 +26,7 @@ import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -117,26 +117,26 @@ class MandatesResourceTest {
 		verify(mockService).deleteMandate(MUNICIPALITY_ID, NAMESPACE, id);
 	}
 
-	// Unimplemented methods
 	@Test
 	void testSearchMandates() {
-		final var grantorPartyId = UUID.randomUUID().toString();
-		final var signatoryPartyId = UUID.randomUUID().toString();
-		final var granteePartyId = UUID.randomUUID().toString();
-		final var pageNumber = 0;
-		final var pageSize = 10;
-		final var pageable = PageRequest.of(pageNumber, pageSize);
+		var parameters = new SearchMandateParameters()
+			.withGranteePartyId(UUID.randomUUID().toString())
+			.withGrantorPartyId(UUID.randomUUID().toString())
+			.withSignatoryPartyId(UUID.randomUUID().toString())
+			.withPage(1)
+			.withLimit(15);
+
 		final var mandates = MandatesBuilder.create().build();
 
-		when(mockService.searchMandates(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable)).thenReturn(MandatesBuilder.create().build());
+		when(mockService.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters)).thenReturn(MandatesBuilder.create().build());
 
 		var response = webTestClient.get()
 			.uri(uriBuilder -> uriBuilder.path(BASE_URL)
-				.queryParam("grantorPartyId", grantorPartyId)
-				.queryParam("signatoryPartyId", signatoryPartyId)
-				.queryParam("granteePartyId", granteePartyId)
-				.queryParam("page", pageNumber)
-				.queryParam("size", pageSize)
+				.queryParam("granteePartyId", parameters.getGranteePartyId())
+				.queryParam("grantorPartyId", parameters.getGrantorPartyId())
+				.queryParam("signatoryPartyId", parameters.getSignatoryPartyId())
+				.queryParam("page", parameters.getPage())
+				.queryParam("limit", parameters.getLimit())
 				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.exchange()
 			.expectStatus().isOk()
@@ -145,9 +145,10 @@ class MandatesResourceTest {
 			.getResponseBody();
 
 		assertThat(response).isEqualTo(mandates);
-		verify(mockService).searchMandates(MUNICIPALITY_ID, NAMESPACE, grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+		verify(mockService).searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
 	}
 
+	// Unimplemented
 	@Test
 	void testUpdateMandates() {
 		final var url = BASE_URL + "/{id}";

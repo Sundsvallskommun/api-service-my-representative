@@ -45,8 +45,8 @@ class SearchMandatesResourceFailureTest {
 				.queryParam("grantorPartyId", "invalid")
 				.queryParam("signatoryPartyId", "alsoInvalid")
 				.queryParam("granteePartyId", "invalidToo")
-				.queryParam("page", 0)
-				.queryParam("size", 10)
+				.queryParam("page", 1)
+				.queryParam("limit", 10)
 				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.exchange()
 			.expectStatus().isBadRequest()
@@ -60,9 +60,9 @@ class SearchMandatesResourceFailureTest {
 			assertThat(p.getStatus()).isEqualTo(BAD_REQUEST);
 			assertThat(p.getViolations()).extracting(Violation::getField, Violation::getMessage)
 				.containsExactlyInAnyOrder(
-					tuple("searchMandates.grantorPartyId", "not a valid UUID"),
-					tuple("searchMandates.granteePartyId", "not a valid UUID"),
-					tuple("searchMandates.signatoryPartyId", "not a valid UUID"));
+					tuple("grantorPartyId", "not a valid UUID"),
+					tuple("granteePartyId", "not a valid UUID"),
+					tuple("signatoryPartyId", "not a valid UUID"));
 		});
 
 		verifyNoInteractions(mockService);

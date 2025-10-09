@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
@@ -55,27 +56,36 @@ class MandateRepositoryTest {
 
 	@Test
 	void testFindAllWithEmptySpecifications() {
-		final var pageable = PageRequest.of(0, 10);
-		final var mandates = mandateRepository.findAllWithParameters(null, null, null, null, null, pageable);
+		final var pageable = PageRequest.of(1, 10);
+		final var mandates = mandateRepository.findAllWithParameters(null, null, new SearchMandateParameters(), pageable);
 		assertThat(mandates).isNotNull();
 		assertThat(mandates.getContent()).hasSize(3);
 	}
 
 	@ParameterizedTest(name = "{0}")
 	@MethodSource("specificationProvider")
-	void testFindAllWithSpecifications(String testName, String grantorPartyId, String granteePartyId, String signatoryPartyId, String wantedId) {
-		final var pageable = PageRequest.of(0, 10);
-
-		final var mandates = mandateRepository.findAllWithParameters(MUNICIPALITY_ID, "MY_NAMESPACE", grantorPartyId, granteePartyId, signatoryPartyId, pageable);
+	void testFindAllWithSpecifications(String testName, SearchMandateParameters parameters, String wantedId) {
+		final var pageable = PageRequest.of(parameters.getPage(), parameters.getLimit());
+		final var mandates = mandateRepository.findAllWithParameters(MUNICIPALITY_ID, "MY_NAMESPACE", parameters, pageable);
 		assertThat(mandates).isNotNull();
 		assertThat(mandates.getContent().getFirst().getId()).isEqualTo(wantedId);
+
 	}
 
 	public static Stream<Arguments> specificationProvider() {
 		return Stream.of(
-			Arguments.of("only grantor", "fb2f0290-3820-11ed-a261-0242ac120002", null, null, "1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0"),
-			Arguments.of("only grantee", null, "fb2f0290-3820-11ed-a261-0242ac120004", null, "1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0"),
-			Arguments.of("only signatory", null, null, "fb2f0290-3820-11ed-a261-0242ac120003", "1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0"),
-			Arguments.of("everyone!", "fb2f0290-3820-11ed-a261-0242ac120005", "fb2f0290-3820-11ed-a261-0242ac120007", "fb2f0290-3820-11ed-a261-0242ac120006", "60850465-28d4-4caa-8e9d-69187461cb27"));
+			Arguments.of("only grantor", createSearchMandateParameters("fb2f0290-3820-11ed-a261-0242ac120002", null, null), "1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0"),
+			Arguments.of("only grantee", createSearchMandateParameters(null, "fb2f0290-3820-11ed-a261-0242ac120004", null), "1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0"),
+			Arguments.of("only signatory", createSearchMandateParameters(null, null, "fb2f0290-3820-11ed-a261-0242ac120003"), "1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0"),
+			Arguments.of("everyone!", createSearchMandateParameters("fb2f0290-3820-11ed-a261-0242ac120005", "fb2f0290-3820-11ed-a261-0242ac120007", "fb2f0290-3820-11ed-a261-0242ac120006"), "60850465-28d4-4caa-8e9d-69187461cb27"));
+	}
+
+	private static SearchMandateParameters createSearchMandateParameters(final String grantorPartyId, final String granteePartyId, final String signatoryPartyId) {
+		return new SearchMandateParameters()
+			.withGrantorPartyId(grantorPartyId)
+			.withGranteePartyId(granteePartyId)
+			.withSignatoryPartyId(signatoryPartyId)
+			.withPage(1)
+			.withLimit(15);
 	}
 }
