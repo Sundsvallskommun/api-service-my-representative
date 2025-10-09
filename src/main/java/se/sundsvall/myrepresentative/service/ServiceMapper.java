@@ -1,10 +1,13 @@
 package se.sundsvall.myrepresentative.service;
 
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-import se.sundsvall.myrepresentative.api.model.CreateMandate;
+import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
 import se.sundsvall.myrepresentative.api.model.DeviceBuilder;
 import se.sundsvall.myrepresentative.api.model.GranteeDetails;
 import se.sundsvall.myrepresentative.api.model.GranteeDetailsBuilder;
@@ -13,6 +16,8 @@ import se.sundsvall.myrepresentative.api.model.GrantorDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.MandateStatus;
+import se.sundsvall.myrepresentative.api.model.Mandates;
+import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
 import se.sundsvall.myrepresentative.api.model.StepUpBuilder;
@@ -21,62 +26,7 @@ import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
 
 @Component
-public class Mapper {
-
-	public MandateEntity toMandateEntity(final String municipalityId, final String namespace, final CreateMandate createMandate) {
-		return ofNullable(createMandate)
-			.map(mandate -> new MandateEntity()
-				.withMunicipalityId(municipalityId)
-				.withGrantorPartyId(of(mandate.grantorDetails())
-					.map(GrantorDetails::grantorPartyId)
-					.orElse(null))
-				.withSignatoryPartyId(of(mandate.grantorDetails())
-					.map(GrantorDetails::signatoryPartyId)
-					.orElse(null))
-				.withGrantee(of(mandate.granteeDetails())
-					.map(GranteeDetails::partyId)
-					.orElse(null))
-				.withName(mandate.grantorDetails().name())
-				.withActiveFrom(mandate.activeFrom())
-				.withInactiveAfter(mandate.inactiveAfter())
-				.withNamespace(namespace)
-				.addSigningInformation(toSigningInformationEntity(createMandate.signingInfo())))
-			.orElse(null);
-	}
-
-	private SigningInformationEntity toSigningInformationEntity(final SigningInfo signingInfo) {
-		return ofNullable(signingInfo)
-			.map(info -> new SigningInformationEntity()
-				.withStatus(signingInfo.status())
-				.withSigned(signingInfo.signed())
-				.withOrderRef(signingInfo.orderRef())
-				.withSignatureData(signingInfo.signature())
-				.withOcspResponse(signingInfo.ocspResponse())
-				.withBankIdIssueDate(signingInfo.issued())
-				.withPersonalNumber(of(signingInfo.user())
-					.map(SigningInfo.User::personalNumber)
-					.orElse(null))
-				.withName(of(signingInfo.user())
-					.map(SigningInfo.User::name)
-					.orElse(null))
-				.withGivenName(of(signingInfo.user())
-					.map(SigningInfo.User::givenName)
-					.orElse(null))
-				.withSurname(of(signingInfo.user())
-					.map(SigningInfo.User::surname)
-					.orElse(null))
-				.withUhi(of(signingInfo.device())
-					.map(SigningInfo.Device::uhi)
-					.orElse(null))
-				.withIpAddress(of(signingInfo.device())
-					.map(SigningInfo.Device::ipAddress)
-					.orElse(null))
-				.withMrtdStepUp(of(signingInfo.stepUp())
-					.map(SigningInfo.StepUp::mrtd)
-					.orElse(null))
-				.withRisk(signingInfo.risk()))
-			.orElse(null);
-	}
+public class ServiceMapper {
 
 	public SigningInfo toSigningInfo(final SigningInformationEntity entity) {
 		return ofNullable(entity)
@@ -123,7 +73,33 @@ public class Mapper {
 			.orElse(null);
 	}
 
-	public MandateDetails toMandateDetails(final MandateEntity mandateEntity) {
+	public Mandates toMandates(final Page<MandateEntity> mandatePage) {
+		return ofNullable(mandatePage)
+			.map(page -> MandatesBuilder.create()
+				.withMandateDetailsList(toMandateDetailsList(page.getContent()))
+				.withMetaData(PagingAndSortingMetaData.create().withPageData(page))
+				.build())
+			.orElse(null);
+	}
+
+	private List<MandateDetails> toMandateDetailsList(final List<MandateEntity> entities) {
+		return ofNullable(entities)
+			.orElse(Collections.emptyList())
+			.stream()
+			.map(this::toMandateDetailsWithoutSigningInfo)
+			.filter(Objects::nonNull)
+			.toList();
+	}
+
+	public MandateDetails toMandateDetailsWithSigningInfo(final MandateEntity mandateEntity) {
+		return toMandateDetails(mandateEntity, true);
+	}
+
+	public MandateDetails toMandateDetailsWithoutSigningInfo(final MandateEntity mandateEntity) {
+		return toMandateDetails(mandateEntity, false);
+	}
+
+	private MandateDetails toMandateDetails(final MandateEntity mandateEntity, boolean includeSigningInfo) {
 		return ofNullable(mandateEntity)
 			.map(entity -> MandateDetailsBuilder.create()
 				.withId(entity.getId())
@@ -138,7 +114,8 @@ public class Mapper {
 				.withStatus(ofNullable(entity.getStatus())
 					.map(status -> MandateStatus.valueOf(status).toString())
 					.orElse(MandateStatus.UNKNOWN.toString()))
-				.withSigningInfo(toSigningInfo(entity.getLatestSigningInformation()))
+				// Include signing info conditionally
+				.withSigningInfo(includeSigningInfo ? toSigningInfo(entity.getLatestSigningInformation()) : null)
 				.build())
 			.orElse(null);
 	}

@@ -31,7 +31,7 @@ public final class TestObjectFactory {
 	public static final String SIGNATORY_PARTY_ID = UUID.randomUUID().toString();
 	public static final String GRANTEE_PARTY_ID = UUID.randomUUID().toString();
 	public static final LocalDate ACTIVE_FROM = LocalDate.now().minusDays(1);
-	public static final LocalDate INACTIVE_AFTER = LocalDate.now().plusDays(1);
+	public static final LocalDate INACTIVE_AFTER = LocalDate.now().plusDays(10);
 	public static final OffsetDateTime CREATED = OffsetDateTime.now().minusMinutes(1);
 	public static final OffsetDateTime UPDATED = OffsetDateTime.now();
 	// Represents a non-deleted-mandate at time 1970-01-01T00:00Z
@@ -41,15 +41,15 @@ public final class TestObjectFactory {
 	public static CreateMandate createMandate() {
 		return CreateMandateBuilder.create()
 			.withGrantorDetails(GrantorDetailsBuilder.create()
-				.withSignatoryPartyId(UUID.randomUUID().toString())
-				.withGrantorPartyId(UUID.randomUUID().toString())
-				.withSignatoryPartyId(UUID.randomUUID().toString())
+				.withSignatoryPartyId(SIGNATORY_PARTY_ID)
+				.withGrantorPartyId(GRANTOR_PARTY_ID)
+				.withName(NAME)
 				.build())
 			.withGranteeDetails(GranteeDetailsBuilder.create()
-				.withPartyId(UUID.randomUUID().toString())
+				.withPartyId(GRANTEE_PARTY_ID)
 				.build())
-			.withActiveFrom(LocalDate.now())
-			.withInactiveAfter(LocalDate.now().plusDays(10))
+			.withActiveFrom(ACTIVE_FROM)
+			.withInactiveAfter(INACTIVE_AFTER)
 			.withSigningInfo(createSigningInfo())
 			.build();
 	}
@@ -57,10 +57,10 @@ public final class TestObjectFactory {
 	public static UpdateMandate updateMandate() {
 		return UpdateMandateBuilder.create()
 			.withGranteeDetails(GranteeDetailsBuilder.create()
-				.withPartyId(UUID.randomUUID().toString())
+				.withPartyId(GRANTEE_PARTY_ID)
 				.build())
-			.withActiveFrom(LocalDate.now())
-			.withInactiveAfter(LocalDate.now().plusDays(10))
+			.withActiveFrom(ACTIVE_FROM)
+			.withInactiveAfter(INACTIVE_AFTER)
 			.build();
 	}
 

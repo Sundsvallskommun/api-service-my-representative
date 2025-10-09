@@ -52,21 +52,38 @@ paths:
           schema:
             type: string
           example: 2facc7a8-69e1-4988-9b3d-4da6cefab703
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         "200":
           description: Successful Operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MandateDetails"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
+                $ref: "#/components/schemas/Mandates"
         "400":
           description: Bad request
           content:
@@ -139,7 +156,7 @@ paths:
     get:
       tags:
         - MyRepresentatives
-      summary: Get mandate by id
+      summary: "Get mandate by id, also returns BankID signing information"
       operationId: getMandateById
       parameters:
         - name: municipalityId
@@ -237,7 +254,7 @@ paths:
     patch:
       tags:
         - MyRepresentatives
-      summary: Update mandate
+      summary: "Update mandate, not implemented yet"
       operationId: updateMandate
       parameters:
         - name: municipalityId
@@ -325,20 +342,20 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     CreateMandate:
       required:
         - activeFrom
@@ -630,12 +647,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         suppressed:
           type: array
           items:
@@ -744,4 +761,68 @@ components:
         signingInfo:
           $ref: "#/components/schemas/SigningInfo"
       description: MandateDetails model
+    Direction:
+      type: string
+      description: The sort order direction
+      example: ASC
+      enum:
+        - ASC
+        - DESC
+    Mandates:
+      type: object
+      properties:
+        mandateDetailsList:
+          type: array
+          description: List of mandates
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/MandateDetails"
+        _meta:
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
+      description: Paginated response containing a list of mandate details
+    PagingAndSortingMetaData:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page
+          format: int32
+          readOnly: true
+          example: 5
+        limit:
+          type: integer
+          description: Displayed objects per page
+          format: int32
+          readOnly: true
+          example: 20
+        count:
+          type: integer
+          description: Displayed objects on current page
+          format: int32
+          readOnly: true
+          example: 13
+        totalRecords:
+          type: integer
+          description: Total amount of hits based on provided search parameters
+          format: int64
+          readOnly: true
+          example: 98
+        totalPages:
+          type: integer
+          description: Total amount of pages based on provided search parameters
+          format: int32
+          readOnly: true
+          example: 23
+        sortBy:
+          type: array
+          readOnly: true
+          items:
+            type: string
+            description: The properties to sort by
+            readOnly: true
+            example: property
+        sortDirection:
+          $ref: "#/components/schemas/Direction"
+      description: PagingAndSortingMetaData model
+      readOnly: true
   securitySchemes: {}

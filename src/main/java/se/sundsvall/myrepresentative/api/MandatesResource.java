@@ -15,7 +15,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +35,7 @@ import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
+import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.UpdateMandate;
 import se.sundsvall.myrepresentative.api.validation.ValidNamespace;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
@@ -84,24 +86,20 @@ class MandatesResource {
 		responses = {
 			@ApiResponse(responseCode = "200",
 				description = "Successful Operation",
-				useReturnTypeSchema = true),
-			@ApiResponse(responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE,
-					schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@GetMapping(value = "/mandates", produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<List<MandateDetails>> searchMandates(
+	ResponseEntity<Mandates> searchMandates(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @ValidNamespace @PathVariable final String namespace,
 		@Parameter(name = "grantorPartyId", description = "PartyId of the grantor (person or organization)", example = "2facc7a8-69e1-4988-9b3d-4da6cefab701") @RequestParam(required = false) @ValidUuid(nullable = true) final String grantorPartyId,
 		@Parameter(name = "granteePartyId", description = "PartyId of the grantee of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab702") @RequestParam(required = false) @ValidUuid(nullable = true) final String granteePartyId,
-		@Parameter(name = "signatoryPartyId", description = "PartyId of the signatory", example = "2facc7a8-69e1-4988-9b3d-4da6cefab703") @RequestParam(required = false) @ValidUuid(nullable = true) final String signatoryPartyId) {
-		// TODO implement
-		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+		@Parameter(name = "signatoryPartyId", description = "PartyId of the signatory", example = "2facc7a8-69e1-4988-9b3d-4da6cefab703") @RequestParam(required = false) @ValidUuid(nullable = true) final String signatoryPartyId,
+		@ParameterObject final Pageable pageable) {
+		return ResponseEntity.ok(representativesService.searchMandates(municipalityId, namespace, grantorPartyId, granteePartyId, signatoryPartyId, pageable));
 	}
 
-	@Operation(summary = "Get mandate by id",
+	@Operation(summary = "Get mandate by id, also returns BankID signing information",
 		responses = {
 			@ApiResponse(responseCode = "200",
 				description = "Successful Operation",
@@ -120,7 +118,7 @@ class MandatesResource {
 		return ResponseEntity.ok(representativesService.getMandateDetails(municipalityId, namespace, id));
 	}
 
-	@Operation(summary = "Update mandate",
+	@Operation(summary = "Update mandate, not implemented yet",
 		responses = {
 			@ApiResponse(responseCode = "200",
 				description = "Ok",
