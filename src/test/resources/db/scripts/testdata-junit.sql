@@ -2,17 +2,17 @@ insert into mandate (active_from, created, deleted, grantee_party_id, grantor_pa
                      inactive_after, municipality_id, name, namespace, signatory_party_id, updated)
 values ('2025-08-01', '2025-10-06 16:34:37.576000', '1970-01-01 01:00:00.000000',
         'fb2f0290-3820-11ed-a261-0242ac120004', 'fb2f0290-3820-11ed-a261-0242ac120002',
-        '1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0', '2025-12-31', '2281', 'Ankeborgs Margarinfabrik',
+        '1a8f4c69-d6b7-4fcb-aa0b-74ed3a2e84a0', '2099-12-31', '2281', 'Ankeborgs Margarinfabrik',
         'MY_NAMESPACE', 'fb2f0290-3820-11ed-a261-0242ac120003', '2025-10-06 16:34:37.576000'),
     
        ('2025-10-01', '2025-10-06 16:36:24.417000', '2025-10-06 16:36:50.598000',
         'fb2f0290-3820-11ed-a261-0242ac120007', 'fb2f0290-3820-11ed-a261-0242ac120005',
-        '4f0c18c2-100a-4cb6-a127-e373dc629407', '2028-11-01', '2281', 'Farbror Joakims Bank',
+        '4f0c18c2-100a-4cb6-a127-e373dc629407', '2099-11-01', '2281', 'Farbror Joakims Bank',
         'MY_NAMESPACE', 'fb2f0290-3820-11ed-a261-0242ac120006', '2025-10-06 16:36:50.600000'),
     
        ('2025-10-01', '2025-10-06 16:37:36.222000', '1970-01-01 01:00:00.000000',
         'fb2f0290-3820-11ed-a261-0242ac120007', 'fb2f0290-3820-11ed-a261-0242ac120005',
-        '60850465-28d4-4caa-8e9d-69187461cb27', '2026-11-01', '2281', 'Farbror Joakims Bank',
+        '60850465-28d4-4caa-8e9d-69187461cb27', '2099-11-01', '2281', 'Farbror Joakims Bank',
         'MY_NAMESPACE', 'fb2f0290-3820-11ed-a261-0242ac120006', '2025-10-06 16:37:36.222000');
 
 insert into signing_information (bank_id_issue_date, given_name, id, ip_address, mandate_id, mrtd,

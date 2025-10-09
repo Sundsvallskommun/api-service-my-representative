@@ -31,42 +31,18 @@ paths:
           schema:
             type: string
           example: MY_NAMESPACE
-        - name: grantorPartyId
+        - name: searchParameters
           in: query
-          description: PartyId of the grantor (person or organization)
-          required: false
+          required: true
           schema:
-            type: string
-          example: 2facc7a8-69e1-4988-9b3d-4da6cefab701
-        - name: granteePartyId
-          in: query
-          description: PartyId of the grantee of the mandate
-          required: false
-          schema:
-            type: string
-          example: 2facc7a8-69e1-4988-9b3d-4da6cefab702
-        - name: signatoryPartyId
-          in: query
-          description: PartyId of the signatory
-          required: false
-          schema:
-            type: string
-          example: 2facc7a8-69e1-4988-9b3d-4da6cefab703
+            $ref: "#/components/schemas/SearchMandateParameters"
       responses:
         "200":
           description: Successful Operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MandateDetails"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
+                $ref: "#/components/schemas/Mandates"
         "400":
           description: Bad request
           content:
@@ -139,7 +115,7 @@ paths:
     get:
       tags:
         - MyRepresentatives
-      summary: Get mandate by id
+      summary: "Get mandate by id, also returns BankID signing information"
       operationId: getMandateById
       parameters:
         - name: municipalityId
@@ -237,7 +213,7 @@ paths:
     patch:
       tags:
         - MyRepresentatives
-      summary: Update mandate
+      summary: "Update mandate, not implemented yet"
       operationId: updateMandate
       parameters:
         - name: municipalityId
@@ -334,11 +310,11 @@ components:
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     CreateMandate:
       required:
         - activeFrom
@@ -744,4 +720,98 @@ components:
         signingInfo:
           $ref: "#/components/schemas/SigningInfo"
       description: MandateDetails model
+    SearchMandateParameters:
+      type: object
+      properties:
+        page:
+          minimum: 1
+          type: integer
+          description: Page number
+          format: int32
+          example: 1
+          default: 1
+        limit:
+          minimum: 1
+          type: integer
+          description: Result size per page. Maximum allowed value is dynamically
+            configured
+          format: int32
+          example: 15
+        grantorPartyId:
+          type: string
+          description: The partyId of the issuing organization or person
+          example: fb2f0290-3820-11ed-a261-0242ac120002
+        granteePartyId:
+          type: string
+          description: PartyId of the grantee
+          example: fb2f0290-3820-11ed-a261-0242ac120004
+        signatoryPartyId:
+          type: string
+          description: PartyId of the issuing person / signatory
+          example: fb2f0290-3820-11ed-a261-0242ac120003
+      description: SearchMandateParameters model
+    Direction:
+      type: string
+      description: The sort order direction
+      example: ASC
+      enum:
+        - ASC
+        - DESC
+    Mandates:
+      type: object
+      properties:
+        mandateDetailsList:
+          type: array
+          description: List of mandates
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/MandateDetails"
+        _meta:
+          $ref: "#/components/schemas/PagingAndSortingMetaData"
+      description: Paginated response containing a list of mandate details
+    PagingAndSortingMetaData:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page
+          format: int32
+          readOnly: true
+          example: 5
+        limit:
+          type: integer
+          description: Displayed objects per page
+          format: int32
+          readOnly: true
+          example: 20
+        count:
+          type: integer
+          description: Displayed objects on current page
+          format: int32
+          readOnly: true
+          example: 13
+        totalRecords:
+          type: integer
+          description: Total amount of hits based on provided search parameters
+          format: int64
+          readOnly: true
+          example: 98
+        totalPages:
+          type: integer
+          description: Total amount of pages based on provided search parameters
+          format: int32
+          readOnly: true
+          example: 23
+        sortBy:
+          type: array
+          readOnly: true
+          items:
+            type: string
+            description: The properties to sort by
+            readOnly: true
+            example: property
+        sortDirection:
+          $ref: "#/components/schemas/Direction"
+      description: PagingAndSortingMetaData model
+      readOnly: true
   securitySchemes: {}

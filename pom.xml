@@ -35,6 +35,10 @@
 			<artifactId>dept44-starter-feign</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-models</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>cc.jilt</groupId>
 			<artifactId>jilt</artifactId>
 			<version>1.8.3</version>
@@ -43,6 +47,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
@@ -69,6 +78,7 @@
 						<exclude>**/org/openapitools/**</exclude>
 						<exclude>**/generated/se/sundsvall/**</exclude>
 						<exclude>**/se/sundsvall/myrepresentative/MyRepresentatives**</exclude>
+						<exclude>**/se/sundsvall/myrepresentative/integration/db/entity/**/*Entity_*</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

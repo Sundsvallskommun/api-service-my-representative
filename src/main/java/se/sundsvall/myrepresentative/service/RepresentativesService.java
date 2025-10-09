@@ -1,31 +1,25 @@
 package se.sundsvall.myrepresentative.service;
 
-import static java.time.temporal.ChronoUnit.MILLIS;
 import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
+import se.sundsvall.myrepresentative.api.model.Mandates;
+import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.config.DataIntegrityExceptionHandler;
-import se.sundsvall.myrepresentative.integration.db.MandateRepository;
+import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 
 @Service
 public class RepresentativesService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RepresentativesService.class);
+	private final RepositoryIntegration repositoryIntegration;
+	private final ServiceMapper serviceMapper;
 
-	private final MandateRepository mandateRepository;
-	private final Mapper mapper;
-
-	public RepresentativesService(MandateRepository mandateRepository, Mapper mapper) {
-		this.mandateRepository = mandateRepository;
-		this.mapper = mapper;
+	public RepresentativesService(RepositoryIntegration repositoryIntegration, ServiceMapper serviceMapper) {
+		this.repositoryIntegration = repositoryIntegration;
+		this.serviceMapper = serviceMapper;
 	}
 
 	/**
@@ -40,11 +34,9 @@ public class RepresentativesService {
 	 * @return                the id of the created mandate
 	 */
 	public String createMandate(final String municipalityId, final String namespace, final CreateMandate request) {
-		final var mandateEntity = mapper.toMandateEntity(municipalityId, namespace, request);
+		var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request);
 
-		final var saved = mandateRepository.save(mandateEntity);
-
-		return saved.getId();
+		return mandateEntity.getId();
 	}
 
 	/**
@@ -53,16 +45,18 @@ public class RepresentativesService {
 	 *
 	 * @param  municipalityId municipalityId
 	 * @param  namespace      namespace
-	 * @param  mandateId      the id of the mandate to retrieve
+	 * @param  id             the id of the mandate to retrieve
 	 * @return                the mandate details
 	 */
-	public MandateDetails getMandateDetails(final String municipalityId, final String namespace, final String mandateId) {
-		return mandateRepository.findByIdAndMunicipalityIdAndNamespace(mandateId, municipalityId, namespace)
-			.map(mapper::toMandateDetails)
+	public MandateDetails getMandateDetails(final String municipalityId, final String namespace, final String id) {
+		var mandateEntity = repositoryIntegration.getMandateDetails(municipalityId, namespace, id);
+
+		return mandateEntity
+			.map(serviceMapper::toMandateDetailsWithoutSigningInfo)
 			.orElseThrow(() -> Problem.builder()
 				.withTitle("No mandate found")
 				.withStatus(NOT_FOUND)
-				.withDetail("Couldn't find any mandate with id '" + mandateId + "' for municipality '" + municipalityId +
+				.withDetail("Couldn't find any mandate with id '" + id + "' for municipality '" + municipalityId +
 					"' and namespace '" + namespace + "'")
 				.build());
 	}
@@ -76,12 +70,11 @@ public class RepresentativesService {
 	 * @param id             id of the mandate to soft delete
 	 */
 	public void deleteMandate(final String municipalityId, final String namespace, final String id) {
-		// We don't delete the entity, we just mark it as deleted using a timestamp to be able to keep them unique.
-		mandateRepository.findActiveByIdAndMunicipalityIdAndNamespace(sanitizeForLogging(id), municipalityId, namespace)
-			.ifPresent(mandateEntity -> {
-				LOG.info("Soft deleting mandate with id {}", sanitizeForLogging(id));
-				mandateEntity.withDeleted(OffsetDateTime.now(ZoneId.systemDefault()).truncatedTo(MILLIS));
-				mandateRepository.save(mandateEntity);
-			});
+		repositoryIntegration.deleteMandate(municipalityId, namespace, id);
+	}
+
+	public Mandates searchMandates(final String municipalityId, final String namespace, SearchMandateParameters parameters) {
+		var foundMandates = repositoryIntegration.searchMandates(municipalityId, namespace, parameters);
+		return serviceMapper.toMandates(foundMandates);
 	}
 }
