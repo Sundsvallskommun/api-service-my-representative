@@ -1,0 +1,34 @@
+{
+	"mandateDetailsList": [
+		{
+			"id": "24b59fba-c6c4-4cec-8723-7d4feb062257",
+			"grantorDetails": {
+				"name": "Ankeborgs Margarinfabrik",
+				"grantorPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c1",
+				"signatoryPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c2"
+			},
+			"granteeDetails": {
+				"partyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c3"
+			},
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"created": "2025-10-10T14:28:53.462+02:00",
+			"updated": "2025-10-10T14:28:53.462+02:00",
+			"activeFrom": "2025-08-01",
+			"inactiveAfter": "2099-12-31",
+			"status": "ACTIVE"
+		}
+	],
+	"_meta": {
+		"page": 1,
+		"limit": 100,
+		"count": 1,
+		"totalRecords": 1,
+		"totalPages": 1,
+		"sortBy": [
+			"status",
+			"created"
+		],
+		"sortDirection": "ASC"
+	}
+}
