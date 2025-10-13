@@ -1,0 +1,34 @@
+{
+	"mandateDetailsList": [
+		{
+			"id": "6f261945-a11c-41b6-8a5a-72ef2b1591de",
+			"grantorDetails": {
+				"name": "Weyland Enterprises",
+				"grantorPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c5",
+				"signatoryPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c6"
+			},
+			"granteeDetails": {
+				"partyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c7"
+			},
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"created": "2025-10-10T14:35:15.505+02:00",
+			"updated": "2025-10-10T14:35:15.505+02:00",
+			"activeFrom": "2024-10-01",
+			"inactiveAfter": "2025-06-30",
+			"status": "EXPIRED"
+		}
+	],
+	"_meta": {
+		"page": 1,
+		"limit": 100,
+		"count": 1,
+		"totalRecords": 1,
+		"totalPages": 1,
+		"sortBy": [
+			"status",
+			"created"
+		],
+		"sortDirection": "ASC"
+	}
+}

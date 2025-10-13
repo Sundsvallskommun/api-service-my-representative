@@ -1,0 +1,5 @@
+{
+	"title": "No mandate found",
+	"status": 404,
+	"detail": "Couldn't find any mandate with id '00000000-0000-0000-0000-000000000000' for municipality '2281' and namespace 'my_namespace'"
+}

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-import static se.sundsvall.myrepresentative.TestObjectFactory.updateMandate;
 
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -67,15 +66,6 @@ class NamespaceFailureTest {
 				assertViolation(responseSpec, field);
 			}
 
-			case "PATCH" -> {
-				final var responseSpec = webTestClient.patch()
-					.uri(BASE_URL + "/{id}", MUNICIPALITY_ID, invalidNamespace, validId)
-					.bodyValue(updateMandate())
-					.exchange();
-
-				assertViolation(responseSpec, field);
-			}
-
 			case "DELETE" -> {
 				final var responseSpec = webTestClient.delete()
 					.uri(BASE_URL + "/{id}", MUNICIPALITY_ID, invalidNamespace, validId)
@@ -107,7 +97,6 @@ class NamespaceFailureTest {
 			Arguments.of("POST /mandates", "POST", "createMandate.namespace"),
 			Arguments.of("GET /mandates", "GET_SEARCH", "searchMandates.namespace"),
 			Arguments.of("GET /mandates/{id}", "GET_BY_ID", "getMandateById.namespace"),
-			Arguments.of("PATCH /mandates/{id}", "PATCH", "updateMandate.namespace"),
 			Arguments.of("DELETE /mandates/{id}", "DELETE", "deleteMandate.namespace"));
 	}
 }

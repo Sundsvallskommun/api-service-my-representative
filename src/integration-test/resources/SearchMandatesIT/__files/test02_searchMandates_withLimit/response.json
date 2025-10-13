@@ -1,0 +1,52 @@
+{
+	"mandateDetailsList": [
+		{
+			"id": "6a6cc4ae-c873-4f23-932a-680af53197df",
+			"grantorDetails": {
+				"name": "Weyland Enterprises",
+				"grantorPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c4",
+				"signatoryPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c5"
+			},
+			"granteeDetails": {
+				"partyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c6"
+			},
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"created": "2025-10-10T14:33:56.429+02:00",
+			"updated": "2025-10-10T14:33:56.429+02:00",
+			"activeFrom": "2025-10-01",
+			"inactiveAfter": "2199-12-31",
+			"status": "ACTIVE"
+		},
+		{
+			"id": "24b59fba-c6c4-4cec-8723-7d4feb062257",
+			"grantorDetails": {
+				"name": "Ankeborgs Margarinfabrik",
+				"grantorPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c1",
+				"signatoryPartyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c2"
+			},
+			"granteeDetails": {
+				"partyId": "e47aa4d3-c79a-4d08-a1d2-799ba549e0c3"
+			},
+			"municipalityId": "2281",
+			"namespace": "MY_NAMESPACE",
+			"created": "2025-10-10T14:28:53.462+02:00",
+			"updated": "2025-10-10T14:28:53.462+02:00",
+			"activeFrom": "2025-08-01",
+			"inactiveAfter": "2099-12-31",
+			"status": "ACTIVE"
+		}
+	],
+	"_meta": {
+		"page": 1,
+		"limit": 2,
+		"count": 2,
+		"totalRecords": 4,
+		"totalPages": 2,
+		"sortBy": [
+			"status",
+			"created"
+		],
+		"sortDirection": "ASC"
+	}
+}

@@ -15,12 +15,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +32,6 @@ import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
-import se.sundsvall.myrepresentative.api.model.UpdateMandate;
 import se.sundsvall.myrepresentative.api.validation.ValidNamespace;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
 
@@ -111,27 +108,6 @@ class MandatesResource {
 		@Parameter(name = "id", description = "Id of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab704") @ValidUuid @PathVariable final String id) {
 
 		return ResponseEntity.ok(representativesService.getMandateDetails(municipalityId, namespace, id));
-	}
-
-	@Operation(summary = "Update mandate, not implemented yet",
-		responses = {
-			@ApiResponse(responseCode = "200",
-				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE,
-					schema = @Schema(implementation = Problem.class)))
-
-		})
-	@PatchMapping(value = "/mandates/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	ResponseEntity<MandateDetails> updateMandate(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "namespace", description = "Namespace", example = "MY_NAMESPACE") @ValidNamespace @PathVariable final String namespace,
-		@Parameter(name = "id", description = "Id of the mandate", example = "2facc7a8-69e1-4988-9b3d-4da6cefab704") @ValidUuid @PathVariable final String id,
-		@Valid @RequestBody final UpdateMandate updateRequest) {
-		// TODO implement
-		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
 	}
 
 	@Operation(summary = "Delete mandate, performs a soft delete",

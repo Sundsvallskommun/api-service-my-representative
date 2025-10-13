@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-import static se.sundsvall.myrepresentative.TestObjectFactory.updateMandate;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -66,15 +65,6 @@ class MunicipalityIdFailureTest {
 				assertViolation(responseSpec, field);
 			}
 
-			case "PATCH" -> {
-				final var responseSpec = webTestClient.patch()
-					.uri(BASE_URL + "/{id}", invalidMunicipalityId, NAMESPACE, validId)
-					.bodyValue(updateMandate())
-					.exchange();
-
-				assertViolation(responseSpec, field);
-			}
-
 			case "DELETE" -> {
 				final var responseSpec = webTestClient.delete()
 					.uri(BASE_URL + "/{id}", invalidMunicipalityId, NAMESPACE, validId)
@@ -106,7 +96,6 @@ class MunicipalityIdFailureTest {
 			Arguments.of("POST /mandates", "POST", "createMandate.municipalityId"),
 			Arguments.of("GET /mandates", "GET_SEARCH", "searchMandates.municipalityId"),
 			Arguments.of("GET /mandates/{id}", "GET_BY_ID", "getMandateById.municipalityId"),
-			Arguments.of("PATCH /mandates/{id}", "PATCH", "updateMandate.municipalityId"),
 			Arguments.of("DELETE /mandates/{id}", "DELETE", "deleteMandate.municipalityId"));
 	}
 }

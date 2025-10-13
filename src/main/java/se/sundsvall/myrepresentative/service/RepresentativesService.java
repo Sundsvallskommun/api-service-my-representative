@@ -52,7 +52,7 @@ public class RepresentativesService {
 		var mandateEntity = repositoryIntegration.getMandateDetails(municipalityId, namespace, id);
 
 		return mandateEntity
-			.map(serviceMapper::toMandateDetailsWithoutSigningInfo)
+			.map(serviceMapper::toMandateDetailsWithSigningInfo)
 			.orElseThrow(() -> Problem.builder()
 				.withTitle("No mandate found")
 				.withStatus(NOT_FOUND)

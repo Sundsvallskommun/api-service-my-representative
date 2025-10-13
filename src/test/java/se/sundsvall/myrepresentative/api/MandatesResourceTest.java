@@ -3,13 +3,11 @@ package se.sundsvall.myrepresentative.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-import static se.sundsvall.myrepresentative.TestObjectFactory.updateMandate;
 
 import java.util.Map;
 import java.util.UUID;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -146,22 +143,5 @@ class MandatesResourceTest {
 
 		assertThat(response).isEqualTo(mandates);
 		verify(mockService).searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
-	}
-
-	// Unimplemented
-	@Test
-	void testUpdateMandates() {
-		final var url = BASE_URL + "/{id}";
-		final var id = UUID.randomUUID().toString();
-		final var updateMandate = updateMandate();
-
-		webTestClient.patch()
-			.uri(uriBuilder -> uriBuilder.path(url)
-				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "id", id)))
-			.bodyValue(updateMandate)
-			.exchange()
-			.expectStatus().isEqualTo(HttpStatus.NOT_IMPLEMENTED);
-
-		verifyNoInteractions(mockService);
 	}
 }

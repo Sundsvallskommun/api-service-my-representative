@@ -65,7 +65,7 @@ class RepresentativesServiceTest {
 	void testGetMandateDetails() {
 		final var mandateId = UUID.randomUUID().toString();
 		when(mockRepositoryIntegration.getMandateDetails(MUNICIPALITY_ID, NAMESPACE, mandateId)).thenReturn(Optional.of(createMandateEntity(false)));
-		when(mockServiceMapper.toMandateDetailsWithoutSigningInfo(any(MandateEntity.class))).thenReturn(MandateDetailsBuilder.create()
+		when(mockServiceMapper.toMandateDetailsWithSigningInfo(any(MandateEntity.class))).thenReturn(MandateDetailsBuilder.create()
 			.withId(mandateId).build());
 
 		final var mandateDetails = representativesService.getMandateDetails(MUNICIPALITY_ID, NAMESPACE, mandateId);
@@ -74,7 +74,7 @@ class RepresentativesServiceTest {
 		assertThat(mandateDetails.id()).isEqualTo(mandateId);
 
 		verify(mockRepositoryIntegration).getMandateDetails(MUNICIPALITY_ID, NAMESPACE, mandateId);
-		verify(mockServiceMapper).toMandateDetailsWithoutSigningInfo(any(MandateEntity.class));
+		verify(mockServiceMapper).toMandateDetailsWithSigningInfo(any(MandateEntity.class));
 	}
 
 	@Test
