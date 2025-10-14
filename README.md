@@ -1,6 +1,6 @@
 # MyRepresentative
 
-_The service creates and maintains powers of attorney between parties in a municipality. The powers of attorney are stored to keep track of who or which parties (i.e. the power of attorney holder) are allowed to act as an agent for a specific counterparty (i.e. the grantor of the power of attorney)._
+_The service creates and maintains powers of attorney (mandates) between parties in a municipality and a specific namespace. The powers of attorney are stored to keep track of who or which parties (i.e. the grantee) are allowed to act as an agent for a specific counterparty (i.e. the grantor of the power of attorney)._
 
 ## Getting Started
 
@@ -40,22 +40,9 @@ cd api-service-my-representative
 mvn spring-boot:run
 ```
 
-- Using Gradle:
-
-```bash
-gradle bootRun
-```
-
 ## Dependencies
 
-This microservice depends on the following services:
-
-- **Party**
-  - **Purpose:** Used for translating between party id and legal id.
-  - **Repository:** [https://github.com/Sundsvallskommun/api-service-party](https://github.com/Sundsvallskommun/api-service-party)
-  - **Setup Instructions:** See documentation in repository above for installation and configuration steps.
-
-Ensure that these services are running and properly configured before starting this microservice.
+none
 
 ## API Documentation
 
@@ -72,11 +59,9 @@ See the [API Documentation](#api-documentation) for detailed information on avai
 ### Example Request
 
 ```bash
-curl -X 'GET' 'https://localhost:8080/2281/mandates' \
-'?mandateIssuer.partyId=fb2f0290-3820-11ed-a261-0242ac120002' \
-'&mandateIssuer.type=pnr' \
-'&mandateAcquirer.partyId=06b0ecca-8f77-4698-850d-5f20b56702e2' \
-'&mandateAcquirer.type=pnr'
+curl -X 'GET' \
+  'http://localhost:8080/2281/MY_NAMESPACE/mandates?page=1&limit=15&grantorPartyId=fb2f0290-3820-11ed-a261-0242ac120002&granteePartyId=fb2f0290-3820-11ed-a261-0242ac120004&signatoryPartyId=fb2f0290-3820-11ed-a261-0242ac120003' \
+  -H 'accept: application/json'
 ```
 
 ## Configuration
@@ -107,17 +92,6 @@ spring:
           schema-generation:
             database:
               action: validate
-```
-
-- **External Service URLs**
-
-```yaml
-integration:
-  party:
-    oauth2-client-id: <client_id>
-    oauth2-client-secret: <client_secret>
-    oauth2-token-url: <token_url>
-    url: <service_endpoint>
 ```
 
 ### Database Initialization
