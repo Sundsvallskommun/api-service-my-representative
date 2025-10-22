@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -59,8 +60,8 @@ public class SigningInformationEntity {
 	@Column(name = "mrtd")
 	private Boolean mrtd = false;
 
-	@Column(name = "signature_data", nullable = false, columnDefinition = "longtext")
-	private String signatureData;
+	@Column(name = "signature", nullable = false, columnDefinition = "longtext")
+	private String signature;
 
 	@Column(name = "ocsp_response", nullable = false, columnDefinition = "longtext")
 	private String ocspResponse;
@@ -68,13 +69,18 @@ public class SigningInformationEntity {
 	@Column(name = "risk", nullable = false, length = 20)
 	private String risk;
 
-	@TimeZoneStorage(NORMALIZE)
-	@Column(name = "signed", nullable = false)
-	private OffsetDateTime signed;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mandate_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_signing_information_mandate"))
 	private MandateEntity mandate;
+
+	@Column(name = "created", nullable = false)
+	@TimeZoneStorage(NORMALIZE)
+	private OffsetDateTime created;
+
+	@PrePersist
+	void prePersist() {
+		created = OffsetDateTime.now();
+	}
 
 	public String getId() {
 		return id;
@@ -164,12 +170,12 @@ public class SigningInformationEntity {
 		this.mrtd = mrtdStepUp;
 	}
 
-	public String getSignatureData() {
-		return signatureData;
+	public String getSignature() {
+		return signature;
 	}
 
-	public void setSignatureData(String signatureData) {
-		this.signatureData = signatureData;
+	public void setSignature(String signature) {
+		this.signature = signature;
 	}
 
 	public String getOcspResponse() {
@@ -196,12 +202,12 @@ public class SigningInformationEntity {
 		this.mandate = mandate;
 	}
 
-	public OffsetDateTime getSigned() {
-		return signed;
+	public OffsetDateTime getCreated() {
+		return created;
 	}
 
-	public void setSigned(OffsetDateTime signed) {
-		this.signed = signed;
+	public void setCreated(OffsetDateTime created) {
+		this.created = created;
 	}
 
 	public SigningInformationEntity withId(String id) {
@@ -259,8 +265,8 @@ public class SigningInformationEntity {
 		return this;
 	}
 
-	public SigningInformationEntity withSignatureData(String signatureData) {
-		this.signatureData = signatureData;
+	public SigningInformationEntity withSignature(String signature) {
+		this.signature = signature;
 		return this;
 	}
 
@@ -279,8 +285,8 @@ public class SigningInformationEntity {
 		return this;
 	}
 
-	public SigningInformationEntity withSigned(OffsetDateTime signed) {
-		this.signed = signed;
+	public SigningInformationEntity withCreated(OffsetDateTime created) {
+		this.created = created;
 		return this;
 	}
 
@@ -311,8 +317,8 @@ public class SigningInformationEntity {
 			", bankIdIssueDate=" + bankIdIssueDate +
 			", mrtd=" + mrtd +
 			", risk='" + risk + '\'' +
-			", signed=" + signed +
 			", mandate=" + mandate +
+			", created=" + created +
 			'}';
 	}
 }

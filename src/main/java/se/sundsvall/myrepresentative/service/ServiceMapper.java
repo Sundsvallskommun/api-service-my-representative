@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
+import se.sundsvall.myrepresentative.api.model.CompletionDataBuilder;
 import se.sundsvall.myrepresentative.api.model.DeviceBuilder;
 import se.sundsvall.myrepresentative.api.model.GranteeDetails;
 import se.sundsvall.myrepresentative.api.model.GranteeDetailsBuilder;
@@ -19,6 +20,10 @@ import se.sundsvall.myrepresentative.api.model.MandateStatus;
 import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
+import se.sundsvall.myrepresentative.api.model.SigningInfo.CompletionData;
+import se.sundsvall.myrepresentative.api.model.SigningInfo.CompletionData.Device;
+import se.sundsvall.myrepresentative.api.model.SigningInfo.CompletionData.StepUp;
+import se.sundsvall.myrepresentative.api.model.SigningInfo.CompletionData.User;
 import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
 import se.sundsvall.myrepresentative.api.model.StepUpBuilder;
 import se.sundsvall.myrepresentative.api.model.UserBuilder;
@@ -28,24 +33,31 @@ import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEnt
 @Component
 public class ServiceMapper {
 
-	public SigningInfo toSigningInfo(final SigningInformationEntity entity) {
+	public SigningInfo toSigningInfo(SigningInformationEntity entity) {
 		return ofNullable(entity)
 			.map(info -> SigningInfoBuilder.create()
 				.withStatus(entity.getStatus())
-				.withSigned(entity.getSigned())
 				.withOrderRef(entity.getOrderRef())
-				.withSignature(entity.getSignatureData())
-				.withOcspResponse(entity.getOcspResponse())
-				.withIssued(entity.getBankIdIssueDate())
-				.withUser(toSigningInfoUser(entity))
-				.withDevice(toSigningInfoDevice(entity))
-				.withStepUp(toSigningInfoStepUp(entity))
-				.withRisk(entity.getRisk())
+				.withCompletionData(toCompletionData(entity))
 				.build())
 			.orElse(null);
 	}
 
-	private SigningInfo.User toSigningInfoUser(final SigningInformationEntity signingInformation) {
+	private CompletionData toCompletionData(final SigningInformationEntity entity) {
+		return ofNullable(entity)
+			.map(info -> CompletionDataBuilder.create()
+				.withBankIdIssueDate(entity.getBankIdIssueDate())
+				.withSignature(entity.getSignature())
+				.withOcspResponse(entity.getOcspResponse())
+				.withRisk(entity.getRisk())
+				.withUser(toSigningInfoUser(entity))
+				.withDevice(toSigningInfoDevice(entity))
+				.withStepUp(toSigningInfoStepUp(entity))
+				.build())
+			.orElse(null);
+	}
+
+	private User toSigningInfoUser(final SigningInformationEntity signingInformation) {
 		return ofNullable(signingInformation)
 			.map(info -> UserBuilder.create()
 				.withPersonalNumber(signingInformation.getPersonalNumber())
@@ -56,7 +68,7 @@ public class ServiceMapper {
 			.orElse(null);
 	}
 
-	private SigningInfo.StepUp toSigningInfoStepUp(final SigningInformationEntity signingInformation) {
+	private StepUp toSigningInfoStepUp(final SigningInformationEntity signingInformation) {
 		return ofNullable(signingInformation)
 			.map(info -> StepUpBuilder.create()
 				.withMrtd(signingInformation.getMrtd())
@@ -64,7 +76,7 @@ public class ServiceMapper {
 			.orElse(null);
 	}
 
-	private SigningInfo.Device toSigningInfoDevice(final SigningInformationEntity signingInformation) {
+	private Device toSigningInfoDevice(final SigningInformationEntity signingInformation) {
 		return ofNullable(signingInformation)
 			.map(info -> DeviceBuilder.create()
 				.withUhi(signingInformation.getUhi())

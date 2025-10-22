@@ -8,11 +8,13 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetter
 import static com.google.code.beanmatchers.BeanMatchers.registerValueGenerator;
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static org.hamcrest.CoreMatchers.allOf;
+import static se.sundsvall.myrepresentative.TestObjectFactory.CREATED;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.UUID;
 import org.hamcrest.MatcherAssert;
@@ -32,12 +34,10 @@ class SigningInformationEntityTest {
 	private static final String UHI = "OZvYM9VvyiAmG7NA5jU5zqGcVpo=";
 	private static final LocalDate BANK_ID_ISSUE_DATE = LocalDate.now();
 	private static final Boolean MRTD = true;
-	private static final String SIGNATURE_DATE = "<base64-encoded data>";
+	private static final String SIGNATURE = "<base64-encoded data>";
 	private static final String OCSP_RESPONSE = "<more base64-encoded data>";
 	private static final String RISK = "low";
 	private static final MandateEntity MANDATE_ENTITY = new MandateEntity();
-	private static final OffsetDateTime SIGNED = OffsetDateTime.now();
-	private static final String[] EXCLUSIONS = List.of("signatureData", "ocspResponse").toArray(new String[0]);
 
 	@BeforeAll
 	static void beforeAll() {
@@ -52,7 +52,7 @@ class SigningInformationEntityTest {
 			hasValidGettersAndSetters(),
 			hasValidBeanHashCodeFor("id"),
 			hasValidBeanEqualsFor("id"),
-			hasValidBeanToStringExcluding(EXCLUSIONS)));
+			hasValidBeanToStringExcluding("signature", "ocspResponse")));
 	}
 
 	@Test
@@ -69,11 +69,11 @@ class SigningInformationEntityTest {
 			.withUhi(UHI)
 			.withBankIdIssueDate(BANK_ID_ISSUE_DATE)
 			.withMrtdStepUp(MRTD)
-			.withSignatureData(SIGNATURE_DATE)
+			.withSignature(SIGNATURE)
 			.withOcspResponse(OCSP_RESPONSE)
 			.withRisk(RISK)
 			.withMandate(MANDATE_ENTITY)
-			.withSigned(SIGNED);
+			.withCreated(CREATED);
 
 		assertBean(entity);
 	}
@@ -92,13 +92,27 @@ class SigningInformationEntityTest {
 		entity.setUhi(UHI);
 		entity.setBankIdIssueDate(BANK_ID_ISSUE_DATE);
 		entity.setMrtd(MRTD);
-		entity.setSignatureData(SIGNATURE_DATE);
+		entity.setSignature(SIGNATURE);
 		entity.setOcspResponse(OCSP_RESPONSE);
 		entity.setRisk(RISK);
 		entity.setMandate(MANDATE_ENTITY);
-		entity.setSigned(SIGNED);
+		entity.setCreated(CREATED);
 
 		assertBean(entity);
+	}
+
+	@Test
+	void testNoDirtOnCreatedBean() {
+		assertThat(new SigningInformationEntity()).hasAllNullFieldsOrPropertiesExcept("mrtd");
+	}
+
+	@Test
+	void testPrePersist() {
+		final var entity = new SigningInformationEntity();
+		entity.setCreated(CREATED);
+		entity.prePersist();
+
+		assertThat(entity.getCreated()).isCloseTo(OffsetDateTime.now(), within(2, ChronoUnit.SECONDS));
 	}
 
 	private void assertBean(final SigningInformationEntity entity) {
@@ -113,17 +127,12 @@ class SigningInformationEntityTest {
 		assertThat(entity.getUhi()).isEqualTo(UHI);
 		assertThat(entity.getBankIdIssueDate()).isEqualTo(BANK_ID_ISSUE_DATE);
 		assertThat(entity.getMrtd()).isEqualTo(MRTD);
-		assertThat(entity.getSignatureData()).isEqualTo(SIGNATURE_DATE);
+		assertThat(entity.getSignature()).isEqualTo(SIGNATURE);
 		assertThat(entity.getOcspResponse()).isEqualTo(OCSP_RESPONSE);
 		assertThat(entity.getRisk()).isEqualTo(RISK);
 		assertThat(entity.getMandate()).isEqualTo(MANDATE_ENTITY);
-		assertThat(entity.getSigned()).isEqualTo(SIGNED);
+		assertThat(entity.getCreated()).isEqualTo(CREATED);
 
 		assertThat(entity).hasNoNullFieldsOrProperties();
-	}
-
-	@Test
-	void testNoDirtOnCreatedBean() {
-		assertThat(new SigningInformationEntity()).hasAllNullFieldsOrPropertiesExcept("mrtd");
 	}
 }

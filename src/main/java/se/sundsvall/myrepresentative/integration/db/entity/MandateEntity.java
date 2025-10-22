@@ -129,10 +129,10 @@ public class MandateEntity {
 		updated = OffsetDateTime.now(systemDefault()).truncatedTo(MILLIS);
 	}
 
-	// Convenience method to get the current signing information (the one with the latest 'signed' timestamp)
+	// Convenience method to get the current signing information (the one with the latest 'created' timestamp)
 	public SigningInformationEntity getLatestSigningInformation() {
 		return signingInformation.stream()
-			.max(Comparator.comparing(SigningInformationEntity::getSigned))
+			.max(Comparator.comparing(SigningInformationEntity::getCreated))
 			.orElse(null);
 	}
 
@@ -249,7 +249,7 @@ public class MandateEntity {
 	/**
 	 * Returns an unmodifiable list of signing information entities associated with this mandate.
 	 * Use addSigningInformation() to add new entries
-	 * 
+	 *
 	 * @return an unmodifiable list of signing information entities
 	 */
 	public List<SigningInformationEntity> getSigningInformation() {

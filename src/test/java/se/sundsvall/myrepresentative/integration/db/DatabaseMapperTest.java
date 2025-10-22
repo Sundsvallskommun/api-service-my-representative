@@ -33,6 +33,7 @@ class DatabaseMapperTest {
 		assertThat(entity.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
 		assertThat(entity.getActiveFrom()).isEqualTo(ACTIVE_FROM);
 		assertThat(entity.getInactiveAfter()).isEqualTo(INACTIVE_AFTER);
+		assertThat(entity.getCreated()).isNull();
 		assertSigningInformation(entity.getLatestSigningInformation(), createMandate);
 
 		// These shouldn't be set when mapping from API model to entity
@@ -49,19 +50,18 @@ class DatabaseMapperTest {
 
 	private void assertSigningInformation(SigningInformationEntity entity, CreateMandate createMandate) {
 		assertThat(entity.getStatus()).isEqualTo(createMandate.signingInfo().status());
-		assertThat(entity.getSigned()).isEqualTo(createMandate.signingInfo().signed());
 		assertThat(entity.getOrderRef()).isEqualTo(createMandate.signingInfo().orderRef());
-		assertThat(entity.getSignatureData()).isEqualTo(createMandate.signingInfo().signature());
-		assertThat(entity.getOcspResponse()).isEqualTo(createMandate.signingInfo().ocspResponse());
-		assertThat(entity.getBankIdIssueDate()).isEqualTo(createMandate.signingInfo().issued());
-		assertThat(entity.getPersonalNumber()).isEqualTo(createMandate.signingInfo().user().personalNumber());
-		assertThat(entity.getName()).isEqualTo(createMandate.signingInfo().user().name());
-		assertThat(entity.getGivenName()).isEqualTo(createMandate.signingInfo().user().givenName());
-		assertThat(entity.getSurname()).isEqualTo(createMandate.signingInfo().user().surname());
-		assertThat(entity.getUhi()).isEqualTo(createMandate.signingInfo().device().uhi());
-		assertThat(entity.getIpAddress()).isEqualTo(createMandate.signingInfo().device().ipAddress());
-		assertThat(entity.getMrtd()).isEqualTo(createMandate.signingInfo().stepUp().mrtd());
-		assertThat(entity.getRisk()).isEqualTo(createMandate.signingInfo().risk());
+		assertThat(entity.getSignature()).isEqualTo(createMandate.signingInfo().completionData().signature());
+		assertThat(entity.getOcspResponse()).isEqualTo(createMandate.signingInfo().completionData().ocspResponse());
+		assertThat(entity.getBankIdIssueDate()).isEqualTo(createMandate.signingInfo().completionData().bankIdIssueDate());
+		assertThat(entity.getPersonalNumber()).isEqualTo(createMandate.signingInfo().completionData().user().personalNumber());
+		assertThat(entity.getName()).isEqualTo(createMandate.signingInfo().completionData().user().name());
+		assertThat(entity.getGivenName()).isEqualTo(createMandate.signingInfo().completionData().user().givenName());
+		assertThat(entity.getSurname()).isEqualTo(createMandate.signingInfo().completionData().user().surname());
+		assertThat(entity.getUhi()).isEqualTo(createMandate.signingInfo().completionData().device().uhi());
+		assertThat(entity.getIpAddress()).isEqualTo(createMandate.signingInfo().completionData().device().ipAddress());
+		assertThat(entity.getMrtd()).isEqualTo(createMandate.signingInfo().completionData().stepUp().mrtd());
+		assertThat(entity.getRisk()).isEqualTo(createMandate.signingInfo().completionData().risk());
 	}
 
 }

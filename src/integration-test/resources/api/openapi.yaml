@@ -255,6 +255,45 @@ components:
         statusCode:
           type: integer
           format: int32
+    CompletionData:
+      required:
+        - bankIdIssueDate
+        - device
+        - ocspResponse
+        - risk
+        - signature
+        - stepUp
+        - user
+      type: object
+      properties:
+        bankIdIssueDate:
+          type: string
+          description: When the BankID was issued
+          format: date
+          example: 2020-01-02
+        signature:
+          minLength: 1
+          type: string
+          description: The signature made by the receiving party
+          example: YmFzZTY0LWVuY29kZWQgZGF0YQ==
+        ocspResponse:
+          minLength: 1
+          type: string
+          description: Online certificate status protocol for the signing order
+          example: YmFzZTY0LWVuY29kZWQgZGF0YQ==
+        risk:
+          minLength: 1
+          type: string
+          description: Indicates the risk level of the order based on data available
+            in the order
+          example: low
+        user:
+          $ref: "#/components/schemas/User"
+        device:
+          $ref: "#/components/schemas/Device"
+        stepUp:
+          $ref: "#/components/schemas/StepUp"
+      description: Information about the user and the completed order
     CreateMandate:
       required:
         - activeFrom
@@ -330,60 +369,23 @@ components:
       description: GrantorDetails model
     SigningInfo:
       required:
-        - device
-        - issued
-        - ocspResponse
+        - completionData
         - orderRef
-        - risk
-        - signature
-        - signed
         - status
-        - stepUp
-        - user
       type: object
       properties:
-        status:
-          minLength: 1
-          type: string
-          description: Status of the signing order
-          example: complete
-        signed:
-          type: string
-          description: Timestamp when the letter was signed by receiving party
-          format: date-time
-          example: 2025-10-01T15:30:00+02:00
         orderRef:
           minLength: 1
           type: string
           description: Reference for the signing order
           example: 131daac9-16c6-4618-beb0-365768f37288
-        signature:
+        status:
           minLength: 1
           type: string
-          description: The signature made by the receiving party
-          example: YmFzZTY0LWVuY29kZWQgZGF0YQ==
-        ocspResponse:
-          minLength: 1
-          type: string
-          description: Online certificate status protocol for the signing order
-          example: YmFzZTY0LWVuY29kZWQgZGF0YQ==
-        user:
-          $ref: "#/components/schemas/User"
-        device:
-          $ref: "#/components/schemas/Device"
-        stepUp:
-          $ref: "#/components/schemas/StepUp"
-        issued:
-          type: string
-          description: When the BankID was issued
-          format: date
-          example: 2020-01-02
-        risk:
-          minLength: 1
-          type: string
-          description: Indicates the risk level of the order based on data available
-            in the order
-          example: low
+          description: Status of the signing order
+          example: complete
+        completionData:
+          $ref: "#/components/schemas/CompletionData"
       description: SigningInfo model
     StepUp:
       required:
