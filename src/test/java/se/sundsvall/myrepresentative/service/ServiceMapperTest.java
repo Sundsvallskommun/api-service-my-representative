@@ -50,19 +50,18 @@ class ServiceMapperTest {
 		final var signingInfo = serviceMapper.toSigningInfo(SIGNING_INFORMATION_ENTITY);
 
 		assertThat(signingInfo.status()).isEqualTo(SIGNING_INFORMATION_ENTITY.getStatus());
-		assertThat(signingInfo.signed()).isEqualTo(SIGNING_INFORMATION_ENTITY.getSigned());
 		assertThat(signingInfo.orderRef()).isEqualTo(SIGNING_INFORMATION_ENTITY.getOrderRef());
-		assertThat(signingInfo.signature()).isEqualTo(SIGNING_INFORMATION_ENTITY.getSignatureData());
-		assertThat(signingInfo.ocspResponse()).isEqualTo(SIGNING_INFORMATION_ENTITY.getOcspResponse());
-		assertThat(signingInfo.issued()).isEqualTo(SIGNING_INFORMATION_ENTITY.getBankIdIssueDate());
-		assertThat(signingInfo.user().personalNumber()).isEqualTo(SIGNING_INFORMATION_ENTITY.getPersonalNumber());
-		assertThat(signingInfo.user().name()).isEqualTo(SIGNING_INFORMATION_ENTITY.getName());
-		assertThat(signingInfo.user().givenName()).isEqualTo(SIGNING_INFORMATION_ENTITY.getGivenName());
-		assertThat(signingInfo.user().surname()).isEqualTo(SIGNING_INFORMATION_ENTITY.getSurname());
-		assertThat(signingInfo.device().uhi()).isEqualTo(SIGNING_INFORMATION_ENTITY.getUhi());
-		assertThat(signingInfo.device().ipAddress()).isEqualTo(SIGNING_INFORMATION_ENTITY.getIpAddress());
-		assertThat(signingInfo.stepUp().mrtd()).isEqualTo(SIGNING_INFORMATION_ENTITY.getMrtd());
-		assertThat(signingInfo.risk()).isEqualTo(SIGNING_INFORMATION_ENTITY.getRisk());
+		assertThat(signingInfo.completionData().signature()).isEqualTo(SIGNING_INFORMATION_ENTITY.getSignature());
+		assertThat(signingInfo.completionData().ocspResponse()).isEqualTo(SIGNING_INFORMATION_ENTITY.getOcspResponse());
+		assertThat(signingInfo.completionData().bankIdIssueDate()).isEqualTo(SIGNING_INFORMATION_ENTITY.getBankIdIssueDate());
+		assertThat(signingInfo.completionData().user().personalNumber()).isEqualTo(SIGNING_INFORMATION_ENTITY.getPersonalNumber());
+		assertThat(signingInfo.completionData().user().name()).isEqualTo(SIGNING_INFORMATION_ENTITY.getName());
+		assertThat(signingInfo.completionData().user().givenName()).isEqualTo(SIGNING_INFORMATION_ENTITY.getGivenName());
+		assertThat(signingInfo.completionData().user().surname()).isEqualTo(SIGNING_INFORMATION_ENTITY.getSurname());
+		assertThat(signingInfo.completionData().device().uhi()).isEqualTo(SIGNING_INFORMATION_ENTITY.getUhi());
+		assertThat(signingInfo.completionData().device().ipAddress()).isEqualTo(SIGNING_INFORMATION_ENTITY.getIpAddress());
+		assertThat(signingInfo.completionData().stepUp().mrtd()).isEqualTo(SIGNING_INFORMATION_ENTITY.getMrtd());
+		assertThat(signingInfo.completionData().risk()).isEqualTo(SIGNING_INFORMATION_ENTITY.getRisk());
 	}
 
 	@Test

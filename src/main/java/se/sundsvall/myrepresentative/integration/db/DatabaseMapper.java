@@ -8,9 +8,6 @@ import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.GranteeDetails;
 import se.sundsvall.myrepresentative.api.model.GrantorDetails;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
-import se.sundsvall.myrepresentative.api.model.SigningInfo.Device;
-import se.sundsvall.myrepresentative.api.model.SigningInfo.StepUp;
-import se.sundsvall.myrepresentative.api.model.SigningInfo.User;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
 
@@ -42,35 +39,30 @@ public class DatabaseMapper {
 
 	private SigningInformationEntity toSigningInformationEntity(final SigningInfo signingInfo) {
 		return ofNullable(signingInfo)
-			.map(info -> new SigningInformationEntity()
-				.withStatus(signingInfo.status())
-				.withSigned(signingInfo.signed())
-				.withOrderRef(signingInfo.orderRef())
-				.withSignatureData(signingInfo.signature())
-				.withOcspResponse(signingInfo.ocspResponse())
-				.withBankIdIssueDate(signingInfo.issued())
-				.withPersonalNumber(of(signingInfo.user())
-					.map(User::personalNumber)
-					.orElse(null))
-				.withName(of(signingInfo.user())
-					.map(User::name)
-					.orElse(null))
-				.withGivenName(of(signingInfo.user())
-					.map(User::givenName)
-					.orElse(null))
-				.withSurname(of(signingInfo.user())
-					.map(User::surname)
-					.orElse(null))
-				.withUhi(of(signingInfo.device())
-					.map(Device::uhi)
-					.orElse(null))
-				.withIpAddress(of(signingInfo.device())
-					.map(Device::ipAddress)
-					.orElse(null))
-				.withMrtdStepUp(of(signingInfo.stepUp())
-					.map(StepUp::mrtd)
-					.orElse(null))
-				.withRisk(signingInfo.risk()))
+			.map(info -> {
+				var entity = new SigningInformationEntity()
+					.withOrderRef(info.orderRef())
+					.withStatus(info.status());
+
+				of(info.completionData()).ifPresent(data -> {
+					entity.withSignature(data.signature())
+						.withOcspResponse(data.ocspResponse())
+						.withBankIdIssueDate(data.bankIdIssueDate())
+						.withRisk(data.risk());
+
+					of(data.user()).ifPresent(user -> entity.withPersonalNumber(user.personalNumber())
+						.withName(user.name())
+						.withGivenName(user.givenName())
+						.withSurname(user.surname()));
+
+					of(data.device()).ifPresent(device -> entity.withIpAddress(device.ipAddress())
+						.withUhi(device.uhi()));
+
+					of(data.stepUp()).ifPresent(stepUp -> entity.withMrtdStepUp(stepUp.mrtd()));
+				});
+
+				return entity;
+			})
 			.orElse(null);
 	}
 }

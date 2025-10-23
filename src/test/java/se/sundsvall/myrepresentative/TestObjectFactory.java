@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
+import se.sundsvall.myrepresentative.api.model.CompletionDataBuilder;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
 import se.sundsvall.myrepresentative.api.model.DeviceBuilder;
@@ -85,34 +86,35 @@ public final class TestObjectFactory {
 	public static SigningInfo createSigningInfo() {
 		return SigningInfoBuilder.create()
 			.withStatus("complete")
-			.withSigned(OffsetDateTime.now().minusDays(1))
 			.withOrderRef(UUID.randomUUID().toString())
-			.withSignature("YmFzZTY0LWVuY29kZWQgZGF0YQ==")
-			.withOcspResponse("YmFzZTY0LWVuY29kZWQgZGF0YQ==")
-			.withIssued(LocalDate.now().minusYears(1))
-			.withUser(UserBuilder.create()
-				.withPersonalNumber("200001012384")
-				.withName("John Wick")
-				.withGivenName("John")
-				.withSurname("Wick")
+			.withCompletionData(CompletionDataBuilder.create()
+				.withSignature("YmFzZTY0LWVuY29kZWQgZGF0YQ==")
+				.withOcspResponse("YmFzZTY0LWVuY29kZWQgZGF0YQ==")
+				.withBankIdIssueDate(LocalDate.now().minusYears(1))
+				.withUser(UserBuilder.create()
+					.withPersonalNumber("200001012384")
+					.withName("John Wick")
+					.withGivenName("John")
+					.withSurname("Wick")
+					.build())
+				.withDevice(DeviceBuilder.create()
+					.withUhi("OZvYM9VvyiAmG7NA5jU5zqGcVpo=")
+					.withIpAddress("192.168.1.1")
+					.build())
+				.withStepUp(StepUpBuilder.create()
+					.withMrtd(true)
+					.build())
+				.withRisk("low")
 				.build())
-			.withDevice(DeviceBuilder.create()
-				.withUhi("OZvYM9VvyiAmG7NA5jU5zqGcVpo=")
-				.withIpAddress("192.168.1.1")
-				.build())
-			.withStepUp(StepUpBuilder.create()
-				.withMrtd(true)
-				.build())
-			.withRisk("low")
 			.build();
 	}
 
 	public static SigningInformationEntity createSigningInfoEntity() {
 		return new SigningInformationEntity()
 			.withStatus("complete")
-			.withSigned(OffsetDateTime.now().minusDays(1))
+			.withCreated(OffsetDateTime.now().minusDays(1))
 			.withOrderRef(UUID.randomUUID().toString())
-			.withSignatureData("YmFzZTY0LWVuY29kZWQgZGF0YQ==")
+			.withSignature("YmFzZTY0LWVuY29kZWQgZGF0YQ==")
 			.withOcspResponse("YmFzZTY0LWVuY29kZWQgZGF0YQ==")
 			.withBankIdIssueDate(LocalDate.now().minusYears(1))
 			.withPersonalNumber("200001012384")

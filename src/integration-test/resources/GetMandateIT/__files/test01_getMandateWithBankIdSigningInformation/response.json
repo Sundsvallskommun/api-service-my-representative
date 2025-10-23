@@ -16,25 +16,26 @@
 	"inactiveAfter": "2099-12-31",
 	"status": "DELETED",
 	"signingInfo": {
-		"status": "complete",
-		"signed": "2025-10-01T15:30:00+02:00",
 		"orderRef": "a58b727c-75f2-4579-8fed-7e57ad8ec89e",
-		"signature": "YmFzZTY0LWVuY29kZWQgZGF0YQ==",
-		"ocspResponse": "YmFzZTY0LWVuY29kZWQgZGF0YQ==",
-		"user": {
-			"personalNumber": "200001011493",
-			"name": "Donald Duck",
-			"givenName": "Donald",
-			"surname": "Duck"
-		},
-		"device": {
-			"ipAddress": "192.168.2.2",
-			"uhi": "OZvYM9VvyiAmG7NA5jU5zqGcVpo="
-		},
-		"stepUp": {
-			"mrtd": true
-		},
-		"issued": "2021-02-03",
-		"risk": "low"
+		"status": "complete",
+		"completionData": {
+			"bankIdIssueDate": "2021-02-03",
+			"signature": "YmFzZTY0LWVuY29kZWQgZGF0YQ==",
+			"ocspResponse": "YmFzZTY0LWVuY29kZWQgZGF0YQ==",
+			"risk": "low",
+			"user": {
+				"personalNumber": "200001011493",
+				"name": "Donald Duck",
+				"givenName": "Donald",
+				"surname": "Duck"
+			},
+			"device": {
+				"ipAddress": "192.168.2.2",
+				"uhi": "OZvYM9VvyiAmG7NA5jU5zqGcVpo="
+			},
+			"stepUp": {
+				"mrtd": true
+			}
+		}
 	}
 }

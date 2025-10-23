@@ -4,6 +4,7 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsFor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCodeFor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanToStringExcluding;
+import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSettersExcluding;
 import static com.google.code.beanmatchers.BeanMatchers.registerValueGenerator;
 import static java.time.OffsetDateTime.now;
 import static java.time.ZoneId.systemDefault;
@@ -48,11 +49,12 @@ class MandateEntityTest {
 
 	@Test
 	void testBean() {
-		MatcherAssert.assertThat(SigningInformationEntity.class, allOf(
+		MatcherAssert.assertThat(MandateEntity.class, allOf(
+			hasValidGettersAndSettersExcluding("latestSigningInformation", "signingInformation"),
 			hasValidBeanConstructor(),
 			hasValidBeanHashCodeFor("id"),
 			hasValidBeanEqualsFor("id"),
-			hasValidBeanToStringExcluding("ocspResponse", "signatureData")));
+			hasValidBeanToStringExcluding("ocspResponse", "signatureData", "latestSigningInformation", "signingInformation")));
 	}
 
 	@Test
@@ -118,7 +120,7 @@ class MandateEntityTest {
 	@Test
 	void testAddAndGetLatestSigningInformation() {
 		var latestSigningInformation = createSigningInfoEntity();
-		latestSigningInformation.setSigned(OffsetDateTime.now(systemDefault()).truncatedTo(ChronoUnit.MILLIS));
+		latestSigningInformation.setCreated(OffsetDateTime.now(systemDefault()).truncatedTo(ChronoUnit.MILLIS));
 		var entity = new MandateEntity()
 			.addSigningInformation(SIGNING_INFORMATION)
 			.addSigningInformation(latestSigningInformation);
