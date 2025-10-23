@@ -261,7 +261,6 @@ components:
         - device
         - ocspResponse
         - signature
-        - stepUp
         - user
       type: object
       properties:

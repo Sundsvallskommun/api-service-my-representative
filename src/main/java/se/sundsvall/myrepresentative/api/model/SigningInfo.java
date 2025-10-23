@@ -36,7 +36,7 @@ public record SigningInfo(
 
 		@Schema(description = "Information regarding the device used for the signing order", requiredMode = REQUIRED) @NotNull @Valid Device device,
 
-		@Schema(description = "Information about possible additional verifications that were part of the signing order", requiredMode = REQUIRED) StepUp stepUp) {
+		@Schema(description = "Information about possible additional verifications that were part of the signing order", requiredMode = NOT_REQUIRED) StepUp stepUp) {
 
 		@Builder
 		public record User(
