@@ -58,7 +58,7 @@ public class DatabaseMapper {
 					of(data.device()).ifPresent(device -> entity.withIpAddress(device.ipAddress())
 						.withUhi(device.uhi()));
 
-					of(data.stepUp()).ifPresent(stepUp -> entity.withMrtdStepUp(stepUp.mrtd()));
+					ofNullable(data.stepUp()).ifPresent(stepUp -> entity.withMrtdStepUp(stepUp.mrtd()));
 				});
 
 				return entity;

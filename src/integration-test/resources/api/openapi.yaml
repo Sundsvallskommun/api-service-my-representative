@@ -260,7 +260,6 @@ components:
         - bankIdIssueDate
         - device
         - ocspResponse
-        - risk
         - signature
         - stepUp
         - user
@@ -282,7 +281,6 @@ components:
           description: Online certificate status protocol for the signing order
           example: YmFzZTY0LWVuY29kZWQgZGF0YQ==
         risk:
-          minLength: 1
           type: string
           description: Indicates the risk level of the order based on data available
             in the order
@@ -388,8 +386,6 @@ components:
           $ref: "#/components/schemas/CompletionData"
       description: SigningInfo model
     StepUp:
-      required:
-        - mrtd
       type: object
       properties:
         mrtd:
@@ -400,10 +396,7 @@ components:
         of the signing order
     User:
       required:
-        - givenName
-        - name
         - personalNumber
-        - surname
       type: object
       properties:
         personalNumber:
@@ -412,17 +405,14 @@ components:
           description: Personal identity number for the signing party
           example: "200001012384"
         name:
-          minLength: 1
           type: string
           description: Full name of the signing party
           example: John Wick
         givenName:
-          minLength: 1
           type: string
           description: First name of the signing party
           example: John
         surname:
-          minLength: 1
           type: string
           description: Last name of the signing party
           example: Wick

@@ -23,20 +23,20 @@ create table mandate
 create table signing_information
 (
     bank_id_issue_date date         not null,
-    given_name         varchar(255) not null,
+    given_name         varchar(255) null,
     id                 varchar(36)  not null primary key,
     ip_address         varchar(45)  not null,
     mandate_id         varchar(36)  not null,
-    mrtd               bit          null,
-    name               varchar(255) not null,
+    mrtd               boolean      null,
+    name               varchar(255) null,
     ocsp_response      longtext     not null,
     order_ref          varchar(36)  not null,
     personal_number    varchar(12)  not null,
-    risk               varchar(20)  not null,
+    risk               varchar(20)  null,
     signature          longtext     not null,
     created            datetime(6)  not null,
     status             varchar(20)  not null,
-    surname            varchar(255) not null,
+    surname            varchar(255) null,
     uhi                text         not null,
     constraint fk_signing_information_mandate
         foreign key (mandate_id) references mandate (id)

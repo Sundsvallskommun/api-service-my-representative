@@ -39,13 +39,13 @@ public class SigningInformationEntity {
 	@Column(name = "personal_number", nullable = false, length = 12)
 	private String personalNumber;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name")
 	private String name;
 
-	@Column(name = "given_name", nullable = false)
+	@Column(name = "given_name")
 	private String givenName;
 
-	@Column(name = "surname", nullable = false)
+	@Column(name = "surname")
 	private String surname;
 
 	@Column(name = "ip_address", nullable = false, length = 45)
@@ -58,7 +58,7 @@ public class SigningInformationEntity {
 	private LocalDate bankIdIssueDate;
 
 	@Column(name = "mrtd")
-	private Boolean mrtd = false;
+	private Boolean mrtd;
 
 	@Column(name = "signature", nullable = false, columnDefinition = "longtext")
 	private String signature;
@@ -66,7 +66,7 @@ public class SigningInformationEntity {
 	@Column(name = "ocsp_response", nullable = false, columnDefinition = "longtext")
 	private String ocspResponse;
 
-	@Column(name = "risk", nullable = false, length = 20)
+	@Column(name = "risk", length = 20)
 	private String risk;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -166,8 +166,8 @@ public class SigningInformationEntity {
 		return mrtd;
 	}
 
-	public void setMrtd(Boolean mrtdStepUp) {
-		this.mrtd = mrtdStepUp;
+	public void setMrtd(Boolean mrtd) {
+		this.mrtd = mrtd;
 	}
 
 	public String getSignature() {
