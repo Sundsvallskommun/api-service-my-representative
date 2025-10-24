@@ -1,18 +1,10 @@
 package apptest;
 
-import static org.springframework.http.HttpHeaders.LOCATION;
-import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.data.elasticsearch.DataElasticsearchTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -31,11 +23,11 @@ class GetMandatesIT extends AbstractAppTest {
 	private static final String BASE_URL = "/2281/my_namespace/mandates";
 	private static final String MUNICIPALITY_ID = "2281";
 	private static final String NAMESPACE = "my_namespace";
-	
+
 	@Test
 	void test01_getMandateWithBankIdSigningInformation() {
-		final var idToGet = "62c07c65-a03e-44c4-8505-a39b046bd6d6";
-		
+		final var idToGet = "24b59fba-c6c4-4cec-8723-7d4feb062257";
+
 		setupCall()
 			.withServicePath(UriComponentsBuilder.newInstance()
 				.replacePath(BASE_URL + "/" + idToGet)
@@ -45,11 +37,11 @@ class GetMandatesIT extends AbstractAppTest {
 			.withExpectedResponse(RESPONSE)
 			.sendRequestAndVerifyResponse();
 	}
-	
+
 	@Test
 	void test02_getMandateNotFound() {
 		final var idToGet = "00000000-0000-0000-0000-000000000000";
-		
+
 		setupCall()
 			.withServicePath(UriComponentsBuilder.newInstance()
 				.replacePath(BASE_URL + "/" + idToGet)

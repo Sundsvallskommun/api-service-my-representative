@@ -1,5 +1,6 @@
 package se.sundsvall.myrepresentative.api.model;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
@@ -29,28 +30,28 @@ public record SigningInfo(
 
 		@Schema(description = "Online certificate status protocol for the signing order", example = "YmFzZTY0LWVuY29kZWQgZGF0YQ==", requiredMode = REQUIRED) @NotEmpty String ocspResponse,
 
-		@Schema(description = "Indicates the risk level of the order based on data available in the order", example = "low", requiredMode = REQUIRED) @NotEmpty String risk,
+		@Schema(description = "Indicates the risk level of the order based on data available in the order", example = "low", requiredMode = NOT_REQUIRED) String risk,
 
 		@Schema(description = "Information regarding the signing party", requiredMode = REQUIRED) @NotNull @Valid User user,
 
 		@Schema(description = "Information regarding the device used for the signing order", requiredMode = REQUIRED) @NotNull @Valid Device device,
 
-		@Schema(description = "Information about possible additional verifications that were part of the signing order", requiredMode = REQUIRED) @NotNull @Valid StepUp stepUp) {
+		@Schema(description = "Information about possible additional verifications that were part of the signing order", requiredMode = NOT_REQUIRED) StepUp stepUp) {
 
 		@Builder
 		public record User(
 			@Schema(description = "Personal identity number for the signing party", example = "200001012384", requiredMode = REQUIRED) @NotEmpty String personalNumber,
 
-			@Schema(description = "Full name of the signing party", example = "John Wick", requiredMode = REQUIRED) @NotEmpty String name,
+			@Schema(description = "Full name of the signing party", example = "John Wick", requiredMode = NOT_REQUIRED) String name,
 
-			@Schema(description = "First name of the signing party", example = "John", requiredMode = REQUIRED) @NotEmpty String givenName,
+			@Schema(description = "First name of the signing party", example = "John", requiredMode = NOT_REQUIRED) String givenName,
 
-			@Schema(description = "Last name of the signing party", example = "Wick", requiredMode = REQUIRED) @NotEmpty String surname) {
+			@Schema(description = "Last name of the signing party", example = "Wick", requiredMode = NOT_REQUIRED) String surname) {
 		}
 
 		@Builder
 		public record StepUp(
-			@Schema(description = "Whether an MRTD check was performed before the order was completed", example = "true", requiredMode = REQUIRED) boolean mrtd) {
+			@Schema(description = "Whether an MRTD check was performed before the order was completed", example = "true", requiredMode = NOT_REQUIRED) Boolean mrtd) {
 		}
 
 		@Builder
