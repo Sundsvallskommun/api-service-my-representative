@@ -2,6 +2,8 @@ package se.sundsvall.myrepresentative.service;
 
 import static org.zalando.problem.Status.NOT_FOUND;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
@@ -10,14 +12,19 @@ import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.config.DataIntegrityExceptionHandler;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
+import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 
 @Service
 public class RepresentativesService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(RepresentativesService.class);
+
+	private final PartyIntegration partyIntegration;
 	private final RepositoryIntegration repositoryIntegration;
 	private final ServiceMapper serviceMapper;
 
-	public RepresentativesService(RepositoryIntegration repositoryIntegration, ServiceMapper serviceMapper) {
+	public RepresentativesService(final PartyIntegration partyIntegration, final RepositoryIntegration repositoryIntegration, final ServiceMapper serviceMapper) {
+		this.partyIntegration = partyIntegration;
 		this.repositoryIntegration = repositoryIntegration;
 		this.serviceMapper = serviceMapper;
 	}
@@ -34,7 +41,12 @@ public class RepresentativesService {
 	 * @return                the id of the created mandate
 	 */
 	public String createMandate(final String municipalityId, final String namespace, final CreateMandate request) {
-		var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request);
+		// TODO Only fetching legalIds for now, implement LegalEntity integration for validating that the signatory is
+		// authorized to sign on behalf of the grantor organization
+		final var grantorLegalId = partyIntegration.getOrganizationLegalId(municipalityId, request.grantorDetails().grantorPartyId());
+		final var signatoryLegalId = partyIntegration.getPersonalLegalId(municipalityId, request.grantorDetails().signatoryPartyId());
+
+		final var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request);
 
 		return mandateEntity.getId();
 	}
@@ -49,7 +61,7 @@ public class RepresentativesService {
 	 * @return                the mandate details
 	 */
 	public MandateDetails getMandateDetails(final String municipalityId, final String namespace, final String id) {
-		var mandateEntity = repositoryIntegration.getMandateDetails(municipalityId, namespace, id);
+		final var mandateEntity = repositoryIntegration.getMandateDetails(municipalityId, namespace, id);
 
 		return mandateEntity
 			.map(serviceMapper::toMandateDetailsWithSigningInfo)
@@ -73,8 +85,8 @@ public class RepresentativesService {
 		repositoryIntegration.deleteMandate(municipalityId, namespace, id);
 	}
 
-	public Mandates searchMandates(final String municipalityId, final String namespace, SearchMandateParameters parameters) {
-		var foundMandates = repositoryIntegration.searchMandates(municipalityId, namespace, parameters);
+	public Mandates searchMandates(final String municipalityId, final String namespace, final SearchMandateParameters parameters) {
+		final var foundMandates = repositoryIntegration.searchMandates(municipalityId, namespace, parameters);
 		return serviceMapper.toMandates(foundMandates);
 	}
 }

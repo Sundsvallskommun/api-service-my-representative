@@ -29,6 +29,7 @@ import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
+import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 
 @ExtendWith(MockitoExtension.class)
 class RepresentativesServiceTest {
@@ -39,12 +40,15 @@ class RepresentativesServiceTest {
 	@Mock
 	private ServiceMapper mockServiceMapper;
 
+	@Mock
+	private PartyIntegration mockPartyIntegration;
+
 	@InjectMocks
 	private RepresentativesService representativesService;
 
 	@AfterEach
 	void tearDown() {
-		Mockito.verifyNoMoreInteractions(mockRepositoryIntegration, mockServiceMapper);
+		Mockito.verifyNoMoreInteractions(mockRepositoryIntegration, mockServiceMapper, mockPartyIntegration);
 	}
 
 	@Test
@@ -52,12 +56,16 @@ class RepresentativesServiceTest {
 		final var id = UUID.randomUUID().toString();
 		final var createMandate = TestObjectFactory.createMandate();
 		final var mandateEntity = new MandateEntity().withId(id);
+		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().grantorPartyId())).thenReturn(Optional.of("some-legal-id"));
+		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().signatoryPartyId())).thenReturn(Optional.of("another-legal-id"));
 		when(mockRepositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(mandateEntity);
 
 		final var mandateId = representativesService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 
 		assertThat(mandateId).isEqualTo(id);
 
+		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().grantorPartyId());
+		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().signatoryPartyId());
 		verify(mockRepositoryIntegration).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 	}
 
@@ -106,7 +114,7 @@ class RepresentativesServiceTest {
 
 	@Test
 	void testSearchMandates() {
-		var parameters = new SearchMandateParameters()
+		final var parameters = new SearchMandateParameters()
 			.withGranteePartyId(UUID.randomUUID().toString())
 			.withGrantorPartyId(UUID.randomUUID().toString())
 			.withSignatoryPartyId(UUID.randomUUID().toString())
@@ -120,7 +128,7 @@ class RepresentativesServiceTest {
 		when(mockRepositoryIntegration.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters)).thenReturn(page);
 		when(mockServiceMapper.toMandates(page)).thenReturn(mandates);
 
-		var response = representativesService.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
+		final var response = representativesService.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
 		assertThat(response).isNotNull();
 		assertThat(response).isEqualTo(mandates);
 		verify(mockRepositoryIntegration).searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);

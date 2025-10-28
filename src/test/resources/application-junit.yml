@@ -1,3 +1,8 @@
+integration:
+  party:
+    connect-timeout: 5
+    read-timeout: 30
+    url: https://localhost:8080/party
 spring:
   cache:
     type: none
@@ -13,3 +18,14 @@ spring:
           schema-generation:
             database:
               action: validate
+  security:
+    oauth2:
+      client:
+        provider:
+          party:
+            token-uri: https://localhost:8080/token
+        registration:
+          party:
+            client-id: override
+            client-secret: override
+            authorization-grant-type: client_credentials
