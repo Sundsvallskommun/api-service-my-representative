@@ -1,0 +1,18 @@
+{
+	"request": {
+		"method": "GET",
+		"url": "/party/2281/ENTERPRISE/e47aa4d3-c79a-4d08-a1d2-799ba549e0c1/legalId",
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		}
+	},
+	"response": {
+		"status": 200,
+		"headers": {
+			"Content-Type": "text/plain"
+		},
+		"body": "5560269986"
+	}
+}

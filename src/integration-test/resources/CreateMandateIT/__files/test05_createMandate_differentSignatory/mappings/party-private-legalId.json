@@ -1,0 +1,18 @@
+{
+	"request": {
+		"method": "GET",
+		"url": "/party/2281/PRIVATE/fb67b32b-1aa1-4209-acea-a4abba09242d/legalId",
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		}
+	},
+	"response": {
+		"status": 200,
+		"headers": {
+			"Content-Type": "text/plain"
+		},
+		"body": "201001192382"
+	}
+}
