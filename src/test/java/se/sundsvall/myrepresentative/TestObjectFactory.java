@@ -1,5 +1,6 @@
 package se.sundsvall.myrepresentative;
 
+import generated.se.sundsvall.legalentity.PersonEngagement;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -65,7 +66,7 @@ public final class TestObjectFactory {
 			.build();
 	}
 
-	public static MandateEntity createMandateEntity(boolean isDeleted) {
+	public static MandateEntity createMandateEntity(final boolean isDeleted) {
 		return new MandateEntity()
 			.withId(ID)
 			.withMunicipalityId(MUNICIPALITY_ID)
@@ -126,5 +127,12 @@ public final class TestObjectFactory {
 			.withMrtdStepUp(true)
 			.withMandate(createMandateEntity(false))
 			.withRisk("low");
+	}
+
+	public static PersonEngagement createPersonEngagement() {
+		final var engagement = new PersonEngagement();
+		engagement.setOrganizationNumber("1234567890");
+		engagement.setIsAuthorizedSignatory(true);
+		return engagement;
 	}
 }

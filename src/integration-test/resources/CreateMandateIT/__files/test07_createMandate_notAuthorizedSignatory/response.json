@@ -1,0 +1,5 @@
+{
+	"title": "Signatory not authorized",
+	"status": 403,
+	"detail": "The person is not an authorized signatory for the organization with legalId: 5560269986"
+}

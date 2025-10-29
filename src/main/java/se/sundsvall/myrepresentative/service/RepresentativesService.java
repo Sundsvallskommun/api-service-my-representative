@@ -2,8 +2,6 @@ package se.sundsvall.myrepresentative.service;
 
 import static org.zalando.problem.Status.NOT_FOUND;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
@@ -12,19 +10,16 @@ import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.config.DataIntegrityExceptionHandler;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
-import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 
 @Service
 public class RepresentativesService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RepresentativesService.class);
-
-	private final PartyIntegration partyIntegration;
 	private final RepositoryIntegration repositoryIntegration;
+	private final LegalEntityService legalEntityService;
 	private final ServiceMapper serviceMapper;
 
-	public RepresentativesService(final PartyIntegration partyIntegration, final RepositoryIntegration repositoryIntegration, final ServiceMapper serviceMapper) {
-		this.partyIntegration = partyIntegration;
+	public RepresentativesService(final RepositoryIntegration repositoryIntegration, final LegalEntityService legalEntityService, final ServiceMapper serviceMapper) {
+		this.legalEntityService = legalEntityService;
 		this.repositoryIntegration = repositoryIntegration;
 		this.serviceMapper = serviceMapper;
 	}
@@ -41,10 +36,7 @@ public class RepresentativesService {
 	 * @return                the id of the created mandate
 	 */
 	public String createMandate(final String municipalityId, final String namespace, final CreateMandate request) {
-		// TODO Only fetching legalIds for now, implement LegalEntity integration for validating that the signatory is
-		// authorized to sign on behalf of the grantor organization
-		final var grantorLegalId = partyIntegration.getOrganizationLegalId(municipalityId, request.grantorDetails().grantorPartyId());
-		final var signatoryLegalId = partyIntegration.getPersonalLegalId(municipalityId, request.grantorDetails().signatoryPartyId());
+		legalEntityService.validateSignatory(municipalityId, request);
 
 		final var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request);
 

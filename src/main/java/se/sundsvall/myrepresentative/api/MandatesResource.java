@@ -47,7 +47,7 @@ class MandatesResource {
 
 	private final RepresentativesService representativesService;
 
-	MandatesResource(RepresentativesService representativesService) {
+	MandatesResource(final RepresentativesService representativesService) {
 		this.representativesService = representativesService;
 	}
 
@@ -57,6 +57,11 @@ class MandatesResource {
 				responseCode = "201",
 				headers = @Header(name = LOCATION, schema = @Schema(type = "string")),
 				description = "Successful Operation",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "403",
+				headers = @Header(name = LOCATION, schema = @Schema(type = "string")),
+				description = "Forbidden",
 				useReturnTypeSchema = true),
 			@ApiResponse(responseCode = "409",
 				description = "Conflict",

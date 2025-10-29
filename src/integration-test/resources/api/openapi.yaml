@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "4.0"
 servers:
-  - url: http://localhost:8080
+  - url: http://127.0.0.1:8080
     description: Generated server url
 paths:
   /{municipalityId}/{namespace}/mandates:
@@ -86,6 +86,13 @@ paths:
       responses:
         "201":
           description: Successful Operation
+          headers:
+            Location:
+              style: simple
+              schema:
+                type: string
+        "403":
+          description: Forbidden
           headers:
             Location:
               style: simple

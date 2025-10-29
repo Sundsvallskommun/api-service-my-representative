@@ -1,0 +1,660 @@
+openapi: 3.0.1
+info:
+  title: Legal Entity API
+  version: v2
+paths:
+  /api/v2/legalentity/api-docs:
+    get:
+      tags:
+        - LegalEntity
+      summary: OpenAPI specification
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+      x-auth-type: None
+  '/api/v2/legalentity/{municipalityId}/{organizationNumber}/guid':
+    get:
+      tags:
+        - LegalEntity
+      parameters:
+        - name: organizationNumber
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: municipalityId
+          in: path
+          description: Kommunkod
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: uuid
+            application/json:
+              schema:
+                type: string
+                format: uuid
+            text/json:
+              schema:
+                type: string
+                format: uuid
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  '/api/v2/legalentity/{municipalityId}/{legalEntityId}/organizationnumber':
+    get:
+      tags:
+        - LegalEntity
+      parameters:
+        - name: legalEntityId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: municipalityId
+          in: path
+          description: Kommunkod
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  '/api/v2/legalentity/{municipalityId}/{legalEntityId}':
+    get:
+      tags:
+        - LegalEntity
+      parameters:
+        - name: legalEntityId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: municipalityId
+          in: path
+          description: Kommunkod
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LegalEntity2'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity2'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LegalEntity2'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  '/api/v2/legalentity/{municipalityId}/engagements/person/{personNumber}':
+    get:
+      tags:
+        - LegalEntity
+      parameters:
+        - name: personNumber
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: municipalityId
+          in: path
+          description: Kommunkod
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonEngagement'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonEngagement'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonEngagement'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  '/api/v2/legalentity/{municipalityId}/engagements/organization/{organizationNumber}':
+    get:
+      tags:
+        - LegalEntity
+      parameters:
+        - name: organizationNumber
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: municipalityId
+          in: path
+          description: Kommunkod
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/OrganizationEngagements'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationEngagements'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationEngagements'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+components:
+  schemas:
+    AnnualRevenue:
+      type: object
+      properties:
+        annualRevenueId:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EmployeeSize:
+      type: object
+      properties:
+        employeeSizeId:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EngagementRole:
+      type: object
+      properties:
+        description:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+      additionalProperties: false
+    LEAddress:
+      type: object
+      properties:
+        addressArea:
+          type: string
+          nullable: true
+        adressNumber:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        postalCode:
+          type: string
+          nullable: true
+        municipality:
+          type: string
+          nullable: true
+        county:
+          type: string
+          nullable: true
+      additionalProperties: false
+    LEPostAddress:
+      type: object
+      properties:
+        coAdress:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        postalCode:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        address1:
+          type: string
+          nullable: true
+        address2:
+          type: string
+          nullable: true
+      additionalProperties: false
+    LegalEntity2:
+      type: object
+      properties:
+        legalEntityId:
+          type: string
+          format: uuid
+          nullable: true
+        organizationNumber:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        legalForm:
+          $ref: '#/components/schemas/LegalForm'
+        postAddress:
+          $ref: '#/components/schemas/LEPostAddress'
+        address:
+          $ref: '#/components/schemas/LEAddress'
+        eMail:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
+        countyMunicipalityCode:
+          type: string
+          nullable: true
+        municipality:
+          type: string
+          nullable: true
+        county:
+          type: string
+          nullable: true
+        acountingPeriodStart:
+          type: string
+          nullable: true
+        acountingPeriodEnded:
+          type: string
+          nullable: true
+        registerDate:
+          type: string
+          format: date
+          nullable: true
+          example: '2023-01-01'
+        unRegisterDate:
+          type: string
+          format: date
+          nullable: true
+          example: '2023-01-01'
+        unRegisterReason:
+          type: string
+          nullable: true
+        unRegisterReasonCode:
+          type: string
+          nullable: true
+        liquidationOrRestructuring:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiquidationOrRestructuring'
+          nullable: true
+        form:
+          type: string
+          nullable: true
+        formShort:
+          type: string
+          nullable: true
+        shareCapital:
+          type: number
+          format: double
+          nullable: true
+        reportingCurrency:
+          type: string
+          nullable: true
+        totalShares:
+          type: integer
+          format: int64
+          nullable: true
+        totalWorkplaces:
+          type: integer
+          format: int32
+          nullable: true
+        fullSignatureDescription:
+          type: string
+          nullable: true
+        businessDescription:
+          type: string
+          nullable: true
+        officers:
+          type: string
+          nullable: true
+        annualRevenue:
+          $ref: '#/components/schemas/AnnualRevenue'
+        revenueYear:
+          type: integer
+          format: int32
+          nullable: true
+        employeeSize:
+          $ref: '#/components/schemas/EmployeeSize'
+        workplaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Workplace'
+          nullable: true
+      additionalProperties: false
+    LegalForm:
+      type: object
+      properties:
+        legalFormId:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    LiquidationOrRestructuring:
+      type: object
+      properties:
+        legalEntityId:
+          type: string
+          format: uuid
+          nullable: true
+        fromDate:
+          type: string
+          format: date
+          nullable: true
+          example: '2023-01-01'
+        name:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+      additionalProperties: false
+    OrganizationEngagement:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        identity:
+          $ref: '#/components/schemas/OrganizationIdentity'
+        relations:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationEngagementRelation'
+          nullable: true
+      additionalProperties: false
+    OrganizationEngagementRelation:
+      type: object
+      properties:
+        description:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties: false
+    OrganizationEngagements:
+      type: object
+      properties:
+        engagements:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationEngagement'
+          nullable: true
+        beneficialOwnershipMarking:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    OrganizationIdentity:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PersonEngagement:
+      type: object
+      properties:
+        organizationNumber:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        form:
+          type: string
+          nullable: true
+        formShort:
+          type: string
+          nullable: true
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/EngagementRole'
+          nullable: true
+        isAuthorizedSignatory:
+          type: boolean
+          nullable: true
+        isSoleTrader:
+          type: boolean
+          nullable: true
+      additionalProperties: false
+      description: Håller information om en persons företags engagemang
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: { }
+    Sni:
+      type: object
+      properties:
+        sniId:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Workplace:
+      type: object
+      properties:
+        legalEntityId:
+          type: string
+          format: uuid
+          nullable: true
+        cfarNumber:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        mainWorkplace:
+          type: boolean
+          nullable: true
+        postAddress:
+          $ref: '#/components/schemas/LEPostAddress'
+        address:
+          $ref: '#/components/schemas/LEAddress'
+        phoneNumber:
+          type: string
+          nullable: true
+        employeeSize:
+          $ref: '#/components/schemas/EmployeeSize'
+        sniCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sni'
+          nullable: true
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: JWT Authorization header using the Bearer scheme.
+      name: X-JWT-Assertion
+      in: header
+security:
+  - Bearer: [ ]
+tags:
+  - name: LegalEntity
+    description: "LegalEntity is the same as Organizations/Companies/Corporations etc..\r\nThe entityname Organization is used to describe the organization structure/tree."

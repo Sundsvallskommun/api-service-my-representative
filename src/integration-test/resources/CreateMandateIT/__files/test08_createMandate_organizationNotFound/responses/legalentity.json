@@ -1,0 +1,30 @@
+[
+	{
+		"organizationNumber": "not-found",
+		"name": "Ankeborgs Margarinfabrik AB",
+		"form": "Aktiebolag",
+		"formShort": "AB",
+		"roles": [
+			{
+				"description": "Styrelseledamot",
+				"code": "LE"
+			}
+		],
+		"isAuthorizedSignatory": true,
+		"isSoleTrader": null
+	},
+	{
+		"organizationNumber": "also-not-found",
+		"name": "Ankeborgs Margarinfabrik AB2",
+		"form": "Aktiebolag",
+		"formShort": "AB",
+		"roles": [
+			{
+				"description": "Styrelseledamot",
+				"code": "LE"
+			}
+		],
+		"isAuthorizedSignatory": true,
+		"isSoleTrader": null
+	}
+]

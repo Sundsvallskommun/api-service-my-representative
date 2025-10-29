@@ -1,4 +1,4 @@
-package se.sundsvall.myrepresentative.integration.party.configuration;
+package se.sundsvall.myrepresentative.integration.legalentity.configuration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 
 @ExtendWith(MockitoExtension.class)
-class PartyConfigurationTest {
+class LegalEntityConfigurationTest {
 
 	@Mock
 	private ClientRegistrationRepository clientRegistrationRepositoryMock;
@@ -34,11 +34,11 @@ class PartyConfigurationTest {
 	private FeignBuilderCustomizer feignBuilderCustomizerMock;
 
 	@Mock
-	private PartyProperties propertiesMock;
+	private LegalEntityProperties propertiesMock;
 
 	@Test
 	void testFeignBuilderCustomizer() {
-		final var configuration = new PartyConfiguration();
+		final var configuration = new LegalEntityConfiguration();
 
 		when(clientRegistrationRepositoryMock.findByRegistrationId(any())).thenReturn(clientRegistrationMock);
 		when(propertiesMock.connectTimeout()).thenReturn(1);
@@ -50,7 +50,7 @@ class PartyConfigurationTest {
 
 			final var customizer = configuration.feignBuilderCustomizer(propertiesMock, clientRegistrationRepositoryMock);
 
-			verify(clientRegistrationRepositoryMock).findByRegistrationId("party");
+			verify(clientRegistrationRepositoryMock).findByRegistrationId("legalentity");
 			verify(feignMultiCustomizerSpy).withRetryableOAuth2InterceptorForClientRegistration(same(clientRegistrationMock));
 			verify(propertiesMock).connectTimeout();
 			verify(propertiesMock).readTimeout();

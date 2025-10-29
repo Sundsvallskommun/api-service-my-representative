@@ -3,6 +3,10 @@ integration:
     connect-timeout: 5
     read-timeout: 30
     url: http://localhost:${wiremock.server.port:}/party
+  legalentity:
+    connect-timeout: 5
+    read-timeout: 30
+    url: http://localhost:${wiremock.server.port:}/legalentity
 spring:
   cache:
     type: none
@@ -26,9 +30,15 @@ spring:
     oauth2:
       client:
         provider:
+          legalentity:
+            token-uri: http://localhost:${wiremock.server.port:}/token
           party:
             token-uri: http://localhost:${wiremock.server.port:}/token
         registration:
+          legalentity:
+            client-id: override
+            client-secret: override
+            authorization-grant-type: client_credentials
           party:
             client-id: override
             client-secret: override
