@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.zalando.problem.Status.CONFLICT;
+import static org.zalando.problem.Status.FORBIDDEN;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
@@ -61,6 +62,21 @@ class CreateMandatesResourceFailureTest {
 		verify(mockService).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 	}
 
+	@Test
+	void testCreateMandateShouldThrowForbiddenWhenSignatoryIsNotAuthorized() {
+		final var createMandate = createMandate();
+		when(mockService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenThrow(Problem.valueOf(FORBIDDEN));
+
+		webTestClient.post()
+			.uri(uriBuilder -> uriBuilder.path(BASE_URL)
+				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
+			.bodyValue(createMandate)
+			.exchange()
+			.expectStatus().isEqualTo(FORBIDDEN.getStatusCode());
+
+		verify(mockService).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+	}
+
 	@ParameterizedTest(name = "{0}")
 	@MethodSource("invalidRequestProvider")
 	void faultyRequestParameters(final String testName, final CreateMandate createMandate) {
@@ -86,7 +102,7 @@ class CreateMandatesResourceFailureTest {
 			Arguments.of("incativeAfter has passed", createMandateWithFaultyDates(now.minusWeeks(2), now.minusWeeks(1))));
 	}
 
-	private static CreateMandate createMandateWithFaultyDates(LocalDate activeFrom, LocalDate incativeAfter) {
+	private static CreateMandate createMandateWithFaultyDates(final LocalDate activeFrom, final LocalDate incativeAfter) {
 		return CreateMandateBuilder.from(createMandate()).withActiveFrom(activeFrom).withInactiveAfter(incativeAfter).build();
 	}
 }

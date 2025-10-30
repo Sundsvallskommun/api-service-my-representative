@@ -4,11 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static org.zalando.problem.Status.NOT_FOUND;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandateEntity;
 
 import java.util.List;
@@ -22,14 +25,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
+import org.zalando.problem.Problem;
 import org.zalando.problem.ThrowableProblem;
-import se.sundsvall.myrepresentative.TestObjectFactory;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
-import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 
 @ExtendWith(MockitoExtension.class)
 class RepresentativesServiceTest {
@@ -41,32 +43,45 @@ class RepresentativesServiceTest {
 	private ServiceMapper mockServiceMapper;
 
 	@Mock
-	private PartyIntegration mockPartyIntegration;
+	private LegalEntityService mockLegalEntityService;
 
 	@InjectMocks
 	private RepresentativesService representativesService;
 
 	@AfterEach
 	void tearDown() {
-		Mockito.verifyNoMoreInteractions(mockRepositoryIntegration, mockServiceMapper, mockPartyIntegration);
+		Mockito.verifyNoMoreInteractions(mockRepositoryIntegration, mockServiceMapper);
 	}
 
 	@Test
 	void testCreateMandate() {
 		final var id = UUID.randomUUID().toString();
-		final var createMandate = TestObjectFactory.createMandate();
+		final var createMandate = createMandate();
 		final var mandateEntity = new MandateEntity().withId(id);
-		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().grantorPartyId())).thenReturn(Optional.of("some-legal-id"));
-		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().signatoryPartyId())).thenReturn(Optional.of("another-legal-id"));
+
 		when(mockRepositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(mandateEntity);
+		doNothing().when(mockLegalEntityService).validateSignatory(MUNICIPALITY_ID, createMandate);
 
 		final var mandateId = representativesService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 
 		assertThat(mandateId).isEqualTo(id);
-
-		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().grantorPartyId());
-		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, createMandate.grantorDetails().signatoryPartyId());
 		verify(mockRepositoryIntegration).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+	}
+
+	@Test
+	void testCreateMandateShouldThrowExceptionWhenSignatoryValidationFails() {
+		final var createMandate = createMandate();
+		doThrow(Problem.valueOf(NOT_FOUND)).when(mockLegalEntityService).validateSignatory(MUNICIPALITY_ID, createMandate);
+
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> representativesService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate))
+			.satisfies(problem -> {
+				assertThat(problem.getStatus()).isEqualTo(NOT_FOUND);
+			});
+
+		verify(mockLegalEntityService).validateSignatory(MUNICIPALITY_ID, createMandate);
+		verifyNoInteractions(mockRepositoryIntegration);
+
 	}
 
 	@Test

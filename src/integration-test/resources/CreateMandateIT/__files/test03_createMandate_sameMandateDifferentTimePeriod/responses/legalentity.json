@@ -1,0 +1,16 @@
+[
+	{
+		"organizationNumber": "5560269986",
+		"name": "Ankeborgs Margarinfabrik AB",
+		"form": "Aktiebolag",
+		"formShort": "AB",
+		"roles": [
+			{
+				"description": "Styrelseledamot",
+				"code": "LE"
+			}
+		],
+		"isAuthorizedSignatory": true,
+		"isSoleTrader": null
+	}
+]

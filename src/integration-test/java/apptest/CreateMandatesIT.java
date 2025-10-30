@@ -5,6 +5,8 @@ import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
@@ -26,7 +28,7 @@ class CreateMandatesIT extends AbstractAppTest {
 	private static final String RESPONSE = "response.json";
 	private static final String REQUEST = "request.json";
 	private static final String BASE_URL = "/2281/my_namespace/mandates";
-	
+
 	@Test
 	void test01_createMandate() {
 		final var headers = setupCall()
@@ -61,6 +63,7 @@ class CreateMandatesIT extends AbstractAppTest {
 			.withHttpMethod(POST)
 			.withRequest(REQUEST)
 			.withExpectedResponseStatus(CONFLICT)
+			.withExpectedResponse(RESPONSE)
 			.sendRequestAndVerifyResponse();
 	}
 
@@ -117,7 +120,8 @@ class CreateMandatesIT extends AbstractAppTest {
 	}
 
 	/**
-	 * Creates a new mandate as one that already exists but with different signatoryPartyId, should not pass.
+	 * Creates a new mandate as one that already exists for the organization, but with different signatoryPartyId
+	 * Should not pass.
 	 */
 	@Test
 	void test05_createMandate_differentSignatory() {
@@ -126,9 +130,10 @@ class CreateMandatesIT extends AbstractAppTest {
 			.withHttpMethod(POST)
 			.withRequest(REQUEST)
 			.withExpectedResponseStatus(CONFLICT)
+			.withExpectedResponse(RESPONSE)
 			.sendRequestAndVerifyResponse();
 	}
-	
+
 	@Test
 	void test06_createMandate_differentMunicipalityAndNamespace() {
 		final var path = "/1984/other_namespace/mandates";
@@ -149,6 +154,34 @@ class CreateMandatesIT extends AbstractAppTest {
 			.withServicePath(location)
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	/**
+	 * The signatory is not an authorized signatory for the organization, should fail.
+	 */
+	@Test
+	void test07_createMandate_notAuthorizedSignatory() {
+		setupCall()
+			.withServicePath(BASE_URL)
+			.withHttpMethod(POST)
+			.withRequest(REQUEST)
+			.withExpectedResponseStatus(FORBIDDEN)
+			.withExpectedResponse(RESPONSE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	/**
+	 * The person does not have any engagement with the organization, should fail.
+	 */
+	@Test
+	void test08_createMandate_organizationNotFound() {
+		setupCall()
+			.withServicePath(BASE_URL)
+			.withHttpMethod(POST)
+			.withRequest(REQUEST)
+			.withExpectedResponseStatus(NOT_FOUND)
 			.withExpectedResponse(RESPONSE)
 			.sendRequestAndVerifyResponse();
 	}

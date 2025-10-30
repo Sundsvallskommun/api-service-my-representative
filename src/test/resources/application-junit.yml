@@ -3,6 +3,10 @@ integration:
     connect-timeout: 5
     read-timeout: 30
     url: https://localhost:8080/party
+  legalentity:
+    connect-timeout: 5
+    read-timeout: 30
+    url: https://localhost:8080/legalentity
 spring:
   cache:
     type: none
@@ -22,9 +26,15 @@ spring:
     oauth2:
       client:
         provider:
+          legalentity:
+            token-uri: https://localhost:8080/token
           party:
             token-uri: https://localhost:8080/token
         registration:
+          legalentity:
+            client-id: override
+            client-secret: override
+            authorization-grant-type: client_credentials
           party:
             client-id: override
             client-secret: override
