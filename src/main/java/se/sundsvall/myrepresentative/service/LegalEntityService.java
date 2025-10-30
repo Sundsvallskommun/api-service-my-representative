@@ -5,7 +5,6 @@ import static org.zalando.problem.Status.NOT_FOUND;
 
 import generated.se.sundsvall.legalentity.PersonEngagement;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,8 +46,7 @@ public class LegalEntityService {
 	private void validateSignatoryForOrganization(final String grantorLegalId, final List<PersonEngagement> personEngagements) {
 		// First check that we can find the organization in the person's engagements, if not throw a 404
 		final var matchingEngagement = personEngagements.stream()
-			.filter(engagement -> StringUtils.isNotEmpty(engagement.getOrganizationNumber())) // We need an organization number
-			.filter(engagement -> engagement.getOrganizationNumber().equals(grantorLegalId)) // Match the organization number
+			.filter(engagement -> grantorLegalId.equals(engagement.getOrganizationNumber())) // Match the organization number
 			.findFirst()
 			.orElseThrow(() -> {
 				LOG.warn("No engagement found for organization: {}", grantorLegalId);
