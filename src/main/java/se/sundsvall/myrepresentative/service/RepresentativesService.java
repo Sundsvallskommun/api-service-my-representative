@@ -2,6 +2,8 @@ package se.sundsvall.myrepresentative.service;
 
 import static org.zalando.problem.Status.NOT_FOUND;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
@@ -10,25 +12,31 @@ import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.config.DataIntegrityExceptionHandler;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
+import se.sundsvall.myrepresentative.integration.legalentity.configuration.LegalEntityProperties;
 
 @Service
 public class RepresentativesService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(RepresentativesService.class);
+
 	private final RepositoryIntegration repositoryIntegration;
 	private final LegalEntityService legalEntityService;
 	private final ServiceMapper serviceMapper;
+	private final LegalEntityProperties legalEntityProperties;
 
-	public RepresentativesService(final RepositoryIntegration repositoryIntegration, final LegalEntityService legalEntityService, final ServiceMapper serviceMapper) {
+	public RepresentativesService(final RepositoryIntegration repositoryIntegration, final LegalEntityService legalEntityService, final ServiceMapper serviceMapper, final LegalEntityProperties legalEntityProperties) {
 		this.legalEntityService = legalEntityService;
 		this.repositoryIntegration = repositoryIntegration;
 		this.serviceMapper = serviceMapper;
+		this.legalEntityProperties = legalEntityProperties;
 	}
 
 	/**
-	 * Creates a new mandate.
+	 * Creates a new mandate after validating that the signatory is an authorized signatory for the organization.
 	 * Throws a Problem with status 409 if a mandate already exists with the same municipalityId, namespace, grantorPartyId,
 	 * granteePartyId,
 	 * deleted value and overlapping activeFrom/inactiveAfter period. Handled in the {@link DataIntegrityExceptionHandler}.
+	 * Validation can be disabled through configuration.
 	 *
 	 * @param  municipalityId municipalityId
 	 * @param  namespace      namespace in which the mandate should be created
@@ -36,7 +44,12 @@ public class RepresentativesService {
 	 * @return                the id of the created mandate
 	 */
 	public String createMandate(final String municipalityId, final String namespace, final CreateMandate request) {
-		legalEntityService.validateSignatory(municipalityId, request);
+		if (legalEntityProperties.validationEnabled()) {
+			legalEntityService.validateSignatory(municipalityId, request);
+		} else {
+			// Log a warning that legal entity validation is disabled
+			LOG.warn("Signatory validation is disabled");
+		}
 
 		final var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request);
 

@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @ConfigurationProperties(prefix = "integration.legalentity")
 public record LegalEntityProperties(
+	@DefaultValue("true") boolean validationEnabled,
 	@DefaultValue("5") int connectTimeout,
 	@DefaultValue("15") int readTimeout) {
 }
