@@ -4,6 +4,7 @@ integration:
     read-timeout: 30
     url: https://localhost:8080/party
   legalentity:
+    validation-enabled: true
     connect-timeout: 5
     read-timeout: 30
     url: https://localhost:8080/legalentity

@@ -4,6 +4,7 @@ integration:
     read-timeout: 30
     url: http://localhost:${wiremock.server.port:}/party
   legalentity:
+    validation-enabled: true
     connect-timeout: 5
     read-timeout: 30
     url: http://localhost:${wiremock.server.port:}/legalentity

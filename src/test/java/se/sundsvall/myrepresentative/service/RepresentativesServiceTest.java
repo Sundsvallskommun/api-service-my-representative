@@ -32,6 +32,7 @@ import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
+import se.sundsvall.myrepresentative.integration.legalentity.configuration.LegalEntityProperties;
 
 @ExtendWith(MockitoExtension.class)
 class RepresentativesServiceTest {
@@ -44,6 +45,9 @@ class RepresentativesServiceTest {
 
 	@Mock
 	private LegalEntityService mockLegalEntityService;
+
+	@Mock
+	private LegalEntityProperties mockLegalEntityProperties;
 
 	@InjectMocks
 	private RepresentativesService representativesService;
@@ -59,6 +63,7 @@ class RepresentativesServiceTest {
 		final var createMandate = createMandate();
 		final var mandateEntity = new MandateEntity().withId(id);
 
+		when(mockLegalEntityProperties.validationEnabled()).thenReturn(true);
 		when(mockRepositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(mandateEntity);
 		doNothing().when(mockLegalEntityService).validateSignatory(MUNICIPALITY_ID, createMandate);
 
@@ -69,8 +74,26 @@ class RepresentativesServiceTest {
 	}
 
 	@Test
+	void testCreateMandateShouldSkipSignatoryValidationWhenDisabled() {
+		final var id = UUID.randomUUID().toString();
+		final var createMandate = createMandate();
+		final var mandateEntity = new MandateEntity().withId(id);
+
+		// Disable validation
+		when(mockLegalEntityProperties.validationEnabled()).thenReturn(false);
+
+		when(mockRepositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(mandateEntity);
+
+		final var mandateId = representativesService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+		assertThat(mandateId).isEqualTo(id);
+		verify(mockRepositoryIntegration).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+		verifyNoInteractions(mockLegalEntityService);
+	}
+
+	@Test
 	void testCreateMandateShouldThrowExceptionWhenSignatoryValidationFails() {
 		final var createMandate = createMandate();
+		when(mockLegalEntityProperties.validationEnabled()).thenReturn(true);
 		doThrow(Problem.valueOf(NOT_FOUND)).when(mockLegalEntityService).validateSignatory(MUNICIPALITY_ID, createMandate);
 
 		assertThatExceptionOfType(ThrowableProblem.class)
