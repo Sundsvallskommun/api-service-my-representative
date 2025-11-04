@@ -17,7 +17,7 @@ public @interface ValidMandateStatus {
 
 	boolean nullable() default false;
 
-	String message() default "Invalid namespace, valid characters are a-z, A-Z, 0-9, '-', '_' and '.'";
+	String message() default "Invalid mandate status";
 
 	Class<?>[] groups() default {};
 
