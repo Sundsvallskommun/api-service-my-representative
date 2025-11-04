@@ -5,37 +5,37 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "4.0"
+  version: "4.1"
 servers:
-  - url: http://127.0.0.1:8080
-    description: Generated server url
+- url: http://localhost:55396
+  description: Generated server url
 paths:
   /{municipalityId}/{namespace}/mandates:
     get:
       tags:
-        - MyRepresentatives
+      - MyRepresentatives
       summary: Search mandates
       operationId: searchMandates
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: namespace
-          in: path
-          description: Namespace
-          required: true
-          schema:
-            type: string
-          example: MY_NAMESPACE
-        - name: searchParameters
-          in: query
-          required: true
-          schema:
-            $ref: "#/components/schemas/SearchMandateParameters"
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: namespace
+        in: path
+        description: Namespace
+        required: true
+        schema:
+          type: string
+        example: MY_NAMESPACE
+      - name: searchParameters
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/SearchMandateParameters"
       responses:
         "200":
           description: Successful Operation
@@ -49,8 +49,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -59,24 +59,24 @@ paths:
                 $ref: "#/components/schemas/Problem"
     post:
       tags:
-        - MyRepresentatives
+      - MyRepresentatives
       summary: Create mandates
       operationId: createMandate
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: namespace
-          in: path
-          description: Namespace
-          required: true
-          schema:
-            type: string
-          example: MY_NAMESPACE
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: namespace
+        in: path
+        description: Namespace
+        required: true
+        schema:
+          type: string
+        example: MY_NAMESPACE
       requestBody:
         content:
           application/json:
@@ -110,8 +110,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -121,31 +121,31 @@ paths:
   /{municipalityId}/{namespace}/mandates/{id}:
     get:
       tags:
-        - MyRepresentatives
+      - MyRepresentatives
       summary: "Get mandate by id, also returns BankID signing information"
       operationId: getMandateById
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: namespace
-          in: path
-          description: Namespace
-          required: true
-          schema:
-            type: string
-          example: MY_NAMESPACE
-        - name: id
-          in: path
-          description: Id of the mandate
-          required: true
-          schema:
-            type: string
-          example: 2facc7a8-69e1-4988-9b3d-4da6cefab704
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: namespace
+        in: path
+        description: Namespace
+        required: true
+        schema:
+          type: string
+        example: MY_NAMESPACE
+      - name: id
+        in: path
+        description: Id of the mandate
+        required: true
+        schema:
+          type: string
+        example: 2facc7a8-69e1-4988-9b3d-4da6cefab704
       responses:
         "200":
           description: Successful Operation
@@ -165,8 +165,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -175,31 +175,31 @@ paths:
                 $ref: "#/components/schemas/Problem"
     delete:
       tags:
-        - MyRepresentatives
+      - MyRepresentatives
       summary: "Delete mandate, performs a soft delete"
       operationId: deleteMandate
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: namespace
-          in: path
-          description: Namespace
-          required: true
-          schema:
-            type: string
-          example: MY_NAMESPACE
-        - name: id
-          in: path
-          description: Id of the mandate
-          required: true
-          schema:
-            type: string
-          example: 2facc7a8-69e1-4988-9b3d-4da6cefab704
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: namespace
+        in: path
+        description: Namespace
+        required: true
+        schema:
+          type: string
+        example: MY_NAMESPACE
+      - name: id
+        in: path
+        description: Id of the mandate
+        required: true
+        schema:
+          type: string
+        example: 2facc7a8-69e1-4988-9b3d-4da6cefab704
       responses:
         "204":
           description: No Content
@@ -209,8 +209,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -220,7 +220,7 @@ paths:
   /api-docs:
     get:
       tags:
-        - API
+      - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -238,6 +238,12 @@ components:
     Problem:
       type: object
       properties:
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
         instance:
           type: string
           format: uri
@@ -248,27 +254,21 @@ components:
           type: object
           additionalProperties:
             type: object
-        title:
-          type: string
-        detail:
-          type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
     StatusType:
       type: object
       properties:
-        reasonPhrase:
-          type: string
         statusCode:
           type: integer
           format: int32
+        reasonPhrase:
+          type: string
     CompletionData:
       required:
-        - bankIdIssueDate
-        - device
-        - ocspResponse
-        - signature
-        - user
+      - bankIdIssueDate
+      - device
+      - ocspResponse
+      - signature
+      - user
       type: object
       properties:
         bankIdIssueDate:
@@ -300,10 +300,10 @@ components:
       description: Information about the user and the completed order
     CreateMandate:
       required:
-        - activeFrom
-        - granteeDetails
-        - grantorDetails
-        - signingInfo
+      - activeFrom
+      - granteeDetails
+      - grantorDetails
+      - signingInfo
       type: object
       properties:
         grantorDetails:
@@ -326,8 +326,8 @@ components:
       description: CreateMandate model
     Device:
       required:
-        - ipAddress
-        - uhi
+      - ipAddress
+      - uhi
       type: object
       properties:
         ipAddress:
@@ -344,7 +344,7 @@ components:
       description: Information regarding the device used for the signing order
     GranteeDetails:
       required:
-        - partyId
+      - partyId
       type: object
       properties:
         partyId:
@@ -354,8 +354,8 @@ components:
       description: GranteeDetails model
     GrantorDetails:
       required:
-        - grantorPartyId
-        - signatoryPartyId
+      - grantorPartyId
+      - signatoryPartyId
       type: object
       properties:
         name:
@@ -373,9 +373,9 @@ components:
       description: GrantorDetails model
     SigningInfo:
       required:
-        - completionData
-        - orderRef
-        - status
+      - completionData
+      - orderRef
+      - status
       type: object
       properties:
         orderRef:
@@ -402,7 +402,7 @@ components:
         of the signing order
     User:
       required:
-        - personalNumber
+      - personalNumber
       type: object
       properties:
         personalNumber:
@@ -463,6 +463,8 @@ components:
           type: string
         message:
           type: string
+        detail:
+          type: string
         instance:
           type: string
           format: uri
@@ -470,8 +472,6 @@ components:
           type: object
           additionalProperties:
             type: object
-        detail:
-          type: string
         suppressed:
           type: array
           items:
@@ -534,6 +534,12 @@ components:
                 type: boolean
         message:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
         instance:
           type: string
           format: uri
@@ -544,12 +550,6 @@ components:
           type: object
           additionalProperties:
             type: object
-        title:
-          type: string
-        detail:
-          type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
         suppressed:
           type: array
           items:
@@ -619,14 +619,26 @@ components:
           type: string
           description: PartyId of the issuing person / signatory
           example: fb2f0290-3820-11ed-a261-0242ac120003
+        statuses:
+          type: array
+          description: List of mandate statuses
+          items:
+            type: string
+            description: List of mandate statuses
+            enum:
+            - ACTIVE
+            - DELETED
+            - EXPIRED
+            - INACTIVE
+            - UNKNOWN
       description: SearchMandateParameters model
     Direction:
       type: string
       description: The sort order direction
       example: ASC
       enum:
-        - ASC
-        - DESC
+      - ASC
+      - DESC
     MandateDetails:
       type: object
       properties:

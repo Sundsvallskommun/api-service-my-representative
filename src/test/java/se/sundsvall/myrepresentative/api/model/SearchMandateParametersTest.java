@@ -11,6 +11,7 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTEE_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTOR_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
 
+import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
@@ -32,12 +33,14 @@ class SearchMandateParametersTest {
 			.withGrantorPartyId(GRANTOR_PARTY_ID)
 			.withGranteePartyId(GRANTEE_PARTY_ID)
 			.withSignatoryPartyId(SIGNATORY_PARTY_ID)
+			.withStatuses(List.of(MandateStatus.EXPIRED))
 			.withLimit(100)
 			.withPage(1);
 
 		assertThat(parameters.getGrantorPartyId()).isEqualTo(GRANTOR_PARTY_ID);
 		assertThat(parameters.getGranteePartyId()).isEqualTo(GRANTEE_PARTY_ID);
 		assertThat(parameters.getSignatoryPartyId()).isEqualTo(SIGNATORY_PARTY_ID);
+		assertThat(parameters.getStatuses()).containsExactly(MandateStatus.EXPIRED);
 		assertThat(parameters.getLimit()).isEqualTo(100);
 		assertThat(parameters.getPage()).isEqualTo(1);
 

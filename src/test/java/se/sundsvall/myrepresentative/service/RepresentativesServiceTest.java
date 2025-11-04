@@ -28,6 +28,7 @@ import org.springframework.data.domain.PageImpl;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
+import se.sundsvall.myrepresentative.api.model.MandateStatus;
 import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
@@ -156,6 +157,7 @@ class RepresentativesServiceTest {
 			.withGranteePartyId(UUID.randomUUID().toString())
 			.withGrantorPartyId(UUID.randomUUID().toString())
 			.withSignatoryPartyId(UUID.randomUUID().toString())
+			.withStatuses(List.of(MandateStatus.DELETED))
 			.withPage(1)
 			.withLimit(15);
 
@@ -167,8 +169,7 @@ class RepresentativesServiceTest {
 		when(mockServiceMapper.toMandates(page)).thenReturn(mandates);
 
 		final var response = representativesService.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
-		assertThat(response).isNotNull();
-		assertThat(response).isEqualTo(mandates);
+		assertThat(response).isNotNull().isEqualTo(mandates);
 		verify(mockRepositoryIntegration).searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
 		verify(mockServiceMapper).toMandates(page);
 	}

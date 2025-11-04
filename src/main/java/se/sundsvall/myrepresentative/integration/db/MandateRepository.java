@@ -5,6 +5,7 @@ import static se.sundsvall.myrepresentative.integration.db.specification.Mandate
 import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withMunicipalityId;
 import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withNamespace;
 import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withSignatoryPartyId;
+import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withStatuses;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import java.time.Instant;
@@ -45,6 +46,7 @@ public interface MandateRepository extends JpaRepository<MandateEntity, String>,
 					.and(withNamespace(namespace))
 					.and(withGrantorPartyId(parameters.getGrantorPartyId()))
 					.and(withGranteePartyId(parameters.getGranteePartyId()))
+					.and(withStatuses(parameters.getStatuses()))
 					.and(withSignatoryPartyId(parameters.getSignatoryPartyId()))),
 			effectivePageable);
 	}

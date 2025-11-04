@@ -1,6 +1,12 @@
 package se.sundsvall.myrepresentative.integration.db.specification;
 
+import static java.util.Collections.emptyList;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.data.jpa.domain.Specification;
+import se.sundsvall.myrepresentative.api.model.MandateStatus;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity_;
 
@@ -30,5 +36,9 @@ public class MandateSpecification {
 
 	public static Specification<MandateEntity> withGranteePartyId(final String value) {
 		return BUILDER.buildEqualFilter(MandateEntity_.GRANTEE_PARTY_ID, value);
+	}
+
+	public static Specification<MandateEntity> withStatuses(final List<MandateStatus> statuses) {
+		return BUILDER.buildEqualAnyFilter(MandateEntity_.STATUS, Optional.ofNullable(statuses).orElse(emptyList()).stream().map(Objects::toString).toList());
 	}
 }
