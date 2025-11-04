@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>se.sundsvall</groupId>
 	<artifactId>api-service-my-representative</artifactId>
-	<version>4.0</version>
+	<version>4.1</version>
 	<name>api-service-my-representative</name>
 	<description>My Representative</description>
 	<properties>
