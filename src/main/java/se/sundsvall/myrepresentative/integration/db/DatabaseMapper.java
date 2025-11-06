@@ -40,22 +40,23 @@ public class DatabaseMapper {
 	private SigningInformationEntity toSigningInformationEntity(final SigningInfo signingInfo) {
 		return ofNullable(signingInfo)
 			.map(info -> {
-				var entity = new SigningInformationEntity()
+				final var entity = new SigningInformationEntity()
 					.withOrderRef(info.orderRef())
-					.withStatus(info.status());
+					.withStatus(info.status())
+					.withExternalTransactionId(info.externalTransactionId());
 
-				of(info.completionData()).ifPresent(data -> {
+				ofNullable(info.completionData()).ifPresent(data -> {
 					entity.withSignature(data.signature())
 						.withOcspResponse(data.ocspResponse())
 						.withBankIdIssueDate(data.bankIdIssueDate())
 						.withRisk(data.risk());
 
-					of(data.user()).ifPresent(user -> entity.withPersonalNumber(user.personalNumber())
+					ofNullable(data.user()).ifPresent(user -> entity.withPersonalNumber(user.personalNumber())
 						.withName(user.name())
 						.withGivenName(user.givenName())
 						.withSurname(user.surname()));
 
-					of(data.device()).ifPresent(device -> entity.withIpAddress(device.ipAddress())
+					ofNullable(data.device()).ifPresent(device -> entity.withIpAddress(device.ipAddress())
 						.withUhi(device.uhi()));
 
 					ofNullable(data.stepUp()).ifPresent(stepUp -> entity.withMrtdStepUp(stepUp.mrtd()));

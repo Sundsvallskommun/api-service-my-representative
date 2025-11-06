@@ -33,11 +33,12 @@ import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEnt
 @Component
 public class ServiceMapper {
 
-	public SigningInfo toSigningInfo(SigningInformationEntity entity) {
+	public SigningInfo toSigningInfo(final SigningInformationEntity entity) {
 		return ofNullable(entity)
 			.map(info -> SigningInfoBuilder.create()
 				.withStatus(entity.getStatus())
 				.withOrderRef(entity.getOrderRef())
+				.withExternalTransactionId(entity.getExternalTransactionId())
 				.withCompletionData(toCompletionData(entity))
 				.build())
 			.orElse(null);
@@ -111,7 +112,7 @@ public class ServiceMapper {
 		return toMandateDetails(mandateEntity, false);
 	}
 
-	private MandateDetails toMandateDetails(final MandateEntity mandateEntity, boolean includeSigningInfo) {
+	private MandateDetails toMandateDetails(final MandateEntity mandateEntity, final boolean includeSigningInfo) {
 		return ofNullable(mandateEntity)
 			.map(entity -> MandateDetailsBuilder.create()
 				.withId(entity.getId())

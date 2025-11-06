@@ -185,4 +185,27 @@ class CreateMandatesIT extends AbstractAppTest {
 			.withExpectedResponse(RESPONSE)
 			.sendRequestAndVerifyResponse();
 	}
+
+	@Test
+	void test09_createMandate_minimalSigningInfo() {
+		final var headers = setupCall()
+			.withServicePath(BASE_URL)
+			.withHttpMethod(POST)
+			.withRequest(REQUEST)
+			.withExpectedResponseStatus(CREATED)
+			.withExpectedResponseHeader(LOCATION, List.of(BASE_URL + "/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$"))
+			.sendRequest()
+			.getResponseHeaders();
+
+		// Use the Location header to get the created mandate and verify it was created
+		final var location = headers.getFirst(LOCATION);
+
+		//Read the created mandate to verify it was created
+		setupCall()
+			.withServicePath(location)
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse(RESPONSE)
+			.sendRequestAndVerifyResponse();
+	}
 }

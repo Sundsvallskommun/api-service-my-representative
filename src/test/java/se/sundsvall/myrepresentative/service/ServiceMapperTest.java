@@ -51,6 +51,7 @@ class ServiceMapperTest {
 
 		assertThat(signingInfo.status()).isEqualTo(SIGNING_INFORMATION_ENTITY.getStatus());
 		assertThat(signingInfo.orderRef()).isEqualTo(SIGNING_INFORMATION_ENTITY.getOrderRef());
+		assertThat(signingInfo.externalTransactionId()).isEqualTo(SIGNING_INFORMATION_ENTITY.getExternalTransactionId());
 		assertThat(signingInfo.completionData().signature()).isEqualTo(SIGNING_INFORMATION_ENTITY.getSignature());
 		assertThat(signingInfo.completionData().ocspResponse()).isEqualTo(SIGNING_INFORMATION_ENTITY.getOcspResponse());
 		assertThat(signingInfo.completionData().bankIdIssueDate()).isEqualTo(SIGNING_INFORMATION_ENTITY.getBankIdIssueDate());
@@ -68,7 +69,7 @@ class ServiceMapperTest {
 	void testToMandates() {
 		final var entity = createMandateEntity(true);
 		final var entity2 = createMandateEntity(false);
-		Page<MandateEntity> page = new PageImpl<>(List.of(entity, entity2));
+		final Page<MandateEntity> page = new PageImpl<>(List.of(entity, entity2));
 		final var mandates = serviceMapper.toMandates(page);
 
 		assertThat(mandates.mandateDetailsList()).hasSize(2);

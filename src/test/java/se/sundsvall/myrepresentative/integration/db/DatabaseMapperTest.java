@@ -13,6 +13,8 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
 
 import org.junit.jupiter.api.Test;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
+import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
+import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
 import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
 
 class DatabaseMapperTest {
@@ -48,11 +50,24 @@ class DatabaseMapperTest {
 		assertThat(mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, null)).isNull();
 	}
 
-	private void assertSigningInformation(SigningInformationEntity entity, CreateMandate createMandate) {
+	@Test
+	void testMapToMandateEntityWitEmptySigningInfo() {
+		final var createMandate = CreateMandateBuilder.from(createMandate())
+			.withSigningInfo(SigningInfoBuilder.create().build())
+			.build();
+		final var mandateEntity = mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, createMandate);
+
+		assertThat(mandateEntity).isNotNull();
+		assertThat(mandateEntity.getSigningInformation().getFirst()).hasAllNullFieldsOrPropertiesExcept("mandate");
+
+	}
+
+	private void assertSigningInformation(final SigningInformationEntity entity, final CreateMandate createMandate) {
 		assertThat(entity.getStatus()).isEqualTo(createMandate.signingInfo().status());
 		assertThat(entity.getOrderRef()).isEqualTo(createMandate.signingInfo().orderRef());
 		assertThat(entity.getSignature()).isEqualTo(createMandate.signingInfo().completionData().signature());
 		assertThat(entity.getOcspResponse()).isEqualTo(createMandate.signingInfo().completionData().ocspResponse());
+		assertThat(entity.getExternalTransactionId()).isEqualTo(createMandate.signingInfo().externalTransactionId());
 		assertThat(entity.getBankIdIssueDate()).isEqualTo(createMandate.signingInfo().completionData().bankIdIssueDate());
 		assertThat(entity.getPersonalNumber()).isEqualTo(createMandate.signingInfo().completionData().user().personalNumber());
 		assertThat(entity.getName()).isEqualTo(createMandate.signingInfo().completionData().user().name());

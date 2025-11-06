@@ -18,12 +18,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import se.sundsvall.myrepresentative.api.model.CompletionDataBuilder;
 import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
+import se.sundsvall.myrepresentative.api.model.DeviceBuilder;
 import se.sundsvall.myrepresentative.api.model.MandateDetails;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.Mandates;
 import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
+import se.sundsvall.myrepresentative.api.model.SigningInfo;
+import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
+import se.sundsvall.myrepresentative.api.model.UserBuilder;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -78,6 +83,26 @@ class MandatesResourceTest {
 	}
 
 	@Test
+	void testCreateMandateWithMinimalSigningInfoShouldBeValid() {
+		final var id = UUID.randomUUID().toString();
+		final var createMandate = CreateMandateBuilder.from(createMandate())
+			.withSigningInfo(createMinmalSigningInfo())
+			.build();
+
+		when(mockService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(id);
+
+		webTestClient.post()
+			.uri(uriBuilder -> uriBuilder.path(BASE_URL)
+				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
+			.bodyValue(createMandate)
+			.exchange()
+			.expectStatus().isCreated()
+			.expectHeader().valueEquals("Location", String.format("/%s/%s/mandates/%s", MUNICIPALITY_ID, NAMESPACE, id));
+
+		verify(mockService).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+	}
+
+	@Test
 	void testGetMandateById() {
 		final var url = BASE_URL + "/{id}";
 		final var id = UUID.randomUUID().toString();
@@ -85,7 +110,7 @@ class MandatesResourceTest {
 
 		when(mockService.getMandateDetails(MUNICIPALITY_ID, NAMESPACE, id)).thenReturn(MandateDetailsBuilder.create().build());
 
-		var response = webTestClient.get()
+		final var response = webTestClient.get()
 			.uri(uriBuilder -> uriBuilder.path(url)
 				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE, "id", id)))
 			.exchange()
@@ -116,7 +141,7 @@ class MandatesResourceTest {
 
 	@Test
 	void testSearchMandates() {
-		var parameters = new SearchMandateParameters()
+		final var parameters = new SearchMandateParameters()
 			.withGranteePartyId(UUID.randomUUID().toString())
 			.withGrantorPartyId(UUID.randomUUID().toString())
 			.withSignatoryPartyId(UUID.randomUUID().toString())
@@ -127,7 +152,7 @@ class MandatesResourceTest {
 
 		when(mockService.searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters)).thenReturn(MandatesBuilder.create().build());
 
-		var response = webTestClient.get()
+		final var response = webTestClient.get()
 			.uri(uriBuilder -> uriBuilder.path(BASE_URL)
 				.queryParam("granteePartyId", parameters.getGranteePartyId())
 				.queryParam("grantorPartyId", parameters.getGrantorPartyId())
@@ -143,5 +168,24 @@ class MandatesResourceTest {
 
 		assertThat(response).isEqualTo(mandates);
 		verify(mockService).searchMandates(MUNICIPALITY_ID, NAMESPACE, parameters);
+	}
+
+	private static SigningInfo createMinmalSigningInfo() {
+		return SigningInfoBuilder.create()
+			.withOrderRef("orderRef")
+			.withExternalTransactionId("externalTransactionId")
+			.withStatus("status")
+			.withCompletionData(CompletionDataBuilder.create()
+				.withSignature("signature")
+				.withUser(UserBuilder.create()
+					.withPersonalNumber("personalNumber")
+					.withGivenName("givenName")
+					.withSurname("surname")
+					.build())
+				.withDevice(DeviceBuilder.create()
+					.withIpAddress("192.168.1.1")
+					.build())
+				.build())
+			.build();
 	}
 }
