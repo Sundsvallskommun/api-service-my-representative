@@ -7,8 +7,8 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.myrepresentative.config.Builder;
 
@@ -17,6 +17,8 @@ import se.sundsvall.myrepresentative.config.Builder;
 public record SigningInfo(
 	@Schema(description = "Reference for the signing order", example = "131daac9-16c6-4618-beb0-365768f37288", requiredMode = REQUIRED) @NotEmpty String orderRef,
 
+	@Schema(description = "External transactionId", example = "87b53852-df66-4eab-bed1-873f927a2dcc", requiredMode = REQUIRED) @NotEmpty String externalTransactionId,
+
 	@Schema(description = "Status of the signing order", example = "complete", requiredMode = REQUIRED) @NotEmpty String status,
 
 	@Schema(description = "Information about the user and the completed order", requiredMode = REQUIRED) @NotNull @Valid CompletionData completionData) {
@@ -24,11 +26,11 @@ public record SigningInfo(
 	@Builder
 	public record CompletionData(
 
-		@Schema(description = "When the BankID was issued", example = "2020-01-02", requiredMode = REQUIRED) @NotNull @DateTimeFormat(iso = DATE) LocalDate bankIdIssueDate,
+		@Schema(description = "When the BankID was issued", example = "2020-01-02", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate bankIdIssueDate,
 
 		@Schema(description = "The signature made by the receiving party", example = "YmFzZTY0LWVuY29kZWQgZGF0YQ==", requiredMode = REQUIRED) @NotEmpty String signature,
 
-		@Schema(description = "Online certificate status protocol for the signing order", example = "YmFzZTY0LWVuY29kZWQgZGF0YQ==", requiredMode = REQUIRED) @NotEmpty String ocspResponse,
+		@Schema(description = "Online certificate status protocol for the signing order", example = "YmFzZTY0LWVuY29kZWQgZGF0YQ==", requiredMode = NOT_REQUIRED) String ocspResponse,
 
 		@Schema(description = "Indicates the risk level of the order based on data available in the order", example = "low", requiredMode = NOT_REQUIRED) String risk,
 
@@ -44,9 +46,9 @@ public record SigningInfo(
 
 			@Schema(description = "Full name of the signing party", example = "John Wick", requiredMode = NOT_REQUIRED) String name,
 
-			@Schema(description = "First name of the signing party", example = "John", requiredMode = NOT_REQUIRED) String givenName,
+			@Schema(description = "First name of the signing party", example = "John", requiredMode = REQUIRED) @NotEmpty String givenName,
 
-			@Schema(description = "Last name of the signing party", example = "Wick", requiredMode = NOT_REQUIRED) String surname) {
+			@Schema(description = "Last name of the signing party", example = "Wick", requiredMode = REQUIRED) @NotEmpty String surname) {
 		}
 
 		@Builder
@@ -58,7 +60,7 @@ public record SigningInfo(
 		public record Device(
 			@Schema(description = "Ip address used when the letter was signed", example = "192.168.1.1", requiredMode = REQUIRED) @NotEmpty String ipAddress,
 
-			@Schema(description = "The Unique Hardware Identifier for the user’s device holding the BankID", example = "OZvYM9VvyiAmG7NA5jU5zqGcVpo=", requiredMode = REQUIRED) @NotEmpty String uhi) {
+			@Schema(description = "The Unique Hardware Identifier for the user’s device holding the BankID", example = "OZvYM9VvyiAmG7NA5jU5zqGcVpo=", requiredMode = NOT_REQUIRED) String uhi) {
 		}
 	}
 }

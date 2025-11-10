@@ -30,6 +30,9 @@ public class SigningInformationEntity {
 	@Column(name = "id", length = 36)
 	private String id;
 
+	@Column(name = "external_transaction_id", nullable = false, length = 36)
+	private String externalTransactionId;
+
 	@Column(name = "order_ref", nullable = false, length = 36)
 	private String orderRef;
 
@@ -42,19 +45,19 @@ public class SigningInformationEntity {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "given_name")
+	@Column(name = "given_name", nullable = false)
 	private String givenName;
 
-	@Column(name = "surname")
+	@Column(name = "surname", nullable = false)
 	private String surname;
 
 	@Column(name = "ip_address", nullable = false, length = 45)
 	private String ipAddress;
 
-	@Column(name = "uhi", nullable = false, columnDefinition = "text")
+	@Column(name = "uhi", columnDefinition = "text")
 	private String uhi;
 
-	@Column(name = "bank_id_issue_date", nullable = false)
+	@Column(name = "bank_id_issue_date")
 	private LocalDate bankIdIssueDate;
 
 	@Column(name = "mrtd")
@@ -63,7 +66,7 @@ public class SigningInformationEntity {
 	@Column(name = "signature", nullable = false, columnDefinition = "longtext")
 	private String signature;
 
-	@Column(name = "ocsp_response", nullable = false, columnDefinition = "longtext")
+	@Column(name = "ocsp_response", columnDefinition = "longtext")
 	private String ocspResponse;
 
 	@Column(name = "risk", length = 20)
@@ -86,15 +89,23 @@ public class SigningInformationEntity {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
+	}
+
+	public String getExternalTransactionId() {
+		return externalTransactionId;
+	}
+
+	public void setExternalTransactionId(final String externalTransactionId) {
+		this.externalTransactionId = externalTransactionId;
 	}
 
 	public String getOrderRef() {
 		return orderRef;
 	}
 
-	public void setOrderRef(String orderRef) {
+	public void setOrderRef(final String orderRef) {
 		this.orderRef = orderRef;
 	}
 
@@ -102,7 +113,7 @@ public class SigningInformationEntity {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
 
@@ -110,7 +121,7 @@ public class SigningInformationEntity {
 		return personalNumber;
 	}
 
-	public void setPersonalNumber(String personalNumber) {
+	public void setPersonalNumber(final String personalNumber) {
 		this.personalNumber = personalNumber;
 	}
 
@@ -118,7 +129,7 @@ public class SigningInformationEntity {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -126,7 +137,7 @@ public class SigningInformationEntity {
 		return givenName;
 	}
 
-	public void setGivenName(String givenName) {
+	public void setGivenName(final String givenName) {
 		this.givenName = givenName;
 	}
 
@@ -134,7 +145,7 @@ public class SigningInformationEntity {
 		return surname;
 	}
 
-	public void setSurname(String surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 
@@ -142,7 +153,7 @@ public class SigningInformationEntity {
 		return ipAddress;
 	}
 
-	public void setIpAddress(String ipAddress) {
+	public void setIpAddress(final String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
 
@@ -150,7 +161,7 @@ public class SigningInformationEntity {
 		return uhi;
 	}
 
-	public void setUhi(String uhi) {
+	public void setUhi(final String uhi) {
 		this.uhi = uhi;
 	}
 
@@ -158,7 +169,7 @@ public class SigningInformationEntity {
 		return bankIdIssueDate;
 	}
 
-	public void setBankIdIssueDate(LocalDate bankIdIssueDate) {
+	public void setBankIdIssueDate(final LocalDate bankIdIssueDate) {
 		this.bankIdIssueDate = bankIdIssueDate;
 	}
 
@@ -166,7 +177,7 @@ public class SigningInformationEntity {
 		return mrtd;
 	}
 
-	public void setMrtd(Boolean mrtd) {
+	public void setMrtd(final Boolean mrtd) {
 		this.mrtd = mrtd;
 	}
 
@@ -174,7 +185,7 @@ public class SigningInformationEntity {
 		return signature;
 	}
 
-	public void setSignature(String signature) {
+	public void setSignature(final String signature) {
 		this.signature = signature;
 	}
 
@@ -182,7 +193,7 @@ public class SigningInformationEntity {
 		return ocspResponse;
 	}
 
-	public void setOcspResponse(String ocspResponse) {
+	public void setOcspResponse(final String ocspResponse) {
 		this.ocspResponse = ocspResponse;
 	}
 
@@ -190,7 +201,7 @@ public class SigningInformationEntity {
 		return risk;
 	}
 
-	public void setRisk(String risk) {
+	public void setRisk(final String risk) {
 		this.risk = risk;
 	}
 
@@ -198,7 +209,7 @@ public class SigningInformationEntity {
 		return mandate;
 	}
 
-	public void setMandate(MandateEntity mandate) {
+	public void setMandate(final MandateEntity mandate) {
 		this.mandate = mandate;
 	}
 
@@ -206,92 +217,97 @@ public class SigningInformationEntity {
 		return created;
 	}
 
-	public void setCreated(OffsetDateTime created) {
+	public void setCreated(final OffsetDateTime created) {
 		this.created = created;
 	}
 
-	public SigningInformationEntity withId(String id) {
+	public SigningInformationEntity withId(final String id) {
 		this.id = id;
 		return this;
 	}
 
-	public SigningInformationEntity withOrderRef(String orderRef) {
+	public SigningInformationEntity withExternalTransactionId(final String externalTransactionId) {
+		this.externalTransactionId = externalTransactionId;
+		return this;
+	}
+
+	public SigningInformationEntity withOrderRef(final String orderRef) {
 		this.orderRef = orderRef;
 		return this;
 	}
 
-	public SigningInformationEntity withStatus(String status) {
+	public SigningInformationEntity withStatus(final String status) {
 		this.status = status;
 		return this;
 	}
 
-	public SigningInformationEntity withPersonalNumber(String personalNumber) {
+	public SigningInformationEntity withPersonalNumber(final String personalNumber) {
 		this.personalNumber = personalNumber;
 		return this;
 	}
 
-	public SigningInformationEntity withName(String name) {
+	public SigningInformationEntity withName(final String name) {
 		this.name = name;
 		return this;
 	}
 
-	public SigningInformationEntity withGivenName(String givenName) {
+	public SigningInformationEntity withGivenName(final String givenName) {
 		this.givenName = givenName;
 		return this;
 	}
 
-	public SigningInformationEntity withSurname(String surname) {
+	public SigningInformationEntity withSurname(final String surname) {
 		this.surname = surname;
 		return this;
 	}
 
-	public SigningInformationEntity withIpAddress(String ipAddress) {
+	public SigningInformationEntity withIpAddress(final String ipAddress) {
 		this.ipAddress = ipAddress;
 		return this;
 	}
 
-	public SigningInformationEntity withUhi(String uhi) {
+	public SigningInformationEntity withUhi(final String uhi) {
 		this.uhi = uhi;
 		return this;
 	}
 
-	public SigningInformationEntity withBankIdIssueDate(LocalDate bankIdIssueDate) {
+	public SigningInformationEntity withBankIdIssueDate(final LocalDate bankIdIssueDate) {
 		this.bankIdIssueDate = bankIdIssueDate;
 		return this;
 	}
 
-	public SigningInformationEntity withMrtdStepUp(Boolean mrtdStepUp) {
+	public SigningInformationEntity withMrtdStepUp(final Boolean mrtdStepUp) {
 		this.mrtd = mrtdStepUp;
 		return this;
 	}
 
-	public SigningInformationEntity withSignature(String signature) {
+	public SigningInformationEntity withSignature(final String signature) {
 		this.signature = signature;
 		return this;
 	}
 
-	public SigningInformationEntity withOcspResponse(String ocspResponse) {
+	public SigningInformationEntity withOcspResponse(final String ocspResponse) {
 		this.ocspResponse = ocspResponse;
 		return this;
 	}
 
-	public SigningInformationEntity withRisk(String risk) {
+	public SigningInformationEntity withRisk(final String risk) {
 		this.risk = risk;
 		return this;
 	}
 
-	public SigningInformationEntity withMandate(MandateEntity mandate) {
+	public SigningInformationEntity withMandate(final MandateEntity mandate) {
 		this.mandate = mandate;
 		return this;
 	}
 
-	public SigningInformationEntity withCreated(OffsetDateTime created) {
+	public SigningInformationEntity withCreated(final OffsetDateTime created) {
 		this.created = created;
 		return this;
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (!(o instanceof final SigningInformationEntity that))
 			return false;
 		return Objects.equals(id, that.id);
@@ -306,6 +322,7 @@ public class SigningInformationEntity {
 	public String toString() {
 		return "SigningInformationEntity{" +
 			"id='" + id + '\'' +
+			", externalTransactionId='" + externalTransactionId + '\'' +
 			", orderRef='" + orderRef + '\'' +
 			", status='" + status + '\'' +
 			", personalNumber='" + personalNumber + '\'' +

@@ -36,6 +36,7 @@ class SigningInformationEntityTest {
 	private static final Boolean MRTD = true;
 	private static final String SIGNATURE = "<base64-encoded data>";
 	private static final String OCSP_RESPONSE = "<more base64-encoded data>";
+	private static final String EXTERNAL_TRANSACTION_ID = UUID.randomUUID().toString();
 	private static final String RISK = "low";
 	private static final MandateEntity MANDATE_ENTITY = new MandateEntity();
 
@@ -71,6 +72,7 @@ class SigningInformationEntityTest {
 			.withMrtdStepUp(MRTD)
 			.withSignature(SIGNATURE)
 			.withOcspResponse(OCSP_RESPONSE)
+			.withExternalTransactionId(EXTERNAL_TRANSACTION_ID)
 			.withRisk(RISK)
 			.withMandate(MANDATE_ENTITY)
 			.withCreated(CREATED);
@@ -94,6 +96,7 @@ class SigningInformationEntityTest {
 		entity.setMrtd(MRTD);
 		entity.setSignature(SIGNATURE);
 		entity.setOcspResponse(OCSP_RESPONSE);
+		entity.withExternalTransactionId(EXTERNAL_TRANSACTION_ID);
 		entity.setRisk(RISK);
 		entity.setMandate(MANDATE_ENTITY);
 		entity.setCreated(CREATED);
@@ -129,6 +132,7 @@ class SigningInformationEntityTest {
 		assertThat(entity.getMrtd()).isEqualTo(MRTD);
 		assertThat(entity.getSignature()).isEqualTo(SIGNATURE);
 		assertThat(entity.getOcspResponse()).isEqualTo(OCSP_RESPONSE);
+		assertThat(entity.getExternalTransactionId()).isEqualTo(EXTERNAL_TRANSACTION_ID);
 		assertThat(entity.getRisk()).isEqualTo(RISK);
 		assertThat(entity.getMandate()).isEqualTo(MANDATE_ENTITY);
 		assertThat(entity.getCreated()).isEqualTo(CREATED);
