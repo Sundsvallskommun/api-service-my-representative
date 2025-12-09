@@ -10,9 +10,9 @@ import se.sundsvall.myrepresentative.config.Builder;
 @Schema(description = "GrantorDetails model")
 public record GrantorDetails(
 
-	@Schema(description = "The name of the granting organization or person", example = "Ankeborgs Margarinfabrik") String name,
+	@Schema(description = "The name of the granting organization or person", examples = "Ankeborgs Margarinfabrik") String name,
 
-	@ValidUuid @Schema(description = "The partyId of the issuing organization or person", example = "fb2f0290-3820-11ed-a261-0242ac120002", requiredMode = REQUIRED) String grantorPartyId,
+	@ValidUuid @Schema(description = "The partyId of the issuing organization or person", examples = "fb2f0290-3820-11ed-a261-0242ac120002", requiredMode = REQUIRED) String grantorPartyId,
 
-	@ValidUuid @Schema(description = "PartyId of the issuing person / signatory", example = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = REQUIRED) String signatoryPartyId) {
+	@ValidUuid @Schema(description = "PartyId of the issuing person / signatory", examples = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = REQUIRED) String signatoryPartyId) {
 }

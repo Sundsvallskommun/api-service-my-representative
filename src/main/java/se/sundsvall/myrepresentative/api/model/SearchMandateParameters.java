@@ -13,15 +13,15 @@ import se.sundsvall.myrepresentative.api.validation.ValidMandateStatus;
 public class SearchMandateParameters extends AbstractParameterPagingBase {
 
 	@ValidUuid(nullable = true)
-	@Schema(description = "The partyId of the issuing organization or person", example = "fb2f0290-3820-11ed-a261-0242ac120002", requiredMode = NOT_REQUIRED)
+	@Schema(description = "The partyId of the issuing organization or person", examples = "fb2f0290-3820-11ed-a261-0242ac120002", requiredMode = NOT_REQUIRED)
 	private String grantorPartyId;
 
 	@ValidUuid(nullable = true)
-	@Schema(description = "PartyId of the grantee", example = "fb2f0290-3820-11ed-a261-0242ac120004", requiredMode = NOT_REQUIRED)
+	@Schema(description = "PartyId of the grantee", examples = "fb2f0290-3820-11ed-a261-0242ac120004", requiredMode = NOT_REQUIRED)
 	private String granteePartyId;
 
 	@ValidUuid(nullable = true)
-	@Schema(description = "PartyId of the issuing person / signatory", example = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = NOT_REQUIRED)
+	@Schema(description = "PartyId of the issuing person / signatory", examples = "fb2f0290-3820-11ed-a261-0242ac120003", requiredMode = NOT_REQUIRED)
 	private String signatoryPartyId;
 
 	@ValidMandateStatus(nullable = true)
