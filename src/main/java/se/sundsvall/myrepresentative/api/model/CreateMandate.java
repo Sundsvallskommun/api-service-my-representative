@@ -21,9 +21,9 @@ public record CreateMandate(
 
 	@Schema(description = "List of grantees", requiredMode = REQUIRED) @NotNull @Valid GranteeDetails granteeDetails,
 
-	@Schema(description = "The date when the mandate becomes effective", example = "2025-08-01", requiredMode = REQUIRED) @NotNull @DateTimeFormat(iso = DATE) LocalDate activeFrom,
+	@Schema(description = "The date when the mandate becomes effective", examples = "2025-08-01", requiredMode = REQUIRED) @NotNull @DateTimeFormat(iso = DATE) LocalDate activeFrom,
 
-	@Schema(description = "The date after which the mandate is no longer valid, if not provided it will be set to activeFrom + 36 months", example = "2025-12-31", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter,
+	@Schema(description = "The date after which the mandate is no longer valid, if not provided it will be set to activeFrom + 36 months", examples = "2025-12-31", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter,
 
 	@Schema(description = "Signing information related to the mandate", requiredMode = REQUIRED) @NotNull @Valid SigningInfo signingInfo) {
 }

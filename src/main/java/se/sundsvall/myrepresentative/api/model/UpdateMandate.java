@@ -16,8 +16,8 @@ public record UpdateMandate(
 
 	@Schema(description = "Mandate grantee and their details", requiredMode = NOT_REQUIRED) @NotNull @Valid GranteeDetails granteeDetails,
 
-	@Schema(description = "The date when the mandate becomes effective", example = "2025-01-01", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate activeFrom,
+	@Schema(description = "The date when the mandate becomes effective", examples = "2025-01-01", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate activeFrom,
 
-	@Schema(description = "The date after which the mandate is no longer valid", example = "2025-12-31", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter) {
+	@Schema(description = "The date after which the mandate is no longer valid", examples = "2025-12-31", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter) {
 
 }

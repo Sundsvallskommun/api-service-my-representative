@@ -12,7 +12,7 @@ import se.sundsvall.myrepresentative.config.Builder;
 
 /**
  * Mandate details.
- * 
+ *
  * @param id             the id of the mandate
  * @param grantorDetails Grantor details
  * @param granteeDetails Grantee details
@@ -28,25 +28,25 @@ import se.sundsvall.myrepresentative.config.Builder;
 @Schema(description = "MandateDetails model")
 public record MandateDetails(
 
-	@Schema(description = "Id of the mandate", example = "123e4567-e89b-12d3-a456-426614174000", accessMode = READ_ONLY) String id,
+	@Schema(description = "Id of the mandate", examples = "123e4567-e89b-12d3-a456-426614174000", accessMode = READ_ONLY) String id,
 
 	@Schema(description = "Mandate grantor details", accessMode = READ_ONLY) GrantorDetails grantorDetails,
 
 	@Schema(description = "Mandate grantee details", accessMode = READ_ONLY) GranteeDetails granteeDetails,
 
-	@Schema(description = "MunicipalityId where the mandate was created", example = "2281", accessMode = READ_ONLY) String municipalityId,
+	@Schema(description = "MunicipalityId where the mandate was created", examples = "2281", accessMode = READ_ONLY) String municipalityId,
 
 	@Schema(description = "The namespace in which the mandate is valid", accessMode = READ_ONLY) String namespace,
 
-	@Schema(description = "The date and time when the mandate was created", example = "2023-11-22T15:30:0+02:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime created,
+	@Schema(description = "The date and time when the mandate was created", examples = "2023-11-22T15:30:0+02:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime created,
 
-	@Schema(description = "The date and time when the mandate was changed", example = "2025-11-22T15:30:00+02:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime updated,
+	@Schema(description = "The date and time when the mandate was changed", examples = "2025-11-22T15:30:00+02:00", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE_TIME) OffsetDateTime updated,
 
-	@Schema(description = "The date when the mandate becomes effective", example = "2025-01-01", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate activeFrom,
+	@Schema(description = "The date when the mandate becomes effective", examples = "2025-01-01", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate activeFrom,
 
-	@Schema(description = "The date after which the mandate is no longer valid", example = "2025-12-31", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter,
+	@Schema(description = "The date after which the mandate is no longer valid", examples = "2025-12-31", accessMode = READ_ONLY) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter,
 
-	@Schema(description = "Indicates whether the mandate is active or not", example = "ACTIVE | INACTIVE | EXPIRED | DELETED", accessMode = READ_ONLY) String status,
+	@Schema(description = "Indicates whether the mandate is active or not", examples = "ACTIVE | INACTIVE | EXPIRED | DELETED", accessMode = READ_ONLY) String status,
 
 	@Schema(description = "Signing information related to the mandate", accessMode = READ_ONLY) SigningInfo signingInfo) {
 }
