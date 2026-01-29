@@ -15,8 +15,6 @@ import se.sundsvall.myrepresentative.api.model.GrantorDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
 import se.sundsvall.myrepresentative.api.model.StepUpBuilder;
-import se.sundsvall.myrepresentative.api.model.UpdateMandate;
-import se.sundsvall.myrepresentative.api.model.UpdateMandateBuilder;
 import se.sundsvall.myrepresentative.api.model.UserBuilder;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
@@ -56,16 +54,6 @@ public final class TestObjectFactory {
 			.build();
 	}
 
-	public static UpdateMandate updateMandate() {
-		return UpdateMandateBuilder.create()
-			.withGranteeDetails(GranteeDetailsBuilder.create()
-				.withPartyId(GRANTEE_PARTY_ID)
-				.build())
-			.withActiveFrom(ACTIVE_FROM)
-			.withInactiveAfter(INACTIVE_AFTER)
-			.build();
-	}
-
 	public static MandateEntity createMandateEntity(final boolean isDeleted) {
 		return new MandateEntity()
 			.withId(ID)
@@ -79,7 +67,7 @@ public final class TestObjectFactory {
 			.withInactiveAfter(INACTIVE_AFTER)
 			.withCreated(CREATED)
 			.withUpdated(UPDATED)
-			// If true, set deleted to current time, else set to "false"
+			// If true, set deleted to the current time, else set to "false"
 			.withDeleted(isDeleted ? OffsetDateTime.now() : NOT_DELETED)
 			.withStatus(STATUS);
 	}

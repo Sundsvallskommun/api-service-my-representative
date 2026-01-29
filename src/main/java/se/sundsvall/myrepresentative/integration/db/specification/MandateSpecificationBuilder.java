@@ -9,11 +9,11 @@ import org.springframework.data.jpa.domain.Specification;
 public class MandateSpecificationBuilder<T> {
 
 	public Specification<T> buildEqualFilter(final String attribute, final Object value) {
-		return (entity, cq, cb) -> nonNull(value) ? cb.equal(entity.get(attribute), value) : cb.and();
+		return (entity, _, cb) -> nonNull(value) ? cb.equal(entity.get(attribute), value) : cb.and();
 	}
 
 	public Specification<T> buildEqualAnyFilter(final String attribute, final List<String> values) {
-		return (entity, cq, cb) -> {
+		return (entity, _, cb) -> {
 			if (values == null || values.isEmpty()) {
 				return cb.and();
 			}

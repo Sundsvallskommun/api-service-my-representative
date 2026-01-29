@@ -36,10 +36,10 @@ public class ServiceMapper {
 	public SigningInfo toSigningInfo(final SigningInformationEntity entity) {
 		return ofNullable(entity)
 			.map(info -> SigningInfoBuilder.create()
-				.withStatus(entity.getStatus())
-				.withOrderRef(entity.getOrderRef())
-				.withExternalTransactionId(entity.getExternalTransactionId())
-				.withCompletionData(toCompletionData(entity))
+				.withStatus(info.getStatus())
+				.withOrderRef(info.getOrderRef())
+				.withExternalTransactionId(info.getExternalTransactionId())
+				.withCompletionData(toCompletionData(info))
 				.build())
 			.orElse(null);
 	}
@@ -47,13 +47,13 @@ public class ServiceMapper {
 	private CompletionData toCompletionData(final SigningInformationEntity entity) {
 		return ofNullable(entity)
 			.map(info -> CompletionDataBuilder.create()
-				.withBankIdIssueDate(entity.getBankIdIssueDate())
-				.withSignature(entity.getSignature())
-				.withOcspResponse(entity.getOcspResponse())
-				.withRisk(entity.getRisk())
-				.withUser(toSigningInfoUser(entity))
-				.withDevice(toSigningInfoDevice(entity))
-				.withStepUp(toSigningInfoStepUp(entity))
+				.withBankIdIssueDate(info.getBankIdIssueDate())
+				.withSignature(info.getSignature())
+				.withOcspResponse(info.getOcspResponse())
+				.withRisk(info.getRisk())
+				.withUser(toSigningInfoUser(info))
+				.withDevice(toSigningInfoDevice(info))
+				.withStepUp(toSigningInfoStepUp(info))
 				.build())
 			.orElse(null);
 	}
@@ -61,10 +61,10 @@ public class ServiceMapper {
 	private User toSigningInfoUser(final SigningInformationEntity signingInformation) {
 		return ofNullable(signingInformation)
 			.map(info -> UserBuilder.create()
-				.withPersonalNumber(signingInformation.getPersonalNumber())
-				.withName(signingInformation.getName())
-				.withGivenName(signingInformation.getGivenName())
-				.withSurname(signingInformation.getSurname())
+				.withPersonalNumber(info.getPersonalNumber())
+				.withName(info.getName())
+				.withGivenName(info.getGivenName())
+				.withSurname(info.getSurname())
 				.build())
 			.orElse(null);
 	}
@@ -72,7 +72,7 @@ public class ServiceMapper {
 	private StepUp toSigningInfoStepUp(final SigningInformationEntity signingInformation) {
 		return ofNullable(signingInformation)
 			.map(info -> StepUpBuilder.create()
-				.withMrtd(signingInformation.getMrtd())
+				.withMrtd(info.getMrtd())
 				.build())
 			.orElse(null);
 	}
@@ -80,8 +80,8 @@ public class ServiceMapper {
 	private Device toSigningInfoDevice(final SigningInformationEntity signingInformation) {
 		return ofNullable(signingInformation)
 			.map(info -> DeviceBuilder.create()
-				.withUhi(signingInformation.getUhi())
-				.withIpAddress(signingInformation.getIpAddress())
+				.withUhi(info.getUhi())
+				.withIpAddress(info.getIpAddress())
 				.build())
 			.orElse(null);
 	}
@@ -146,7 +146,7 @@ public class ServiceMapper {
 	private GranteeDetails toGranteeDetails(final MandateEntity mandateEntity) {
 		return ofNullable(mandateEntity)
 			.map(entity -> GranteeDetailsBuilder.create()
-				.withPartyId(mandateEntity.getGranteePartyId())
+				.withPartyId(entity.getGranteePartyId())
 				.build())
 			.orElse(null);
 	}

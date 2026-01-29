@@ -1,0 +1,16 @@
+[
+	{
+		"organizationNumber": "5560269988",
+		"name": "Different Grantor Company AB",
+		"form": "Aktiebolag",
+		"formShort": "AB",
+		"roles": [
+			{
+				"description": "Styrelseledamot",
+				"code": "LE"
+			}
+		],
+		"isAuthorizedSignatory": true,
+		"isSoleTrader": null
+	}
+]

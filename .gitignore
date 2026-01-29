@@ -35,3 +35,7 @@ build/
 .env
 /log
 logback-spring.xml
+
+### Claude ###
+CLAUDE.md
+.claude/

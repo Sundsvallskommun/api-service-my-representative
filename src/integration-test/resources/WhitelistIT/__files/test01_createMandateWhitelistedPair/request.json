@@ -1,0 +1,12 @@
+{
+	"grantorDetails": {
+		"name": "Whitelisted Company",
+		"grantorPartyId": "bb000001-0000-0000-0000-000000000001",
+		"signatoryPartyId": "aa000001-0000-0000-0000-000000000001"
+	},
+	"granteeDetails": {
+		"partyId": "cc000001-0000-0000-0000-000000000001"
+	},
+	"activeFrom": "2030-01-01",
+	"inactiveAfter": "2099-12-31"
+}

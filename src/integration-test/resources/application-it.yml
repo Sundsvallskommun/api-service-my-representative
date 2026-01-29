@@ -8,6 +8,13 @@ integration:
     connect-timeout: 5
     read-timeout: 30
     url: http://localhost:${wiremock.server.port:}/legalentity
+    whitelist:
+      aa000001-0000-0000-0000-000000000001:
+        - bb000001-0000-0000-0000-000000000001
+      aa000002-0000-0000-0000-000000000002:
+        - bb000002-0000-0000-0000-00000000000a
+        - bb000002-0000-0000-0000-00000000000b
+        - bb000002-0000-0000-0000-00000000000c
 spring:
   cache:
     type: none

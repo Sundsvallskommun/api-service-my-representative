@@ -1,0 +1,18 @@
+{
+	"id": "${json-unit.regex}^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$",
+	"grantorDetails": {
+		"name": "Multi-Grantor Company",
+		"grantorPartyId": "bb000002-0000-0000-0000-00000000000b",
+		"signatoryPartyId": "aa000002-0000-0000-0000-000000000002"
+	},
+	"granteeDetails": {
+		"partyId": "cc000004-0000-0000-0000-000000000004"
+	},
+	"municipalityId": "2281",
+	"namespace": "my_namespace",
+	"created": "${json-unit.regex}^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d{0,10}(Z|[+-]\\d{2}:\\d{2})?$",
+	"updated": "${json-unit.regex}^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d{0,10}(Z|[+-]\\d{2}:\\d{2})?$",
+	"activeFrom": "2030-01-01",
+	"inactiveAfter": "2099-12-31",
+	"status": "INACTIVE"
+}

@@ -100,8 +100,6 @@ class CreateMandatesResourceFailureTest {
 				.build())
 			.build();
 
-		when(mockService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenThrow(Problem.valueOf(CONFLICT));
-
 		final var response = webTestClient.post()
 			.uri(uriBuilder -> uriBuilder.path(BASE_URL)
 				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
@@ -148,11 +146,11 @@ class CreateMandatesResourceFailureTest {
 			Arguments.of("invalid grantorPartyId", CreateMandateBuilder.from(createMandate()).withGrantorDetails(GrantorDetailsBuilder.create().withGrantorPartyId(invalidUuid).build()).build()),
 			Arguments.of("invalid signatoryPartyId", CreateMandateBuilder.from(createMandate()).withGrantorDetails(GrantorDetailsBuilder.create().withSignatoryPartyId(invalidUuid).build()).build()),
 			Arguments.of("invalid granteePartyId", CreateMandateBuilder.from(createMandate()).withGranteeDetails(GranteeDetailsBuilder.create().withPartyId(invalidUuid).build()).build()),
-			Arguments.of("activeFrom is after incativeAfter", createMandateWithFaultyDates(now.plusWeeks(1), now)),
-			Arguments.of("incativeAfter has passed", createMandateWithFaultyDates(now.minusWeeks(2), now.minusWeeks(1))));
+			Arguments.of("activeFrom is after inactiveAfter", createMandateWithFaultyDates(now.plusWeeks(1), now)),
+			Arguments.of("inactiveAfter has passed", createMandateWithFaultyDates(now.minusWeeks(2), now.minusWeeks(1))));
 	}
 
-	private static CreateMandate createMandateWithFaultyDates(final LocalDate activeFrom, final LocalDate incativeAfter) {
-		return CreateMandateBuilder.from(createMandate()).withActiveFrom(activeFrom).withInactiveAfter(incativeAfter).build();
+	private static CreateMandate createMandateWithFaultyDates(final LocalDate activeFrom, final LocalDate inactiveAfter) {
+		return CreateMandateBuilder.from(createMandate()).withActiveFrom(activeFrom).withInactiveAfter(inactiveAfter).build();
 	}
 }

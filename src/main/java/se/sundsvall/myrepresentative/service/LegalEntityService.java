@@ -1,17 +1,22 @@
 package se.sundsvall.myrepresentative.service;
 
+import static org.zalando.problem.Status.BAD_REQUEST;
 import static org.zalando.problem.Status.FORBIDDEN;
 import static org.zalando.problem.Status.NOT_FOUND;
 
 import generated.se.sundsvall.legalentity.PersonEngagement;
+import jakarta.validation.Validator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
+import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.integration.legalentity.LegalEntityIntegration;
+import se.sundsvall.myrepresentative.integration.legalentity.configuration.LegalEntityProperties;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 
 @Service
@@ -21,10 +26,14 @@ public class LegalEntityService {
 
 	private final PartyIntegration partyIntegration;
 	private final LegalEntityIntegration legalEntityIntegration;
+	private final LegalEntityProperties legalEntityProperties;
+	private final Validator validator;
 
-	public LegalEntityService(final PartyIntegration partyIntegration, final LegalEntityIntegration legalEntityIntegration) {
+	public LegalEntityService(final PartyIntegration partyIntegration, final LegalEntityIntegration legalEntityIntegration, final LegalEntityProperties legalEntityProperties, final Validator validator) {
 		this.partyIntegration = partyIntegration;
 		this.legalEntityIntegration = legalEntityIntegration;
+		this.legalEntityProperties = legalEntityProperties;
+		this.validator = validator;
 	}
 
 	/**
@@ -35,12 +44,31 @@ public class LegalEntityService {
 	 * @throws ThrowableProblem with status 404 if no engagement found, or 403 if not an authorized signatory
 	 */
 	public void validateSignatory(final String municipalityId, final CreateMandate request) {
-		final var grantorLegalId = getLegalIdForPartyId(municipalityId, request.grantorDetails().grantorPartyId(), true);
-		final var signatoryLegalId = getLegalIdForPartyId(municipalityId, request.grantorDetails().signatoryPartyId(), false);
+		final var signatoryPartyId = request.grantorDetails().signatoryPartyId();
+		final var grantorPartyId = request.grantorDetails().grantorPartyId();
+
+		if (isWhitelisted(signatoryPartyId, grantorPartyId)) {
+			LOG.info("Signatory {} is whitelisted for grantor {}, skipping validation", signatoryPartyId, grantorPartyId);
+			return;
+		}
+
+		validateSigningInfo(request.signingInfo());
+
+		final var grantorLegalId = getLegalIdForPartyId(municipalityId, grantorPartyId, true);
+		final var signatoryLegalId = getLegalIdForPartyId(municipalityId, signatoryPartyId, false);
 
 		final var personEngagements = legalEntityIntegration.getPersonEngagements(municipalityId, signatoryLegalId);
 
 		validateSignatoryForOrganization(grantorLegalId, personEngagements);
+	}
+
+	private boolean isWhitelisted(final String signatoryPartyId, final String grantorPartyId) {
+		final var whitelist = legalEntityProperties.whitelist();
+		if (whitelist == null || whitelist.isEmpty()) {
+			return false;
+		}
+		final var allowedGrantors = whitelist.get(signatoryPartyId);
+		return allowedGrantors != null && allowedGrantors.contains(grantorPartyId);
 	}
 
 	private void validateSignatoryForOrganization(final String grantorLegalId, final List<PersonEngagement> personEngagements) {
@@ -98,5 +126,27 @@ public class LegalEntityService {
 			.withStatus(NOT_FOUND)
 			.withDetail("No legalId found for partyId: " + partyId)
 			.build();
+	}
+
+	private void validateSigningInfo(final SigningInfo signingInfo) {
+		if (signingInfo == null) {
+			throw Problem.builder()
+				.withTitle("Bad Request")
+				.withStatus(BAD_REQUEST)
+				.withDetail("signingInfo is required for non-whitelisted mandates")
+				.build();
+		}
+
+		final var violations = validator.validate(signingInfo);
+		if (!violations.isEmpty()) {
+			final var message = violations.stream()
+				.map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
+				.collect(Collectors.joining(", "));
+			throw Problem.builder()
+				.withTitle("Bad Request")
+				.withStatus(BAD_REQUEST)
+				.withDetail("Invalid signingInfo: " + message)
+				.build();
+		}
 	}
 }

@@ -1,0 +1,18 @@
+{
+	"request": {
+		"method": "GET",
+		"url": "/party/2281/PRIVATE/aa000001-0000-0000-0000-000000000001/legalId",
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		}
+	},
+	"response": {
+		"status": 200,
+		"headers": {
+			"Content-Type": "text/plain"
+		},
+		"body": "201001192384"
+	}
+}

@@ -48,7 +48,7 @@ public class MandateEntity {
 	// Will be the same as '1970-01-01 01:00:00.000000'
 	public static final OffsetDateTime NOT_DELETED = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
 
-	// Concatenating the sql to get rid of "non-escaped" characters warning when using text-block.
+	// Concatenating the SQL to get rid of "non-escaped" characters warning when using text-block.
 	private static final String STATUS_FORMULA = "case " +
 		"when deleted != '1970-01-01 01:00:00.000000' then 'DELETED' " +
 		"when active_from > curdate() then 'INACTIVE' " +
@@ -137,6 +137,9 @@ public class MandateEntity {
 	}
 
 	public MandateEntity addSigningInformation(SigningInformationEntity entity) {
+		if (entity == null) {
+			return this;
+		}
 		entity.setMandate(this);
 		this.signingInformation.add(entity);
 		return this;
@@ -247,8 +250,8 @@ public class MandateEntity {
 	}
 
 	/**
-	 * Returns an unmodifiable list of signing information entities associated with this mandate.
-	 * Use addSigningInformation() to add new entries
+	 * Returns an unmodifiable list of signing information entities associated with this mandate. Use
+	 * addSigningInformation() to add new entries
 	 *
 	 * @return an unmodifiable list of signing information entities
 	 */

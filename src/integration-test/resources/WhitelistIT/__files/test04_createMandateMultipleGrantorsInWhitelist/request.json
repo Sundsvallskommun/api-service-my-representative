@@ -1,0 +1,12 @@
+{
+	"grantorDetails": {
+		"name": "Multi-Grantor Company",
+		"grantorPartyId": "bb000002-0000-0000-0000-00000000000b",
+		"signatoryPartyId": "aa000002-0000-0000-0000-000000000002"
+	},
+	"granteeDetails": {
+		"partyId": "cc000004-0000-0000-0000-000000000004"
+	},
+	"activeFrom": "2030-01-01",
+	"inactiveAfter": "2099-12-31"
+}

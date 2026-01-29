@@ -19,6 +19,6 @@ public interface LegalEntityClient {
 
 	@GetMapping("/{municipalityId}/engagements/person/{personNumber}")
 	List<PersonEngagement> getPersonEngagements(
-		@PathVariable(name = "municipalityId") final String municipalityId,
-		@PathVariable(name = "personNumber") String personNumber);
+		@PathVariable final String municipalityId,
+		@PathVariable final String personNumber);
 }
