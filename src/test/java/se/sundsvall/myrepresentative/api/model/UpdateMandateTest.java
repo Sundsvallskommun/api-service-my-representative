@@ -4,12 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.myrepresentative.TestObjectFactory.ACTIVE_FROM;
 import static se.sundsvall.myrepresentative.TestObjectFactory.INACTIVE_AFTER;
 
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class UpdateMandateTest {
 
-	private static final String ID = UUID.randomUUID().toString();
 	private static final GranteeDetails GRANTEE_DETAILS = GranteeDetailsBuilder.create().build();
 
 	@Test

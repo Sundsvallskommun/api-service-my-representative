@@ -22,7 +22,7 @@ class DataIntegrityExceptionHandlerTest {
 	private static final String GENERIC_DUPLICATE_ENTRY_TITLE = "Data integrity violation";
 	private static final String GENERIC_DUPLICATE_ENTRY_MESSAGE = "A data integrity violation occurred";
 
-	public static Stream<Arguments> duplcateEntryProvider() {
+	public static Stream<Arguments> duplicateEntryProvider() {
 		return Stream.of(
 			Arguments.of("error 1062", 1062, DUPLICATE_ENTRY_TITLE, DUPLICATE_ENTRY_MESSAGE),
 			Arguments.of("error 1586", 1586, DUPLICATE_ENTRY_TITLE, DUPLICATE_ENTRY_MESSAGE),
@@ -30,7 +30,7 @@ class DataIntegrityExceptionHandlerTest {
 	}
 
 	@ParameterizedTest(name = "{0}")
-	@MethodSource("duplcateEntryProvider")
+	@MethodSource("duplicateEntryProvider")
 	void handleDuplicateEntry_shouldReturnProblem(final String testName, final int errorCode, final String expectedTitle, final String expectedMessage) {
 		final var sqlIntegrityException = new SQLIntegrityConstraintViolationException("Duplicate entry", "23000", errorCode);
 		final var constraintViolationException = new ConstraintViolationException("Constraint violation", sqlIntegrityException, "some_constraint");

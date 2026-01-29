@@ -19,8 +19,8 @@ public interface PartyClient {
 
 	@GetMapping("/{municipalityId}/{type}/{partyId}/legalId")
 	Optional<String> getLegalIdByPartyId(
-		@PathVariable(name = "municipalityId") final String municipalityId,
-		@PathVariable(name = "type") final PartyType type,
-		@PathVariable(name = "partyId") final String partyId);
+		@PathVariable final String municipalityId,
+		@PathVariable final PartyType type,
+		@PathVariable final String partyId);
 
 }

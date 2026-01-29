@@ -32,10 +32,10 @@ public class RepresentativesService {
 	}
 
 	/**
-	 * Creates a new mandate after validating that the signatory is an authorized signatory for the organization.
-	 * Throws a Problem with status 409 if a mandate already exists with the same municipalityId, namespace, grantorPartyId,
-	 * granteePartyId,
-	 * deleted value and overlapping activeFrom/inactiveAfter period. Handled in the {@link DataIntegrityExceptionHandler}.
+	 * Creates a new mandate after validating that the signatory is an authorized signatory for the organization. Throws a
+	 * Problem with status 409 if a mandate already exists with the same municipalityId, namespace, grantorPartyId,
+	 * granteePartyId, deleted
+	 * value and overlapping activeFrom/inactiveAfter period. Handled in the {@link DataIntegrityExceptionHandler}.
 	 * Validation can be disabled through configuration.
 	 *
 	 * @param  municipalityId municipalityId
@@ -57,8 +57,8 @@ public class RepresentativesService {
 	}
 
 	/**
-	 * Retrieves the mandate for the given id, municipalityId and namespace.
-	 * Throws a Problem with status 404 if no mandate is found with the given id
+	 * Retrieves the mandate for the given id, municipalityId and namespace. Throws a Problem with status 404 if no mandate
+	 * is found with the given id
 	 *
 	 * @param  municipalityId municipalityId
 	 * @param  namespace      namespace
@@ -79,8 +79,8 @@ public class RepresentativesService {
 	}
 
 	/**
-	 * Soft deletes the mandate for the given id, municipalityId and namespace.
-	 * The soft delete is done by setting the 'deleted' attribute to the current timestamp.
+	 * Soft deletes the mandate for the given id, municipalityId and namespace. The soft delete is done by setting the
+	 * 'deleted' attribute to the current timestamp.
 	 *
 	 * @param municipalityId municipalityId
 	 * @param namespace      namespace

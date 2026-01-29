@@ -6,8 +6,8 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.myrepresentative.api.validation.ValidDateRange;
 import se.sundsvall.myrepresentative.config.Builder;
@@ -25,5 +25,5 @@ public record CreateMandate(
 
 	@Schema(description = "The date after which the mandate is no longer valid, if not provided it will be set to activeFrom + 36 months", examples = "2025-12-31", requiredMode = NOT_REQUIRED) @DateTimeFormat(iso = DATE) LocalDate inactiveAfter,
 
-	@Schema(description = "Signing information related to the mandate", requiredMode = REQUIRED) @NotNull @Valid SigningInfo signingInfo) {
+	@Schema(description = "Signing information related to the mandate", requiredMode = NOT_REQUIRED) @Valid SigningInfo signingInfo) {
 }

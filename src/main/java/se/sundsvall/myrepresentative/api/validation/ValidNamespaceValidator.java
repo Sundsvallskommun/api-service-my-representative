@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ValidNamespaceValidator implements ConstraintValidator<ValidNamespace, String> {
 
 	// Only allow letters (a-z, A-Z), digits (0-9), hyphens(-), underscores(_) and dots(.)
-	private static final String NAMESPACE_REGEXP = "[\\w\\-\\.]+";
+	private static final String NAMESPACE_REGEXP = "[\\w\\-.]+";
 	private static final int MAX_LENGTH = 128;
 
 	@Override
