@@ -18,8 +18,8 @@ public class MandateSpecificationBuilder<T> {
 				return cb.and();
 			}
 			final var predicates = values.stream()
-				.filter(value1 -> value1 != null && !value1.isBlank())
-				.map(value1 -> cb.equal(entity.get(attribute), value1))
+				.filter(value -> value != null && !value.isBlank())
+				.map(value -> cb.equal(entity.get(attribute), value))
 				.toArray(Predicate[]::new);
 			return cb.or(predicates);
 		};
