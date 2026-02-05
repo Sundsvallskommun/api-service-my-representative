@@ -45,12 +45,11 @@ public class RepresentativesService {
 	 */
 	public String createMandate(final String municipalityId, final String namespace, final CreateMandate request) {
 		final var whitelisted = isWhitelisted(request);
-		if (legalEntityProperties.validationEnabled() && !whitelisted) {
+
+		if (!legalEntityProperties.validationEnabled()) {
+			LOG.warn("Signatory validation is disabled");
+		} else if (!whitelisted) {
 			legalEntityService.validateSignatory(municipalityId, request);
-		} else {
-			if (!legalEntityProperties.validationEnabled()) {
-				LOG.warn("Signatory validation is disabled");
-			}
 		}
 
 		final var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request, whitelisted);
