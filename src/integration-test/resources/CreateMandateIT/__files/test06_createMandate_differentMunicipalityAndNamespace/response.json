@@ -15,6 +15,7 @@
 	"activeFrom": "2025-08-01",
 	"inactiveAfter": "2099-12-31",
 	"status": "ACTIVE",
+	"whitelisted": false,
 	"signingInfo": {
 		"orderRef": "131daac9-16c6-4618-beb0-365768f37288",
 		"externalTransactionId": "e698871a-fd60-4fbb-98eb-d44dcf656086",

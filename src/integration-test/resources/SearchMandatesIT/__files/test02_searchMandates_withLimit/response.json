@@ -16,7 +16,8 @@
 			"updated": "2025-10-10T14:33:56.429+02:00",
 			"activeFrom": "2025-10-01",
 			"inactiveAfter": "2199-12-31",
-			"status": "ACTIVE"
+			"status": "ACTIVE",
+			"whitelisted": false
 		},
 		{
 			"id": "24b59fba-c6c4-4cec-8723-7d4feb062257",
@@ -34,7 +35,8 @@
 			"updated": "2025-10-10T14:28:53.462+02:00",
 			"activeFrom": "2025-08-01",
 			"inactiveAfter": "2099-12-31",
-			"status": "ACTIVE"
+			"status": "ACTIVE",
+			"whitelisted": false
 		}
 	],
 	"_meta": {

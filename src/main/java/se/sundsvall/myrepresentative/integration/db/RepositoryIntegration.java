@@ -28,8 +28,8 @@ public class RepositoryIntegration {
 		this.mapper = mapper;
 	}
 
-	public MandateEntity createMandate(String municipalityId, String namespace, CreateMandate request) {
-		var mandateEntity = mapper.toMandateEntity(municipalityId, namespace, request);
+	public MandateEntity createMandate(final String municipalityId, final String namespace, final CreateMandate request, final boolean whitelisted) {
+		var mandateEntity = mapper.toMandateEntity(municipalityId, namespace, request, whitelisted);
 		return mandateRepository.save(mandateEntity);
 	}
 

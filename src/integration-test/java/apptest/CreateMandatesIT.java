@@ -10,10 +10,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
-
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 import se.sundsvall.myrepresentative.MyRepresentatives;
@@ -53,8 +51,7 @@ class CreateMandatesIT extends AbstractAppTest {
 	}
 
 	/**
-	 * A test where the same mandate details already exists and an overlapping time period, should fail.
-	 * "id" in testdata-it.sql is 24b59fba-c6c4-4cec-8723-7d4feb062257
+	 * A test where the same mandate details already exist and an overlapping time period should fail. "id" in testdata-it.sql is 24b59fba-c6c4-4cec-8723-7d4feb062257
 	 */
 	@Test
 	void test02_createMandate_mandateAlreadyExists() {
@@ -68,7 +65,7 @@ class CreateMandatesIT extends AbstractAppTest {
 	}
 
 	/**
-	 * A test where the same mandate details already exists but with a different time period, should pass.
+	 * A test where the same mandate details already exist but with a different time period should pass.
 	 */
 	@Test
 	void test03_createMandate_sameMandateDifferentTimePeriod() {
@@ -120,8 +117,7 @@ class CreateMandatesIT extends AbstractAppTest {
 	}
 
 	/**
-	 * Creates a new mandate as one that already exists for the organization, but with different signatoryPartyId
-	 * Should not pass.
+	 * Creates a new mandate as one that already exists for the organization, but with different signatoryPartyId Should not pass.
 	 */
 	@Test
 	void test05_createMandate_differentSignatory() {

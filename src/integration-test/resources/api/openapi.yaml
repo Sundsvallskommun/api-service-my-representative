@@ -5,9 +5,9 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "4.3"
+  version: "4.4"
 servers:
-  - url: http://localhost:61773
+  - url: http://localhost:58206
     description: Generated server url
 paths:
   /{municipalityId}/{namespace}/mandates:
@@ -249,9 +249,9 @@ components:
           additionalProperties: { }
         status:
           $ref: "#/components/schemas/StatusType"
-        title:
-          type: string
         detail:
+          type: string
+        title:
           type: string
     StatusType:
       type: object
@@ -569,9 +569,9 @@ components:
           additionalProperties: { }
         status:
           $ref: "#/components/schemas/StatusType"
-        title:
-          type: string
         detail:
+          type: string
+        title:
           type: string
         suppressed:
           type: array
@@ -721,6 +721,13 @@ components:
         signingInfo:
           $ref: "#/components/schemas/SigningInfo"
           description: Signing information related to the mandate
+          readOnly: true
+        whitelisted:
+          type: boolean
+          description: Indicates whether the mandate was created through a whitelisted
+            process
+          examples:
+            - true | false
           readOnly: true
     Mandates:
       type: object
