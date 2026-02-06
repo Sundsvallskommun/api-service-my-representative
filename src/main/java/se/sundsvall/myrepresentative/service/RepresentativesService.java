@@ -35,7 +35,7 @@ public class RepresentativesService {
 	 * Creates a new mandate after validating that the signatory is an authorized signatory for the organization. Throws a
 	 * Problem with status 409 if a mandate already exists with the same municipalityId, namespace, grantorPartyId,
 	 * granteePartyId, deleted
-	 * value and overlapping activeFrom/inactiveAfter period. Handled in the {@link DataIntegrityExceptionHandler}.
+	 * value, and overlapping activeFrom/inactiveAfter period. Handled in the {@link DataIntegrityExceptionHandler}.
 	 * Validation can be disabled through configuration.
 	 *
 	 * @param  municipalityId municipalityId
@@ -44,20 +44,21 @@ public class RepresentativesService {
 	 * @return                the id of the created mandate
 	 */
 	public String createMandate(final String municipalityId, final String namespace, final CreateMandate request) {
-		if (legalEntityProperties.validationEnabled()) {
-			legalEntityService.validateSignatory(municipalityId, request);
-		} else {
-			// Log a warning that legal entity validation is disabled
+		final var whitelisted = isWhitelisted(request);
+
+		if (!legalEntityProperties.validationEnabled()) {
 			LOG.warn("Signatory validation is disabled");
+		} else if (!whitelisted) {
+			legalEntityService.validateSignatory(municipalityId, request);
 		}
 
-		final var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request);
+		final var mandateEntity = repositoryIntegration.createMandate(municipalityId, namespace, request, whitelisted);
 
 		return mandateEntity.getId();
 	}
 
 	/**
-	 * Retrieves the mandate for the given id, municipalityId and namespace. Throws a Problem with status 404 if no mandate
+	 * Retrieves the mandate for the given id, municipalityId, and namespace. Throws a Problem with status 404 if no mandate
 	 * is found with the given id
 	 *
 	 * @param  municipalityId municipalityId
@@ -79,12 +80,12 @@ public class RepresentativesService {
 	}
 
 	/**
-	 * Soft deletes the mandate for the given id, municipalityId and namespace. The soft delete is done by setting the
+	 * Soft deletes the mandate for the given id, municipalityId, and namespace. The soft delete is done by setting the
 	 * 'deleted' attribute to the current timestamp.
 	 *
 	 * @param municipalityId municipalityId
 	 * @param namespace      namespace
-	 * @param id             id of the mandate to soft delete
+	 * @param id             id of the mandate to softly delete
 	 */
 	public void deleteMandate(final String municipalityId, final String namespace, final String id) {
 		repositoryIntegration.deleteMandate(municipalityId, namespace, id);
@@ -94,4 +95,22 @@ public class RepresentativesService {
 		final var foundMandates = repositoryIntegration.searchMandates(municipalityId, namespace, parameters);
 		return serviceMapper.toMandates(foundMandates);
 	}
+
+	private boolean isWhitelisted(final CreateMandate request) {
+		final var signatoryPartyId = request.grantorDetails().signatoryPartyId();
+		final var grantorPartyId = request.grantorDetails().grantorPartyId();
+		final var whitelist = legalEntityProperties.whitelist();
+		if (whitelist == null || whitelist.isEmpty()) {
+			return false;
+		}
+
+		final var allowedGrantors = whitelist.get(signatoryPartyId);
+		if (allowedGrantors == null || !allowedGrantors.contains(grantorPartyId)) {
+			return false;
+		}
+
+		LOG.info("Signatory {} is whitelisted for grantor {}, skipping validation", signatoryPartyId, grantorPartyId);
+		return true;
+	}
+
 }

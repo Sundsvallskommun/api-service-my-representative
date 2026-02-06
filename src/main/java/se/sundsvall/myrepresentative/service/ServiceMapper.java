@@ -129,6 +129,7 @@ public class ServiceMapper {
 					.orElse(MandateStatus.UNKNOWN.toString()))
 				// Include signing info conditionally
 				.withSigningInfo(includeSigningInfo ? toSigningInfo(entity.getLatestSigningInformation()) : null)
+				.withWhitelisted(entity.isWhitelisted())
 				.build())
 			.orElse(null);
 	}

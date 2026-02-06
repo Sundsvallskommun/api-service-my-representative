@@ -3,6 +3,8 @@ package se.sundsvall.myrepresentative.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -65,13 +67,13 @@ class RepresentativesServiceTest {
 		final var mandateEntity = new MandateEntity().withId(id);
 
 		when(mockLegalEntityProperties.validationEnabled()).thenReturn(true);
-		when(mockRepositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(mandateEntity);
+		when(mockRepositoryIntegration.createMandate(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(createMandate), anyBoolean())).thenReturn(mandateEntity);
 		doNothing().when(mockLegalEntityService).validateSignatory(MUNICIPALITY_ID, createMandate);
 
 		final var mandateId = representativesService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 
 		assertThat(mandateId).isEqualTo(id);
-		verify(mockRepositoryIntegration).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+		verify(mockRepositoryIntegration).createMandate(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(createMandate), anyBoolean());
 	}
 
 	@Test
@@ -83,11 +85,11 @@ class RepresentativesServiceTest {
 		// Disable validation
 		when(mockLegalEntityProperties.validationEnabled()).thenReturn(false);
 
-		when(mockRepositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate)).thenReturn(mandateEntity);
+		when(mockRepositoryIntegration.createMandate(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(createMandate), anyBoolean())).thenReturn(mandateEntity);
 
 		final var mandateId = representativesService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 		assertThat(mandateId).isEqualTo(id);
-		verify(mockRepositoryIntegration).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
+		verify(mockRepositoryIntegration).createMandate(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(createMandate), anyBoolean());
 		verifyNoInteractions(mockLegalEntityService);
 	}
 
@@ -99,9 +101,7 @@ class RepresentativesServiceTest {
 
 		assertThatExceptionOfType(ThrowableProblem.class)
 			.isThrownBy(() -> representativesService.createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate))
-			.satisfies(problem -> {
-				assertThat(problem.getStatus()).isEqualTo(NOT_FOUND);
-			});
+			.satisfies(problem -> assertThat(problem.getStatus()).isEqualTo(NOT_FOUND));
 
 		verify(mockLegalEntityService).validateSignatory(MUNICIPALITY_ID, createMandate);
 		verifyNoInteractions(mockRepositoryIntegration);

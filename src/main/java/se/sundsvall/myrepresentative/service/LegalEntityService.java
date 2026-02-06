@@ -16,7 +16,6 @@ import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.integration.legalentity.LegalEntityIntegration;
-import se.sundsvall.myrepresentative.integration.legalentity.configuration.LegalEntityProperties;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 
 @Service
@@ -26,13 +25,11 @@ public class LegalEntityService {
 
 	private final PartyIntegration partyIntegration;
 	private final LegalEntityIntegration legalEntityIntegration;
-	private final LegalEntityProperties legalEntityProperties;
 	private final Validator validator;
 
-	public LegalEntityService(final PartyIntegration partyIntegration, final LegalEntityIntegration legalEntityIntegration, final LegalEntityProperties legalEntityProperties, final Validator validator) {
+	public LegalEntityService(final PartyIntegration partyIntegration, final LegalEntityIntegration legalEntityIntegration, final Validator validator) {
 		this.partyIntegration = partyIntegration;
 		this.legalEntityIntegration = legalEntityIntegration;
-		this.legalEntityProperties = legalEntityProperties;
 		this.validator = validator;
 	}
 
@@ -47,11 +44,6 @@ public class LegalEntityService {
 		final var signatoryPartyId = request.grantorDetails().signatoryPartyId();
 		final var grantorPartyId = request.grantorDetails().grantorPartyId();
 
-		if (isWhitelisted(signatoryPartyId, grantorPartyId)) {
-			LOG.info("Signatory {} is whitelisted for grantor {}, skipping validation", signatoryPartyId, grantorPartyId);
-			return;
-		}
-
 		validateSigningInfo(request.signingInfo());
 
 		final var grantorLegalId = getLegalIdForPartyId(municipalityId, grantorPartyId, true);
@@ -60,15 +52,6 @@ public class LegalEntityService {
 		final var personEngagements = legalEntityIntegration.getPersonEngagements(municipalityId, signatoryLegalId);
 
 		validateSignatoryForOrganization(grantorLegalId, personEngagements);
-	}
-
-	private boolean isWhitelisted(final String signatoryPartyId, final String grantorPartyId) {
-		final var whitelist = legalEntityProperties.whitelist();
-		if (whitelist == null || whitelist.isEmpty()) {
-			return false;
-		}
-		final var allowedGrantors = whitelist.get(signatoryPartyId);
-		return allowedGrantors != null && allowedGrantors.contains(grantorPartyId);
 	}
 
 	private void validateSignatoryForOrganization(final String grantorLegalId, final List<PersonEngagement> personEngagements) {

@@ -104,6 +104,9 @@ public class MandateEntity {
 	@OneToMany(mappedBy = "mandate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private final List<SigningInformationEntity> signingInformation = new ArrayList<>();
 
+	@Column(name = "whitelisted", nullable = false)
+	private boolean whitelisted;
+
 	@PrePersist
 	protected void onCreate() {
 		created = OffsetDateTime.now(systemDefault()).truncatedTo(MILLIS);
@@ -118,7 +121,7 @@ public class MandateEntity {
 				throw Problem.builder()
 					.withTitle("Cannot set validity period for mandate")
 					.withStatus(INTERNAL_SERVER_ERROR)
-					.withDetail("activeFrom and/or incactiveAfter is null, cannot set validity period")
+					.withDetail("activeFrom and/or inactiveAfter is null, cannot set validity period")
 					.build();
 			}
 		}
@@ -151,6 +154,14 @@ public class MandateEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public boolean isWhitelisted() {
+		return whitelisted;
+	}
+
+	public void setWhitelisted(boolean whitelisted) {
+		this.whitelisted = whitelisted;
 	}
 
 	public String getName() {
@@ -269,6 +280,11 @@ public class MandateEntity {
 		return this;
 	}
 
+	public MandateEntity withWhitelisted(boolean whitelisted) {
+		this.whitelisted = whitelisted;
+		return this;
+	}
+
 	public MandateEntity withSignatoryPartyId(String signatoryPartyId) {
 		this.signatoryPartyId = signatoryPartyId;
 		return this;
@@ -350,8 +366,10 @@ public class MandateEntity {
 			", updated=" + updated +
 			", activeFrom=" + activeFrom +
 			", inactiveAfter=" + inactiveAfter +
-			", deleted='" + deleted + '\'' +
+			", deleted=" + deleted +
 			", status='" + status + '\'' +
+			", signingInformation=" + signingInformation +
+			", whitelisted=" + whitelisted +
 			'}';
 	}
 }

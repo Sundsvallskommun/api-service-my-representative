@@ -22,7 +22,7 @@ import se.sundsvall.myrepresentative.config.Builder;
  * @param updated        date and time when the mandate was last updated
  * @param activeFrom     date and time from when the mandate is valid
  * @param inactiveAfter  date and time when the mandate is no longer valid
- * @param status         status of the mandate (ACTIVE | INACTIVE | EXPIRED | DELETED ) backed by {@link MandateStatus}
+ * @param status         status of the mandate (ACTIVE | INACTIVE | EXPIRED | DELETED) backed by {@link MandateStatus}
  */
 @Builder
 @Schema(description = "MandateDetails model")
@@ -48,5 +48,7 @@ public record MandateDetails(
 
 	@Schema(description = "Indicates whether the mandate is active or not", examples = "ACTIVE | INACTIVE | EXPIRED | DELETED", accessMode = READ_ONLY) String status,
 
-	@Schema(description = "Signing information related to the mandate", accessMode = READ_ONLY) SigningInfo signingInfo) {
+	@Schema(description = "Signing information related to the mandate", accessMode = READ_ONLY) SigningInfo signingInfo,
+
+	@Schema(description = "Indicates whether the mandate was created through a whitelisted process", examples = "true | false", accessMode = READ_ONLY) boolean whitelisted) {
 }

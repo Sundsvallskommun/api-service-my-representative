@@ -14,7 +14,7 @@ import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEnt
 @Component
 public class DatabaseMapper {
 
-	public MandateEntity toMandateEntity(final String municipalityId, final String namespace, final CreateMandate createMandate) {
+	public MandateEntity toMandateEntity(final String municipalityId, final String namespace, final CreateMandate createMandate, final boolean whitelisted) {
 		return ofNullable(createMandate)
 			.map(mandate -> new MandateEntity()
 				.withMunicipalityId(municipalityId)
@@ -33,6 +33,7 @@ public class DatabaseMapper {
 				.withActiveFrom(mandate.activeFrom())
 				.withInactiveAfter(mandate.inactiveAfter())
 				.withNamespace(namespace)
+				.withWhitelisted(whitelisted)
 				.addSigningInformation(toSigningInformationEntity(createMandate.signingInfo())))
 			.orElse(null);
 	}

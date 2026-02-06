@@ -20,9 +20,9 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.createPersonEngage
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Path;
 import jakarta.validation.Validator;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +37,6 @@ import se.sundsvall.myrepresentative.api.model.GranteeDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.GrantorDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.integration.legalentity.LegalEntityIntegration;
-import se.sundsvall.myrepresentative.integration.legalentity.configuration.LegalEntityProperties;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,9 +49,6 @@ class LegalEntityServiceTest {
 	private LegalEntityIntegration mockLegalEntityIntegration;
 
 	@Mock
-	private LegalEntityProperties mockLegalEntityProperties;
-
-	@Mock
 	private Validator mockValidator;
 
 	@InjectMocks
@@ -60,7 +56,7 @@ class LegalEntityServiceTest {
 
 	@AfterEach
 	void tearDown() {
-		verifyNoMoreInteractions(mockPartyIntegration, mockLegalEntityIntegration, mockLegalEntityProperties, mockValidator);
+		verifyNoMoreInteractions(mockPartyIntegration, mockLegalEntityIntegration, mockValidator);
 	}
 
 	private static final String ORGANIZATION_LEGAL_ID = "1234567890"; // Matches the organization number in createPersonEngagement
@@ -70,7 +66,6 @@ class LegalEntityServiceTest {
 	void validateSignatory() {
 		final var personEngagements = List.of(createPersonEngagement());
 		final var request = createMandate();
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
 		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
 		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.of(SIGNATORY_LEGAL_ID));
@@ -78,7 +73,6 @@ class LegalEntityServiceTest {
 
 		assertDoesNotThrow(() -> service.validateSignatory(MUNICIPALITY_ID, request));
 
-		verify(mockLegalEntityProperties).whitelist();
 		verify(mockValidator).validate(request.signingInfo());
 		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
 		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
@@ -88,7 +82,6 @@ class LegalEntityServiceTest {
 	@Test
 	void validateSignatoryOrganizationNotFound() {
 		final var request = createMandate();
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
 		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.empty());
 
@@ -100,7 +93,6 @@ class LegalEntityServiceTest {
 				assertThat(problem.getDetail()).isEqualTo("No legalId found for partyId: " + request.grantorDetails().grantorPartyId());
 			});
 
-		verify(mockLegalEntityProperties).whitelist();
 		verify(mockValidator).validate(request.signingInfo());
 		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
 		verifyNoInteractions(mockLegalEntityIntegration);
@@ -109,7 +101,6 @@ class LegalEntityServiceTest {
 	@Test
 	void validateSignatoryPersonNotFound() {
 		final var request = createMandate();
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
 		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
 		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.empty());
@@ -122,7 +113,6 @@ class LegalEntityServiceTest {
 				assertThat(problem.getDetail()).isEqualTo("No legalId found for partyId: " + request.grantorDetails().signatoryPartyId());
 			});
 
-		verify(mockLegalEntityProperties).whitelist();
 		verify(mockValidator).validate(request.signingInfo());
 		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
 		verifyNoInteractions(mockLegalEntityIntegration);
@@ -136,7 +126,6 @@ class LegalEntityServiceTest {
 		final var personEngagements = List.of(engagement);
 		final var request = createMandate();
 
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
 		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
 		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.of(SIGNATORY_LEGAL_ID));
@@ -150,7 +139,6 @@ class LegalEntityServiceTest {
 				assertThat(problem.getDetail()).isEqualTo("The person is not an authorized signatory for the organization with legalId: " + ORGANIZATION_LEGAL_ID);
 			});
 
-		verify(mockLegalEntityProperties).whitelist();
 		verify(mockValidator).validate(request.signingInfo());
 		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
 		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
@@ -165,7 +153,6 @@ class LegalEntityServiceTest {
 		final var personEngagements = List.of(engagement);
 		final var request = createMandate();
 
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
 		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
 		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.of(SIGNATORY_LEGAL_ID));
@@ -179,7 +166,6 @@ class LegalEntityServiceTest {
 				assertThat(problem.getDetail()).isEqualTo("The person does not have any engagements with the organization with legalId: " + ORGANIZATION_LEGAL_ID);
 			});
 
-		verify(mockLegalEntityProperties).whitelist();
 		verify(mockValidator).validate(request.signingInfo());
 		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
 		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
@@ -193,7 +179,6 @@ class LegalEntityServiceTest {
 		personEngagement.setOrganizationNumber("not-found");
 		final var personEngagements = List.of(personEngagement);
 
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
 		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
 		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.of(SIGNATORY_LEGAL_ID));
@@ -207,78 +192,6 @@ class LegalEntityServiceTest {
 				assertThat(problem.getDetail()).isEqualTo("The person does not have any engagements with the organization with legalId: 1234567890");
 			});
 
-		verify(mockLegalEntityProperties).whitelist();
-		verify(mockValidator).validate(request.signingInfo());
-		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
-		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
-		verify(mockLegalEntityIntegration).getPersonEngagements(MUNICIPALITY_ID, SIGNATORY_LEGAL_ID);
-	}
-
-	@Test
-	void validateSignatoryWhitelistedPairSkipsValidation() {
-		final var request = createMandate();
-		final var whitelist = Map.of(SIGNATORY_PARTY_ID, List.of(GRANTOR_PARTY_ID));
-		when(mockLegalEntityProperties.whitelist()).thenReturn(whitelist);
-
-		assertDoesNotThrow(() -> service.validateSignatory(MUNICIPALITY_ID, request));
-
-		verify(mockLegalEntityProperties).whitelist();
-		verifyNoInteractions(mockPartyIntegration, mockLegalEntityIntegration, mockValidator);
-	}
-
-	@Test
-	void validateSignatoryNonWhitelistedPairContinuesValidation() {
-		final var personEngagements = List.of(createPersonEngagement());
-		final var request = createMandate();
-		final var whitelist = Map.of("other-signatory-id", List.of(GRANTOR_PARTY_ID));
-		when(mockLegalEntityProperties.whitelist()).thenReturn(whitelist);
-		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
-		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
-		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.of(SIGNATORY_LEGAL_ID));
-		when(mockLegalEntityIntegration.getPersonEngagements(MUNICIPALITY_ID, SIGNATORY_LEGAL_ID)).thenReturn(personEngagements);
-
-		assertDoesNotThrow(() -> service.validateSignatory(MUNICIPALITY_ID, request));
-
-		verify(mockLegalEntityProperties).whitelist();
-		verify(mockValidator).validate(request.signingInfo());
-		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
-		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
-		verify(mockLegalEntityIntegration).getPersonEngagements(MUNICIPALITY_ID, SIGNATORY_LEGAL_ID);
-	}
-
-	@Test
-	void validateSignatoryEmptyWhitelistContinuesValidation() {
-		final var personEngagements = List.of(createPersonEngagement());
-		final var request = createMandate();
-		when(mockLegalEntityProperties.whitelist()).thenReturn(Collections.emptyMap());
-		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
-		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
-		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.of(SIGNATORY_LEGAL_ID));
-		when(mockLegalEntityIntegration.getPersonEngagements(MUNICIPALITY_ID, SIGNATORY_LEGAL_ID)).thenReturn(personEngagements);
-
-		assertDoesNotThrow(() -> service.validateSignatory(MUNICIPALITY_ID, request));
-
-		verify(mockLegalEntityProperties).whitelist();
-		verify(mockValidator).validate(request.signingInfo());
-		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
-		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
-		verify(mockLegalEntityIntegration).getPersonEngagements(MUNICIPALITY_ID, SIGNATORY_LEGAL_ID);
-	}
-
-	@Test
-	void validateSignatoryWhitelistedSignatoryButDifferentGrantorContinuesValidation() {
-		final var personEngagements = List.of(createPersonEngagement());
-		final var request = createMandate();
-		final var whitelist = Map.of(SIGNATORY_PARTY_ID, List.of("other-grantor-id"));
-		when(mockLegalEntityProperties.whitelist()).thenReturn(whitelist);
-		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Collections.emptySet());
-		when(mockPartyIntegration.getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId())).thenReturn(Optional.of(ORGANIZATION_LEGAL_ID));
-		when(mockPartyIntegration.getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId())).thenReturn(Optional.of(SIGNATORY_LEGAL_ID));
-		when(mockLegalEntityIntegration.getPersonEngagements(MUNICIPALITY_ID, SIGNATORY_LEGAL_ID)).thenReturn(personEngagements);
-
-		assertDoesNotThrow(() -> service.validateSignatory(MUNICIPALITY_ID, request));
-
-		verify(mockLegalEntityProperties).whitelist();
 		verify(mockValidator).validate(request.signingInfo());
 		verify(mockPartyIntegration).getOrganizationLegalId(MUNICIPALITY_ID, request.grantorDetails().grantorPartyId());
 		verify(mockPartyIntegration).getPersonalLegalId(MUNICIPALITY_ID, request.grantorDetails().signatoryPartyId());
@@ -296,11 +209,9 @@ class LegalEntityServiceTest {
 			.withGranteeDetails(GranteeDetailsBuilder.create()
 				.withPartyId("grantee-party-id")
 				.build())
-			.withActiveFrom(java.time.LocalDate.now())
+			.withActiveFrom(LocalDate.now())
 			.withSigningInfo(null)
 			.build();
-
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 
 		assertThatExceptionOfType(ThrowableProblem.class)
 			.isThrownBy(() -> service.validateSignatory(MUNICIPALITY_ID, request))
@@ -310,7 +221,6 @@ class LegalEntityServiceTest {
 				assertThat(problem.getDetail()).isEqualTo("signingInfo is required for non-whitelisted mandates");
 			});
 
-		verify(mockLegalEntityProperties).whitelist();
 		verifyNoInteractions(mockPartyIntegration, mockLegalEntityIntegration, mockValidator);
 	}
 
@@ -324,7 +234,6 @@ class LegalEntityServiceTest {
 		when(mockViolation.getPropertyPath()).thenReturn(mockPath);
 		when(mockViolation.getMessage()).thenReturn("must not be empty");
 
-		when(mockLegalEntityProperties.whitelist()).thenReturn(null);
 		when(mockValidator.validate(any(SigningInfo.class))).thenReturn(Set.of(mockViolation));
 
 		assertThatExceptionOfType(ThrowableProblem.class)
@@ -335,7 +244,6 @@ class LegalEntityServiceTest {
 				assertThat(problem.getDetail()).isEqualTo("Invalid signingInfo: orderRef: must not be empty");
 			});
 
-		verify(mockLegalEntityProperties).whitelist();
 		verify(mockValidator).validate(request.signingInfo());
 		verifyNoInteractions(mockPartyIntegration, mockLegalEntityIntegration);
 	}

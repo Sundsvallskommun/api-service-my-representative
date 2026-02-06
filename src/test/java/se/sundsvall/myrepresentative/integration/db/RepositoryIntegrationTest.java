@@ -2,6 +2,8 @@ package se.sundsvall.myrepresentative.integration.db;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -50,14 +52,14 @@ class RepositoryIntegrationTest {
 	void testCreateMandate() {
 		final var request = createMandate();
 		final var entity = createMandateEntity(false);
-		when(mockMapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, request)).thenReturn(entity);
+		when(mockMapper.toMandateEntity(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(request), anyBoolean())).thenReturn(entity);
 		when(mockRepository.save(entity)).thenReturn(entity);
 
-		var mandateEntity = repositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, request);
+		var mandateEntity = repositoryIntegration.createMandate(MUNICIPALITY_ID, NAMESPACE, request, false);
 
 		assertThat(mandateEntity).isEqualTo(entity);
 
-		verify(mockMapper).toMandateEntity(MUNICIPALITY_ID, NAMESPACE, request);
+		verify(mockMapper).toMandateEntity(eq(MUNICIPALITY_ID), eq(NAMESPACE), eq(request), anyBoolean());
 		verify(mockRepository).save(entity);
 	}
 

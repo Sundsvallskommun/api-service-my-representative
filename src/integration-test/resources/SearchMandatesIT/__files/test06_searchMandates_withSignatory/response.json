@@ -16,7 +16,8 @@
 			"updated": "2025-10-10T14:28:53.462+02:00",
 			"activeFrom": "2025-08-01",
 			"inactiveAfter": "2099-12-31",
-			"status": "ACTIVE"
+			"status": "ACTIVE",
+			"whitelisted": false
 		}
 	],
 	"_meta": {

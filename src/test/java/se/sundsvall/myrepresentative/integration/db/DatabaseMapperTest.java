@@ -19,13 +19,15 @@ import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEnt
 
 class DatabaseMapperTest {
 
+	private static final boolean WHITELISTED = true;
+
 	private final DatabaseMapper mapper = new DatabaseMapper();
 
 	@Test
 	void testMapToMandateEntity() {
 		final var createMandate = createMandate();
 
-		final var entity = mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, createMandate);
+		final var entity = mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, createMandate, WHITELISTED);
 
 		assertThat(entity.getName()).isEqualTo(NAME);
 		assertThat(entity.getGrantorPartyId()).isEqualTo(GRANTOR_PARTY_ID);
@@ -47,7 +49,7 @@ class DatabaseMapperTest {
 
 	@Test
 	void testMapToMandateEntityWithNullBean() {
-		assertThat(mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, null)).isNull();
+		assertThat(mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, null, WHITELISTED)).isNull();
 	}
 
 	@Test
@@ -55,7 +57,7 @@ class DatabaseMapperTest {
 		final var createMandate = CreateMandateBuilder.from(createMandate())
 			.withSigningInfo(SigningInfoBuilder.create().build())
 			.build();
-		final var mandateEntity = mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, createMandate);
+		final var mandateEntity = mapper.toMandateEntity(MUNICIPALITY_ID, NAMESPACE, createMandate, WHITELISTED);
 
 		assertThat(mandateEntity).isNotNull();
 		assertThat(mandateEntity.getSigningInformation().getFirst()).hasAllNullFieldsOrPropertiesExcept("mandate");

@@ -26,6 +26,7 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.NOT_DELETED;
 import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.STATUS;
 import static se.sundsvall.myrepresentative.TestObjectFactory.UPDATED;
+import static se.sundsvall.myrepresentative.TestObjectFactory.WHITELISTED;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createSigningInfoEntity;
 
 import java.time.LocalDate;
@@ -73,6 +74,7 @@ class MandateEntityTest {
 			.withGrantee(GRANTEE_PARTY_ID)
 			.withNamespace(NAMESPACE)
 			.withStatus(STATUS)
+			.withWhitelisted(WHITELISTED)
 			.addSigningInformation(SIGNING_INFORMATION);
 
 		assertBean(entity);
@@ -94,7 +96,8 @@ class MandateEntityTest {
 		entity.setGranteePartyId(GRANTEE_PARTY_ID);
 		entity.setNamespace(NAMESPACE);
 		entity.setStatus(STATUS);
-		entity.addSigningInformation(SIGNING_INFORMATION); // Not really a setter but it's needed for the assertBean
+		entity.setWhitelisted(WHITELISTED);
+		entity.addSigningInformation(SIGNING_INFORMATION); // Not really a setter, but it's necessary for the assertBean
 
 		assertBean(entity);
 	}
@@ -113,6 +116,7 @@ class MandateEntityTest {
 		assertThat(entity.getGranteePartyId()).isEqualTo(GRANTEE_PARTY_ID);
 		assertThat(entity.getStatus()).isEqualTo(STATUS);
 		assertThat(entity.getSigningInformation()).containsExactly(SIGNING_INFORMATION);
+		assertThat(entity.isWhitelisted()).isEqualTo(WHITELISTED);
 
 		assertThat(entity).hasNoNullFieldsOrProperties();
 	}
@@ -170,7 +174,7 @@ class MandateEntityTest {
 			.satisfies(problem -> {
 				assertThat(problem.getStatus()).isEqualTo(INTERNAL_SERVER_ERROR);
 				assertThat(problem.getTitle()).isEqualTo("Cannot set validity period for mandate");
-				assertThat(problem.getDetail()).isEqualTo("activeFrom and/or incactiveAfter is null, cannot set validity period");
+				assertThat(problem.getDetail()).isEqualTo("activeFrom and/or inactiveAfter is null, cannot set validity period");
 			});
 	}
 
@@ -187,6 +191,6 @@ class MandateEntityTest {
 
 	@Test
 	void testNoDirtOnCreatedBean() {
-		assertThat(new MandateEntity()).hasAllNullFieldsOrPropertiesExcept("signingInformation");
+		assertThat(new MandateEntity()).hasAllNullFieldsOrPropertiesExcept("signingInformation", "whitelisted");
 	}
 }

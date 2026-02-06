@@ -37,6 +37,7 @@ public final class TestObjectFactory {
 	// Represents a non-deleted-mandate at time 1970-01-01T00:00Z
 	public static final OffsetDateTime NOT_DELETED = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
 	public static final String STATUS = "ACTIVE";
+	public static final boolean WHITELISTED = true;
 
 	public static CreateMandate createMandate() {
 		return CreateMandateBuilder.create()

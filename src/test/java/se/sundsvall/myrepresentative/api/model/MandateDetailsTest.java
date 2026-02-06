@@ -18,10 +18,11 @@ class MandateDetailsTest {
 	private static final GrantorDetails GRANTOR_DETAILS = GrantorDetailsBuilder.create().build();
 	private static final GranteeDetails GRANTEE_DETAILS = GranteeDetailsBuilder.create().build();
 	private static final SigningInfo SIGNING_INFO = createSigningInfo();
+	private static final boolean WHITELISTED = true;
 
 	@Test
 	void testConstructor() {
-		final var mandateDetails = new MandateDetails(ID, GRANTOR_DETAILS, GRANTEE_DETAILS, MUNICIPALITY_ID, NAMESPACE, CREATED, UPDATED, ACTIVE_FROM, INACTIVE_AFTER, STATUS, SIGNING_INFO);
+		final var mandateDetails = new MandateDetails(ID, GRANTOR_DETAILS, GRANTEE_DETAILS, MUNICIPALITY_ID, NAMESPACE, CREATED, UPDATED, ACTIVE_FROM, INACTIVE_AFTER, STATUS, SIGNING_INFO, WHITELISTED);
 		assertBean(mandateDetails);
 	}
 
@@ -39,6 +40,7 @@ class MandateDetailsTest {
 			.withInactiveAfter(INACTIVE_AFTER)
 			.withStatus(STATUS)
 			.withSigningInfo(SIGNING_INFO)
+			.withWhitelisted(WHITELISTED)
 			.build();
 
 		assertBean(mandateDetails);
@@ -46,8 +48,8 @@ class MandateDetailsTest {
 
 	@Test
 	void noDirtOnEmptyBean() {
-		assertThat(new MandateDetails(null, null, null, null, null, null, null, null, null, null, null)).hasAllNullFieldsOrProperties();
-		assertThat(MandateDetailsBuilder.create().build()).hasAllNullFieldsOrProperties();
+		assertThat(new MandateDetails(null, null, null, null, null, null, null, null, null, null, null, false)).hasAllNullFieldsOrPropertiesExcept("whitelisted");
+		assertThat(MandateDetailsBuilder.create().build()).hasAllNullFieldsOrPropertiesExcept("whitelisted");
 	}
 
 	private void assertBean(MandateDetails mandateDetails) {
@@ -62,6 +64,7 @@ class MandateDetailsTest {
 		assertThat(mandateDetails.inactiveAfter()).isEqualTo(INACTIVE_AFTER);
 		assertThat(mandateDetails.status()).isEqualTo(STATUS);
 		assertThat(mandateDetails.signingInfo()).isEqualTo(SIGNING_INFO);
+		assertThat(mandateDetails.whitelisted()).isEqualTo(WHITELISTED);
 
 		assertThat(mandateDetails).hasNoNullFieldsOrProperties();
 	}
