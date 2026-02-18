@@ -1,18 +1,5 @@
 package se.sundsvall.myrepresentative.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
-import static org.zalando.problem.Status.CONFLICT;
-import static org.zalando.problem.Status.FORBIDDEN;
-import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
-import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
-import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -39,6 +26,19 @@ import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
 import se.sundsvall.myrepresentative.api.model.StepUpBuilder;
 import se.sundsvall.myrepresentative.api.model.UserBuilder;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
+import static org.zalando.problem.Status.CONFLICT;
+import static org.zalando.problem.Status.FORBIDDEN;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("junit")

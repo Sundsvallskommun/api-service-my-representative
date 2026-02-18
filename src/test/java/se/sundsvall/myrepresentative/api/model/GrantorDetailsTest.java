@@ -1,11 +1,11 @@
 package se.sundsvall.myrepresentative.api.model;
 
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTOR_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAME;
 import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
-
-import org.junit.jupiter.api.Test;
 
 class GrantorDetailsTest {
 

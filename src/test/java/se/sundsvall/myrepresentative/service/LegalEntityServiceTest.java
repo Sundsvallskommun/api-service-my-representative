@@ -1,22 +1,5 @@
 package se.sundsvall.myrepresentative.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.FORBIDDEN;
-import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTOR_PARTY_ID;
-import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
-import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
-import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-import static se.sundsvall.myrepresentative.TestObjectFactory.createPersonEngagement;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Path;
 import jakarta.validation.Validator;
@@ -38,6 +21,23 @@ import se.sundsvall.myrepresentative.api.model.GrantorDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.integration.legalentity.LegalEntityIntegration;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.FORBIDDEN;
+import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTOR_PARTY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createPersonEngagement;
 
 @ExtendWith(MockitoExtension.class)
 class LegalEntityServiceTest {

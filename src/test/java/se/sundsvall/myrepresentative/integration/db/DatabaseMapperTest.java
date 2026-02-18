@@ -1,5 +1,11 @@
 package se.sundsvall.myrepresentative.integration.db;
 
+import org.junit.jupiter.api.Test;
+import se.sundsvall.myrepresentative.api.model.CreateMandate;
+import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
+import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
+import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.myrepresentative.TestObjectFactory.ACTIVE_FROM;
 import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTEE_PARTY_ID;
@@ -10,12 +16,6 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.NAME;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-
-import org.junit.jupiter.api.Test;
-import se.sundsvall.myrepresentative.api.model.CreateMandate;
-import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
-import se.sundsvall.myrepresentative.api.model.SigningInfoBuilder;
-import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
 
 class DatabaseMapperTest {
 

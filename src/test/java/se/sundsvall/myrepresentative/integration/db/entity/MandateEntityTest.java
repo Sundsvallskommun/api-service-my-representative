@@ -1,5 +1,14 @@
 package se.sundsvall.myrepresentative.integration.db.entity;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Random;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.zalando.problem.ThrowableProblem;
+
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEqualsFor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCodeFor;
@@ -28,15 +37,6 @@ import static se.sundsvall.myrepresentative.TestObjectFactory.STATUS;
 import static se.sundsvall.myrepresentative.TestObjectFactory.UPDATED;
 import static se.sundsvall.myrepresentative.TestObjectFactory.WHITELISTED;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createSigningInfoEntity;
-
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Random;
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.zalando.problem.ThrowableProblem;
 
 class MandateEntityTest {
 

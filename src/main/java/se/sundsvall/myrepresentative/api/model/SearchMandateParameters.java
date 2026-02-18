@@ -1,13 +1,13 @@
 package se.sundsvall.myrepresentative.api.model;
 
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.Objects;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import se.sundsvall.dept44.models.api.paging.AbstractParameterPagingBase;
 import se.sundsvall.myrepresentative.api.validation.ValidMandateStatus;
+
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 
 @Schema(description = "SearchMandateParameters model")
 public class SearchMandateParameters extends AbstractParameterPagingBase {
