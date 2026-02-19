@@ -1,21 +1,5 @@
 package se.sundsvall.myrepresentative.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
-import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
-import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-import static se.sundsvall.myrepresentative.TestObjectFactory.createMandateEntity;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,6 +20,22 @@ import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.legalentity.configuration.LegalEntityProperties;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createMandateEntity;
 
 @ExtendWith(MockitoExtension.class)
 class RepresentativesServiceTest {

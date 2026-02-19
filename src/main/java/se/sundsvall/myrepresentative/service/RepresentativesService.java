@@ -1,7 +1,5 @@
 package se.sundsvall.myrepresentative.service;
 
-import static org.zalando.problem.Status.NOT_FOUND;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,8 @@ import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.config.DataIntegrityExceptionHandler;
 import se.sundsvall.myrepresentative.integration.db.RepositoryIntegration;
 import se.sundsvall.myrepresentative.integration.legalentity.configuration.LegalEntityProperties;
+
+import static org.zalando.problem.Status.NOT_FOUND;
 
 @Service
 public class RepresentativesService {

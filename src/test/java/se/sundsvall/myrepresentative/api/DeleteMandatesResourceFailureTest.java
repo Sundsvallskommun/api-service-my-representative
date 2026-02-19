@@ -1,15 +1,5 @@
 package se.sundsvall.myrepresentative.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.CONFLICT;
-import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
-import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
-import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
-
 import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -23,6 +13,16 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 import org.zalando.problem.violations.Violation;
 import se.sundsvall.myrepresentative.service.RepresentativesService;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.CONFLICT;
+import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
+import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
+import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("junit")

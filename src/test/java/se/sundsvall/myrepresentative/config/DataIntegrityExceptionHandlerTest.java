@@ -1,7 +1,5 @@
 package se.sundsvall.myrepresentative.config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.stream.Stream;
 import org.hibernate.exception.ConstraintViolationException;
@@ -13,6 +11,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DataIntegrityExceptionHandlerTest {
 

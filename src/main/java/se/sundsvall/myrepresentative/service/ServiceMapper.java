@@ -1,7 +1,5 @@
 package se.sundsvall.myrepresentative.service;
 
-import static java.util.Optional.ofNullable;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +27,8 @@ import se.sundsvall.myrepresentative.api.model.StepUpBuilder;
 import se.sundsvall.myrepresentative.api.model.UserBuilder;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
+
+import static java.util.Optional.ofNullable;
 
 @Component
 public class ServiceMapper {

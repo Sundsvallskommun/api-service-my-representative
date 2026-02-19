@@ -1,12 +1,5 @@
 package se.sundsvall.myrepresentative.integration.db;
 
-import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withGranteePartyId;
-import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withGrantorPartyId;
-import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withMunicipalityId;
-import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withNamespace;
-import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withSignatoryPartyId;
-import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withStatuses;
-
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -21,6 +14,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
+
+import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withGranteePartyId;
+import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withGrantorPartyId;
+import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withMunicipalityId;
+import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withNamespace;
+import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withSignatoryPartyId;
+import static se.sundsvall.myrepresentative.integration.db.specification.MandateSpecification.withStatuses;
 
 @CircuitBreaker(name = "mandateRepository")
 public interface MandateRepository extends JpaRepository<MandateEntity, String>, JpaSpecificationExecutor<MandateEntity> {

@@ -1,7 +1,5 @@
 package se.sundsvall.myrepresentative.config;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-
 import java.util.Set;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
+
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 /**
  * Handle duplicate entries in the database and return a Problem response with 409 CONFLICT.

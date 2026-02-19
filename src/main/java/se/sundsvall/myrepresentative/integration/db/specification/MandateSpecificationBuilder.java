@@ -1,10 +1,10 @@
 package se.sundsvall.myrepresentative.integration.db.specification;
 
-import static java.util.Objects.nonNull;
-
 import jakarta.persistence.criteria.Predicate;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
+
+import static java.util.Objects.nonNull;
 
 public class MandateSpecificationBuilder<T> {
 

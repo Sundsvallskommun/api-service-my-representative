@@ -1,10 +1,10 @@
 package se.sundsvall.myrepresentative.api.model;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import se.sundsvall.dept44.models.api.paging.PagingAndSortingMetaData;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MandatesTest {
 

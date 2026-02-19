@@ -1,9 +1,5 @@
 package se.sundsvall.myrepresentative.api.model;
 
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
-import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +7,10 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.myrepresentative.api.validation.ValidDateRange;
 import se.sundsvall.myrepresentative.config.Builder;
+
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
 @Builder
 @Schema(description = "CreateMandate model")

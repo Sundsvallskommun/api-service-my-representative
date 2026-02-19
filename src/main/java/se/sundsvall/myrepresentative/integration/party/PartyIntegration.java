@@ -1,10 +1,10 @@
 package se.sundsvall.myrepresentative.integration.party;
 
-import static generated.se.sundsvall.party.PartyType.ENTERPRISE;
-import static generated.se.sundsvall.party.PartyType.PRIVATE;
-
 import java.util.Optional;
 import org.springframework.stereotype.Component;
+
+import static generated.se.sundsvall.party.PartyType.ENTERPRISE;
+import static generated.se.sundsvall.party.PartyType.PRIVATE;
 
 @Component
 public class PartyIntegration {

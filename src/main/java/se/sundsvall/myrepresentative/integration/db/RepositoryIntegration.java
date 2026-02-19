@@ -1,8 +1,5 @@
 package se.sundsvall.myrepresentative.integration.db;
 
-import static java.time.temporal.ChronoUnit.MILLIS;
-import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
-
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
@@ -14,6 +11,9 @@ import org.springframework.stereotype.Component;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.SearchMandateParameters;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
+
+import static java.time.temporal.ChronoUnit.MILLIS;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 @Component
 public class RepositoryIntegration {

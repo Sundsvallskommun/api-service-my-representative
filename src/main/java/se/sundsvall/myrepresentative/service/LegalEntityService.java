@@ -1,9 +1,5 @@
 package se.sundsvall.myrepresentative.service;
 
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.FORBIDDEN;
-import static org.zalando.problem.Status.NOT_FOUND;
-
 import generated.se.sundsvall.legalentity.PersonEngagement;
 import jakarta.validation.Validator;
 import java.util.List;
@@ -17,6 +13,10 @@ import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.integration.legalentity.LegalEntityIntegration;
 import se.sundsvall.myrepresentative.integration.party.PartyIntegration;
+
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.FORBIDDEN;
+import static org.zalando.problem.Status.NOT_FOUND;
 
 @Service
 public class LegalEntityService {

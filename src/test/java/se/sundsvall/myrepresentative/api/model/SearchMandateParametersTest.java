@@ -1,5 +1,9 @@
 package se.sundsvall.myrepresentative.api.model;
 
+import java.util.List;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Test;
+
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
@@ -10,10 +14,6 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTEE_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.GRANTOR_PARTY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.SIGNATORY_PARTY_ID;
-
-import java.util.List;
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.Test;
 
 class SearchMandateParametersTest {
 

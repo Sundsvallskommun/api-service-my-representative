@@ -1,8 +1,5 @@
 package se.sundsvall.myrepresentative.integration.db;
 
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-
 import org.springframework.stereotype.Component;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.GranteeDetails;
@@ -10,6 +7,9 @@ import se.sundsvall.myrepresentative.api.model.GrantorDetails;
 import se.sundsvall.myrepresentative.api.model.SigningInfo;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.db.entity.SigningInformationEntity;
+
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
 @Component
 public class DatabaseMapper {

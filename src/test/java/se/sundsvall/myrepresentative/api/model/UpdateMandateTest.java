@@ -1,10 +1,10 @@
 package se.sundsvall.myrepresentative.api.model;
 
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.myrepresentative.TestObjectFactory.ACTIVE_FROM;
 import static se.sundsvall.myrepresentative.TestObjectFactory.INACTIVE_AFTER;
-
-import org.junit.jupiter.api.Test;
 
 class UpdateMandateTest {
 

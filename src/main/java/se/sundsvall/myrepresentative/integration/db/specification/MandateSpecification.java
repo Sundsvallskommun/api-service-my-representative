@@ -1,13 +1,13 @@
 package se.sundsvall.myrepresentative.integration.db.specification;
 
-import static java.util.Collections.emptyList;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.data.jpa.domain.Specification;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity;
 import se.sundsvall.myrepresentative.integration.db.entity.MandateEntity_;
+
+import static java.util.Collections.emptyList;
 
 public class MandateSpecification {
 
