@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Objects;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.TimeZoneStorage;
-import org.zalando.problem.Problem;
+import se.sundsvall.dept44.problem.Problem;
 
 import static java.time.ZoneId.systemDefault;
 import static java.time.temporal.ChronoUnit.MILLIS;
 import static org.hibernate.annotations.TimeZoneStorageType.NORMALIZE;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Entity
 @Table(name = "mandate",
