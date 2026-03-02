@@ -11,8 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ThrowableProblem;
+import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 import se.sundsvall.myrepresentative.api.model.MandateDetailsBuilder;
 import se.sundsvall.myrepresentative.api.model.MandateStatus;
 import se.sundsvall.myrepresentative.api.model.MandatesBuilder;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
@@ -131,7 +131,7 @@ class RepresentativesServiceTest {
 
 		assertThatExceptionOfType(ThrowableProblem.class).isThrownBy(() -> representativesService.getMandateDetails(MUNICIPALITY_ID, NAMESPACE, mandateId))
 			.satisfies(problem -> {
-				assertThat(problem.getStatus().getStatusCode()).isEqualTo(404);
+				assertThat(problem.getStatus().value()).isEqualTo(404);
 				assertThat(problem.getTitle()).isEqualTo("No mandate found");
 				assertThat(problem.getMessage()).isEqualTo("No mandate found: Couldn't find any mandate with id '" + mandateId + "' for municipality '" + MUNICIPALITY_ID + "' and namespace '" + NAMESPACE + "'");
 			});

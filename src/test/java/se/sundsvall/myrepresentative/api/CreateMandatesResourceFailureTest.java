@@ -10,12 +10,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.zalando.problem.Problem;
-import org.zalando.problem.violations.ConstraintViolationProblem;
-import org.zalando.problem.violations.Violation;
+import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
+import se.sundsvall.dept44.problem.violations.Violation;
 import se.sundsvall.myrepresentative.api.model.CompletionDataBuilder;
 import se.sundsvall.myrepresentative.api.model.CreateMandate;
 import se.sundsvall.myrepresentative.api.model.CreateMandateBuilder;
@@ -33,14 +34,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
-import static org.zalando.problem.Status.CONFLICT;
-import static org.zalando.problem.Status.FORBIDDEN;
 import static se.sundsvall.myrepresentative.TestObjectFactory.MUNICIPALITY_ID;
 import static se.sundsvall.myrepresentative.TestObjectFactory.NAMESPACE;
 import static se.sundsvall.myrepresentative.TestObjectFactory.createMandate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
 @ActiveProfiles("junit")
 class CreateMandatesResourceFailureTest {
 
@@ -67,7 +69,7 @@ class CreateMandatesResourceFailureTest {
 				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.bodyValue(createMandate)
 			.exchange()
-			.expectStatus().isEqualTo(CONFLICT.getStatusCode());
+			.expectStatus().isEqualTo(CONFLICT.value());
 
 		verify(mockService).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 	}
@@ -82,7 +84,7 @@ class CreateMandatesResourceFailureTest {
 				.build(Map.of("municipalityId", MUNICIPALITY_ID, "namespace", NAMESPACE)))
 			.bodyValue(createMandate)
 			.exchange()
-			.expectStatus().isEqualTo(FORBIDDEN.getStatusCode());
+			.expectStatus().isEqualTo(FORBIDDEN.value());
 
 		verify(mockService).createMandate(MUNICIPALITY_ID, NAMESPACE, createMandate);
 	}
@@ -113,7 +115,7 @@ class CreateMandatesResourceFailureTest {
 			.getResponseBody();
 
 		assertThat(problem.getViolations())
-			.extracting(Violation::getField, Violation::getMessage)
+			.extracting(Violation::field, Violation::message)
 			.containsExactlyInAnyOrder(
 				tuple("signingInfo.completionData.device.ipAddress", "must not be empty"),
 				tuple("signingInfo.completionData.signature", "must not be empty"),

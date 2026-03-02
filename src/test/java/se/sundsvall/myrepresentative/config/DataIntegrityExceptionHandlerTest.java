@@ -9,8 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
+import se.sundsvall.dept44.problem.Problem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +41,7 @@ class DataIntegrityExceptionHandlerTest {
 		assertThat(responseEntity.getBody())
 			.isNotNull()
 			.extracting(Problem::getTitle, Problem::getStatus, Problem::getDetail)
-			.containsExactly(expectedTitle, Status.CONFLICT, expectedMessage);
+			.containsExactly(expectedTitle, HttpStatus.CONFLICT, expectedMessage);
 	}
 
 	@Test
@@ -55,6 +54,6 @@ class DataIntegrityExceptionHandlerTest {
 		assertThat(responseEntity.getBody())
 			.isNotNull()
 			.extracting(Problem::getTitle, Problem::getStatus, Problem::getDetail)
-			.containsExactly(GENERIC_DUPLICATE_ENTRY_TITLE, Status.CONFLICT, GENERIC_DUPLICATE_ENTRY_MESSAGE);
+			.containsExactly(GENERIC_DUPLICATE_ENTRY_TITLE, HttpStatus.CONFLICT, GENERIC_DUPLICATE_ENTRY_MESSAGE);
 	}
 }

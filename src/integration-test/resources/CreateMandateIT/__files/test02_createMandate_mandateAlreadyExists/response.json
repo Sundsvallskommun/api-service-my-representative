@@ -1,4 +1,5 @@
 {
+	"type": "about:blank",
 	"title": "Duplicate entry",
 	"status": 409,
 	"detail": "A record with the same unique identifier(s) already exists"

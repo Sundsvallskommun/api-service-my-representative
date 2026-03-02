@@ -6,11 +6,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.spring.web.advice.ProblemHandling;
+import se.sundsvall.dept44.problem.Problem;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
 /**
  * Handle duplicate entries in the database and return a Problem response with 409 CONFLICT.
@@ -18,7 +17,7 @@ import static org.springframework.http.HttpStatus.CONFLICT;
  * If it's a different kind of DataIntegrityViolationException, we return a generic 409 CONFLICT.
  */
 @ControllerAdvice
-public class DataIntegrityExceptionHandler implements ProblemHandling {
+public class DataIntegrityExceptionHandler {
 
 	// Error 1062: Duplicate entry for key
 	// Error 1586: Duplicate entry for key name specified
@@ -44,9 +43,10 @@ public class DataIntegrityExceptionHandler implements ProblemHandling {
 
 	private ResponseEntity<Problem> handleException(String title, String detail) {
 		return ResponseEntity.status(CONFLICT)
+			.contentType(APPLICATION_PROBLEM_JSON)
 			.body(Problem.builder()
 				.withTitle(title)
-				.withStatus(Status.CONFLICT)
+				.withStatus(CONFLICT)
 				.withDetail(detail)
 				.build());
 	}
