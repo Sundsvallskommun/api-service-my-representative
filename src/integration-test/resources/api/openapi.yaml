@@ -408,7 +408,7 @@ components:
           type: boolean
           description: Whether an MRTD check was performed before the order was completed
           examples:
-          - "true"
+          - true
     User:
       type: object
       properties:
@@ -601,7 +601,7 @@ components:
           description: Indicates whether the mandate was created through a whitelisted
             process
           examples:
-          - true | false
+          - true
           readOnly: true
     Mandates:
       type: object
