@@ -3,6 +3,7 @@ package se.sundsvall.myrepresentative.api.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class ValidDateRangeValidator implements ConstraintValidator<ValidDateRange, Object> {
 
@@ -39,7 +40,7 @@ public class ValidDateRangeValidator implements ConstraintValidator<ValidDateRan
 				return false;
 			}
 
-			if (inactiveAfter != null && inactiveAfter.isBefore(LocalDate.now())) {
+			if (inactiveAfter != null && inactiveAfter.isBefore(LocalDate.now(ZoneId.systemDefault()))) {
 				context.disableDefaultConstraintViolation();
 				context.buildConstraintViolationWithTemplate("inactiveAfter must be today or later").addConstraintViolation();
 				return false;
