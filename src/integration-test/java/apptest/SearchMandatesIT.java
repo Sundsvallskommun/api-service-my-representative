@@ -1,8 +1,5 @@
 package apptest;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpStatus.OK;
-
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
@@ -11,6 +8,9 @@ import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 import se.sundsvall.myrepresentative.MyRepresentatives;
 import se.sundsvall.myrepresentative.api.model.MandateStatus;
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpStatus.OK;
 
 @WireMockAppTestSuite(files = "classpath:/SearchMandatesIT/", classes = MyRepresentatives.class)
 @Sql({
@@ -76,8 +76,7 @@ class SearchMandatesIT extends AbstractAppTest {
 			.withServicePath(UriComponentsBuilder.newInstance()
 				.replacePath(BASE_URL)
 				.queryParam("granteePartyId", "e47aa4d3-c79a-4d08-a1d2-799ba549e0c7")
-				.toUriString()
-			)
+				.toUriString())
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse(RESPONSE)
